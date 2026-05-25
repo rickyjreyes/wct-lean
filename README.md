@@ -25,6 +25,28 @@ WCTLean/
 lake build
 ```
 
+### Verified build
+
+Local result: `lake build` completed successfully (7227 jobs).
+
+`MyProject/Basic.lean` previously had one unused-variable warning at
+line 75 (the `n` binder in `NonConstructible`); it has been renamed to
+`_n` so the warning is silenced. The warning was unrelated to the
+`WCTLean` core.
+
+### Scope
+
+This repo does not prove WCT. It formalizes narrow support lemmas:
+dimensional closure, curvature-dimension sanity, positivity skeletons,
+Koide domain safety, and Fourier scaffolding.
+
+See:
+
+- [THEOREMS.md](./THEOREMS.md) — every current `WCTLean` theorem with
+  file, meaning, WCT role, and status.
+- [SYMPY_MAP.md](./SYMPY_MAP.md) — mapping from `wct-sympy` symbolic
+  audit checks to Lean theorem names.
+
 ### Headline theorems
 
 - `hbar_div_c_mul_k_is_mass` — `[ℏ/c · k] = M`

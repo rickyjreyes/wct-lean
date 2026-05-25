@@ -72,6 +72,6 @@ axiom exponential_bound :
 
 -- Nonconstructibility
 def NonConstructible (M : Nat -> StateConfig) (psi_star : StateConfig) : Prop :=
-  forall i : Nat, exists n : Nat, Ne (M i) psi_star
+  forall i : Nat, exists _n : Nat, Ne (M i) psi_star
 
 end WCT
