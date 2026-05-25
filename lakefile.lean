@@ -7,6 +7,9 @@ package my_project where
 @[default_target]
 lean_lib MyProject
 
+@[default_target]
+lean_lib WCTLean
+
 lean_exe my_project where
   root := `Main
 

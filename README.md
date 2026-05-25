@@ -1,4 +1,44 @@
-# MyProject â€” Î˜-LEAN Validation Framework
+# wct-lean
+
+This repo formalizes narrow WCT-supporting lemmas in Lean 4.
+It does not prove WCT.
+It currently proves dimensional algebra, positivity skeletons, and
+domain-safety lemmas.
+
+## WCTLean library
+
+Narrow foundation under `WCTLean/`:
+
+```
+WCTLean/
+  Dimension.lean   -- integer-exponent (M,L,T) algebra; ℏ/c·k = M
+  Curvature.lean   -- κ, τ at L⁻¹; dimensional sqrt
+  Energy.lean      -- nonnegativity lemmas; toy quadratic energy ≥ 0
+  Koide.lean       -- Koide expression; denominator positivity
+  Fourier.lean     -- product-to-sum identity; cos-orthogonality TODO
+  Main.lean        -- imports the five modules above
+```
+
+### Build
+
+```bash
+lake build
+```
+
+### Headline theorems
+
+- `hbar_div_c_mul_k_is_mass` — `[ℏ/c · k] = M`
+- `sqrt_inverse_length_squared` — `√(L⁻²) = L⁻¹` at the dimensional level
+- `square_nonnegative` — `0 ≤ x²` for any real `x`
+- `positive_quadratic_energy_nonnegative` — `a, b ≥ 0 ⇒ a x² + b y² ≥ 0`
+- `koide_denominator_positive` — `(√mₑ + √m_μ + √m_τ)² > 0` for positive masses
+
+Open items are kept as explicit `TODO` definitions, not as fake proofs
+(see `cos_orthogonality_TODO` in `Fourier.lean`).
+
+---
+
+# MyProject — Θ-LEAN Validation Framework
 
 **Status:** Active  
 **Scope:** Formal validation of curvature-regulated symbolic computation  
