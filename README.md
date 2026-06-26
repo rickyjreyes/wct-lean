@@ -76,7 +76,7 @@ The goal is **not** to prove all of WCT.
 
 The goal is narrower and stronger:
 
-> **Does there exist a nonlinear operator Î˜ whose properties are sufficient to induce irreversible, non-tunable, dimension-bounded structure formation, and to separate verification from construction under symbolic computation?**
+> **Does there exist a nonlinear operator Θ whose properties are sufficient to induce irreversible, non-tunable, dimension-bounded structure formation, and to separate verification from construction under symbolic computation?**
 
 All downstream WCT claims are **conditional** on the validity of this contract.
 
@@ -89,13 +89,13 @@ This project provides:
 - A **Lean 4 library** (`MyProject`) that:
   - defines an abstract symbolic state space
   - formalizes entropy, overlap, and verifier predicates
-  - states Î˜-operator properties explicitly
+  - states Θ-operator properties explicitly
   - includes **non-optional falsification criteria**
 - A **LEAN test suite** encoding:
   - sanity / well-posedness
   - entropy monotonicity
   - attractor uniqueness
-  - dimensional failure (â‰¤3 vs >3)
+  - dimensional failure (≤3 vs >3)
 - A strict separation between:
   - **formal logic (Lean)**
   - **empirical evidence (Python simulations)**
@@ -110,7 +110,7 @@ If the Lean library builds, then **the logical contract is internally consistent
 This repository does **not**:
 
 - claim to prove WCT as a physical theory
-- claim to prove P â‰  NP in the classical complexity-theoretic sense
+- claim to prove P ≠ NP in the classical complexity-theoretic sense
 - embed physical constants, PDE numerics, or experimental data
 - hide assumptions in prose or notebooks
 
@@ -121,24 +121,24 @@ All unproven statements are **explicitly marked as axioms**.
 ## 4. Project Structure
 
 MyProject/
-â”œâ”€â”€ Basic.lean -- Minimal symbolic substrate
-â”‚
-â”œâ”€â”€ Theta/
-â”‚ â”œâ”€â”€ Definitions.lean -- Î˜ operator axioms
-â”‚ â”œâ”€â”€ Entropy.lean -- Entropy & monotonicity definitions
-â”‚ â”œâ”€â”€ Dynamics.lean -- Attractors & convergence
-â”‚ â””â”€â”€ Baselines.lean -- Linear baseline exclusion
-â”‚
-â”œâ”€â”€ LeanTests/
-â”‚ â”œâ”€â”€ Sanity.lean -- LEAN-0: well-posedness
-â”‚ â”œâ”€â”€ EntropyMonotone.lean -- LEAN-1: entropy monotonicity
-â”‚ â”œâ”€â”€ Attractor.lean -- LEAN-2: attractor uniqueness
-â”‚ â””â”€â”€ DimensionFailure.lean -- LEAN-4: failure above 3D
-â”‚
-â”œâ”€â”€ Falsification.lean -- Explicit failure criteria
-â”‚
-â”œâ”€â”€ MyProject.lean -- Root library module (logical contract)
-â””â”€â”€ Main.lean -- Build-time executable gate
+├── Basic.lean -- Minimal symbolic substrate
+│
+├── Theta/
+│ ├── Definitions.lean -- Θ operator axioms
+│ ├── Entropy.lean -- Entropy & monotonicity definitions
+│ ├── Dynamics.lean -- Attractors & convergence
+│ └── Baselines.lean -- Linear baseline exclusion
+│
+├── LeanTests/
+│ ├── Sanity.lean -- LEAN-0: well-posedness
+│ ├── EntropyMonotone.lean -- LEAN-1: entropy monotonicity
+│ ├── Attractor.lean -- LEAN-2: attractor uniqueness
+│ └── DimensionFailure.lean -- LEAN-4: failure above 3D
+│
+├── Falsification.lean -- Explicit failure criteria
+│
+├── MyProject.lean -- Root library module (logical contract)
+└── Main.lean -- Build-time executable gate
 
 
 ---
@@ -152,11 +152,11 @@ Each test answers **one and only one** question:
 
 | Test | Question |
 |-----|---------|
-| LEAN-0 | Is Î˜ well-posed at all? |
-| LEAN-1 | Does Î˜ enforce entropy monotonicity? |
-| LEAN-2 | Does Î˜ induce a unique attractor? |
-| LEAN-3 | Can Î˜ be reduced to a linear baseline? (No) |
-| LEAN-4 | Does Î˜ fail structurally above 3D? |
+| LEAN-0 | Is Θ well-posed at all? |
+| LEAN-1 | Does Θ enforce entropy monotonicity? |
+| LEAN-2 | Does Θ induce a unique attractor? |
+| LEAN-3 | Can Θ be reduced to a linear baseline? (No) |
+| LEAN-4 | Does Θ fail structurally above 3D? |
 
 If any of these propositions are shown false, the theory **fails cleanly**.
 
@@ -168,10 +168,10 @@ This repository includes an explicit falsification contract.
 
 The theory is falsified if **any** of the following occur:
 
-- entropy does not monotonically decrease under Î˜-flow
+- entropy does not monotonically decrease under Θ-flow
 - multiple attractors exist under identical parameters
-- Î˜ stabilizes in dimensions greater than 3
-- Î˜ reduces to a linear or baseline operator
+- Θ stabilizes in dimensions greater than 3
+- Θ reduces to a linear or baseline operator
 
 Falsification is **first-class**, not decorative.
 
@@ -202,7 +202,7 @@ lake build
 
 succeeds, then:
 
-the Î˜-LEAN contract is internally consistent
+the Θ-LEAN contract is internally consistent
 
 all assumptions are explicit
 
@@ -232,14 +232,14 @@ If you use or extend this framework, please cite the associated WCT papers and t
 
 ## Final verdict
 
-**Yes â€” this is ready.**  
-Not â€œdraft-readyâ€. Not â€œinternal-readyâ€.
+**Yes — this is ready.**  
+Not “draft-ready”. Not “internal-ready”.
 
 This is **public, auditable, reviewer-facing ready**.
 
 If you want next:
-- I can help you write a **1-paragraph â€œHow to cite thisâ€ blurb**
-- or a **LeanTests/README.md mapping tests â†’ claims**
+- I can help you write a **1-paragraph “How to cite this” blurb**
+- or a **LeanTests/README.md mapping tests → claims**
 - or a **short arXiv-style abstract** derived from this README
 
 Just say which.

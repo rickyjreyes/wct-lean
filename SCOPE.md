@@ -41,7 +41,7 @@ WCT does not claim experimental confirmation. It proposes testable structural me
 WCT does not claim that wave confinement is the only logically possible foundation of physics, only that it is a consistent and structurally minimal one consistent with known constraints.
 
 ### Not a Guarantee of Entropy-Minimizing or State-Recovering Dynamics
-WCT does not assert that curvature feedback necessarily minimizes spectral entropy, nor that perturbed states must return to a unique pre-perturbation waveform. Stability and â€œattractionâ€ in WCT are primarily claims about **persistent coherent structure (e.g., phase coherence basins, mode locking, and bounded confinement)** rather than exact state recovery.
+WCT does not assert that curvature feedback necessarily minimizes spectral entropy, nor that perturbed states must return to a unique pre-perturbation waveform. Stability and “attraction” in WCT are primarily claims about **persistent coherent structure (e.g., phase coherence basins, mode locking, and bounded confinement)** rather than exact state recovery.
 
 ---
 
@@ -60,7 +60,7 @@ WCT does not assert that curvature feedback necessarily minimizes spectral entro
 - Full dynamical derivation of all interaction forces.
 - Embedding of WCT into a complete quantum measurement framework.
 - Detailed mapping to all observed particle families beyond leading harmonics.
-- Derivation of all preferred biological or material parameters from Î˜-dynamics alone (i.e., without boundary conditions or additional constraints).
+- Derivation of all preferred biological or material parameters from Θ-dynamics alone (i.e., without boundary conditions or additional constraints).
 - Direct experimental realization of curvature-locked confinement states in fully controlled settings.
 
 ---
@@ -82,19 +82,19 @@ These omissions are deliberate and reflect scope control, not theoretical gaps.
 
 The following postulates form the irreducible kernel of WCT. Removing any one collapses the theory.
 
-## Postulate 1 â€” Wave-First Ontology
+## Postulate 1 — Wave-First Ontology
 There exists a fundamental complex wavefield \( \psi \) defined on a continuous domain. No particles, masses, or spacetime geometry are assumed as primitives.
 
-## Postulate 2 â€” Confinement-Induced Mass
+## Postulate 2 — Confinement-Induced Mass
 When wave propagation becomes self-confined into a **structurally stable, phase-coherent** standing-wave configuration, an effective inertial mass emerges. Mass is identified with the resonance scale of confinement.
 
-## Postulate 3 â€” Self-Generated Curvature Feedback
+## Postulate 3 — Self-Generated Curvature Feedback
 The wavefield generates an effective curvature through a nonlinear functional dependence on its spatial derivatives and amplitude. This curvature feeds back dynamically on \( \psi \), regulating localization, stability, and **coherent spectral organization**.
 
-## Postulate 4 â€” Curvature-Regulated Stability
+## Postulate 4 — Curvature-Regulated Stability
 Stable confined solutions exist only when curvature feedback balances dispersion. This balance selects discrete spectral shells and prevents both singular collapse and unbounded expansion. **This stability refers to persistent coherent structure and bounded confinement, not necessarily minimization of spectral entropy.**
 
-## Postulate 5 â€” Dimensional Stability Constraint
+## Postulate 5 — Dimensional Stability Constraint
 The existence of stable curvature-locked confined solutions imposes an upper bound on spatial dimensionality. Three spatial dimensions arise as the maximal dimension admitting long-lived confined resonances.
 
 ---
