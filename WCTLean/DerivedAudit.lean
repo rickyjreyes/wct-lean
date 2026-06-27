@@ -31,22 +31,23 @@ theorem effectiveWavenumber_eq_loopAverage
   unfold effectiveWavenumber
   rw [hclosure]
 
-/-- E5: a nonzero constant weight cancels from the weighted average. -/
+/-- E5: a nonzero constant weight cancels from the weighted average when the
+loop length is nonzero. -/
 theorem constantWeightedAverage_eq_loopAverage
     (weight integratedObservable loopLength : ℝ)
-    (hweight : weight ≠ 0) :
+    (hweight : weight ≠ 0)
+    (hloop : loopLength ≠ 0) :
     constantWeightedAverage weight integratedObservable loopLength =
       integratedObservable / loopLength := by
   unfold constantWeightedAverage
-  by_cases hloop : loopLength = 0
-  · simp [hloop]
-  · field_simp [hweight, hloop]
+  field_simp [hweight, hloop]
 
-/-- E5: exact closure and constant positive weight give the full algebraic
-wavenumber chain used by the symbolic audit. -/
+/-- E5: exact closure, positive loop length, and constant positive weight give
+the full algebraic wavenumber chain used by the symbolic audit. -/
 theorem resolved_e5_effectiveWavenumber_chain
     (n : ℤ) (weight loopLength loopCurvature : ℝ)
     (hweight : 0 < weight)
+    (hloop : 0 < loopLength)
     (hclosure : loopCurvature = 2 * Real.pi * |(n : ℝ)|) :
     effectiveWavenumber n loopLength = loopCurvature / loopLength ∧
     constantWeightedAverage weight loopCurvature loopLength =
@@ -54,7 +55,7 @@ theorem resolved_e5_effectiveWavenumber_chain
   constructor
   · exact effectiveWavenumber_eq_loopAverage n loopLength loopCurvature hclosure
   · exact constantWeightedAverage_eq_loopAverage
-      weight loopCurvature loopLength (ne_of_gt hweight)
+      weight loopCurvature loopLength (ne_of_gt hweight) (ne_of_gt hloop)
 
 /-- E9 algebraic core: polar decomposition gives
 `star psi * dpsi = du/2 + i*u*dtheta`; its imaginary part is `u*dtheta`. -/
