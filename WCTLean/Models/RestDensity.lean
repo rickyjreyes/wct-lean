@@ -2,7 +2,7 @@ import Mathlib
 
 namespace WCTLean
 
-def densityWeightedAverage {ι : Type*} [Fintype ι]
+noncomputable def densityWeightedAverage {ι : Type*} [Fintype ι]
     (density observable : ι → ℝ) : ℝ :=
   (∑ i, density i * observable i) / (∑ i, density i)
 
@@ -16,8 +16,6 @@ theorem lockingMismatch_zero
     (h : ∀ i, phaseGradient i = sigma i) :
     lockingMismatch density phaseGradient sigma = 0 := by
   unfold lockingMismatch
-  apply Finset.sum_eq_zero
-  intro i hi
-  simp [h i]
+  simp [h]
 
 end WCTLean
