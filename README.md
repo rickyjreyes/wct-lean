@@ -10,13 +10,26 @@
 
 It does **not** prove WCT as a physical theory, establish the complete nonlinear PDE program, validate experiments, or convert every `wct-sympy` `PASS` into an unconditional theorem.
 
+## Start with the equations and coverage map
+
+Lean declarations support canonical WCT equation IDs; this repository is not the canonical equation text and does not yet formalize all 142 objects.
+
+- **Complete 142-object Lean coverage accounting:** [`FORMAL_COVERAGE_INDEX.md`](FORMAL_COVERAGE_INDEX.md)
+- **Full corrected WCT equation registry:** [`WCT_FULL_EQUATION_LIST_CORRECTED.md`](https://github.com/rickyjreyes/geometry_of_resonance/blob/main/WCT_FULL_EQUATION_LIST_CORRECTED.md)
+- **Audited master equation architecture:** [`WCT_MASTER_EQUATIONS_UPDATED.md`](https://github.com/rickyjreyes/geometry_of_resonance/blob/main/WCT_MASTER_EQUATIONS_UPDATED.md)
+- **Complete SymPy classification:** [`wct-sympy/VERIFICATION_INDEX.md`](https://github.com/rickyjreyes/wct-sympy/blob/main/VERIFICATION_INDEX.md)
+- **Exact Lean theorem inventory:** [`THEOREMS.md`](THEOREMS.md)
+- **Public cross-repository corpus map:** [WCT Research Corpus](https://rickyjreyes.github.io/research-corpus/)
+
+Use the canonical registry for equation text, symbols, assumptions, and scientific boundaries. Use `FORMAL_COVERAGE_INDEX.md` to determine whether a canonical ID has direct Lean support, partial support, a definition, a counterexample, a TODO, or no maintained mapping.
+
 ## Repository roles
 
 | Repository | Role |
 |---|---|
-| `wct-lean` | Kernel-checked definitions, lemmas, counterexamples, and conditional theorems |
-| `wct-sympy` | Symbolic algebra, dimensions, limits, residuals, and executable counterexamples |
-| `geometry_of_resonance` | Canonical master equations and equation registry |
+| [`wct-lean`](https://github.com/rickyjreyes/wct-lean) | Kernel-checked definitions, lemmas, counterexamples, and conditional theorems |
+| [`wct-sympy`](https://github.com/rickyjreyes/wct-sympy) | Symbolic algebra, dimensions, limits, residuals, and executable counterexamples |
+| [`geometry_of_resonance`](https://github.com/rickyjreyes/geometry_of_resonance) | Canonical master equations and full equation registry |
 
 ## Maintained compiled root
 
@@ -303,7 +316,7 @@ $$
 =142.
 $$
 
-These are symbolic-audit classifications, not Lean-proof counts.
+These are symbolic-audit classifications, not Lean-proof counts. The complete object-by-object distinction is recorded in [`FORMAL_COVERAGE_INDEX.md`](FORMAL_COVERAGE_INDEX.md).
 
 The formal path is
 
@@ -341,6 +354,8 @@ GitHub Actions runs the Lean build on every push and pull request.
 
 ## Documentation
 
+- [`FORMAL_COVERAGE_INDEX.md`](FORMAL_COVERAGE_INDEX.md) — all 142 canonical IDs accounted for
+- [Canonical full equation registry](https://github.com/rickyjreyes/geometry_of_resonance/blob/main/WCT_FULL_EQUATION_LIST_CORRECTED.md)
 - [`THEOREMS.md`](./THEOREMS.md)
 - [`SYMPY_MAP.md`](./SYMPY_MAP.md)
 - [`WCTLean/DerivedAudit.lean`](./WCTLean/DerivedAudit.lean)
