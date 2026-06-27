@@ -1,59 +1,51 @@
 # SYMPY_MAP
 
-This file maps the nearby `wct-sympy` symbolic-audit checks to the Lean
-theorems in `WCTLean/` that formalize a corresponding dimensional or
-domain-safety statement.
+This file maps executable `wct-sympy` checks to corresponding `WCTLean` declarations.
 
-The Lean side covers **structural** claims: dimensions match, denominators
-are positive, energies are nonnegative. It does **not** restate numerical
-equalities that `wct-sympy` checks by symbolic substitution.
+A SymPy `PASS` is not automatically a Lean proof. The relationship column distinguishes exact algebraic counterparts from conditional cores and adjacent support lemmas.
 
-## D1_10 — `m = ℏ/c · k_eff`
+| SymPy ID | Lean declaration | relationship | meaning |
+|---|---|---|---|
+| `E5` | `effectiveWavenumber_eq_loopAverage` | conditional exact counterpart | exact closure implies winding wavenumber equals integrated curvature divided by loop length |
+| `E5` | `constantWeightedAverage_eq_loopAverage` | conditional exact counterpart | constant nonzero weight cancels from the weighted average |
+| `E5` | `resolved_e5_effectiveWavenumber_chain` | conditional exact counterpart | combines closure and positive constant weight into the full algebraic chain |
+| `E9` | `polarCurrentProduct_im` | algebraic core | imaginary part of the polar current product is `u*dtheta` |
+| `E9` | `phaseCurrent_of_polar_factorization` | conditional counterpart | assumes the polar derivative factorization, then proves the phase-current identity |
+| `E9` | `conservationResidual_zero_iff` | adjacent theorem | proves the local continuity residual equivalence |
+| `E13` | `bandpass_oneMode_symbol` | spectral algebra core | one Fourier mode gives the growth symbol `r + a k² - b k⁴` |
+| `E14` | `bandpass_oneMode_symbol` | adjacent theorem | supports the operator-symbol correspondence but does not prove the functional derivative |
+| `E18` | `resolved_e18_energy_nonnegative` | conditional exact counterpart | nonnegative coefficients and terms imply nonnegative encoded energy |
+| `E18` | `resolved_e18_gradientFlow_descent` | conditional core | assumes the chain-rule rate identity and proves nonpositive descent |
+| `E58` | `bandGreenDenominator_pos` | exact counterpart | positive offset prevents a denominator zero |
+| `E58` | `bandGreenDenominator_ge_offset` | exact counterpart | denominator is bounded below by `r` |
+| `E58` | `bandGreenKernel_pos` | exact counterpart | Green kernel is positive |
+| `E58` | `bandGreenKernel_le_inverseOffset` | exact counterpart | Green kernel is at most `1/r` |
+| `E58` | `bandGreenKernel_at_shell` | exact counterpart | the upper bound is attained at the selected shell |
+| `CM9` | `photonSecondOrder_iff_firstOrder` | exact algebraic counterpart | photon second-order and first-order acceleration forms are equivalent |
+| `CM9` | `baryonSecondOrder_iff_firstOrder` | exact algebraic counterpart | baryon second-order and first-order acceleration forms are equivalent |
+| `CM11` | none | TODO | full time-dependent Gaussian damping requires a formal ODE solution theorem |
+| `CM12` | `dimensionlessPowerSpectrum` | definition | dimensionless power-spectrum observable |
+| `CM13` | `peakPowerRatio21`, `peakPowerRatio31`, `peakScaleRatio21`, `peakScaleRatio31` | definitions | peak-height and peak-scale ratios |
+| `CM16` | `horizonWavenumber` | partial definition | defines `2π/R_hor`; the horizon-radius integral is not yet encoded |
+| `CM18` | none | TODO definition | closure-set enumeration has not yet been encoded as a Lean finite set |
 
-- **`wct-sympy` audit check:** dimensional consistency of the closure
-  `m = (ℏ / c) · k_eff`.
-- **Lean theorem:** `hbar_div_c_mul_k_is_mass`
-  (`WCTLean/Dimension.lean`).
-- **Meaning:** dimensional mass closure — `(actionDim / velocityDim) ·
-  inverseLengthDim = massDim`, i.e. `(1, 2, -1) − (0, 1, -1) + (0, -1, 0) =
-  (1, 0, 0)`.
+## Existing structural mappings
 
-## CURV1 — `σ = √(κ² + τ²)`
+| Symbolic family | Lean declaration | relationship |
+|---|---|---|
+| `m = (ℏ/c) k_eff` | `hbar_div_c_mul_k_is_mass` | dimensional support only |
+| `sigma = sqrt(kappa² + tau²)` | `sqrt_inverse_length_squared`, `sqrt_kappa_sq_dim` | dimensional support only |
+| Koide expression | `koide_denominator_positive`, `koide_well_defined`, `koide_positive` | domain safety only; does not prove `K=2/3` |
+| finite locking mismatch | `lockingMismatch_nonnegative`, `lockingMismatch_zero` | finite algebraic support |
+| historical E17 denominator | `resolved_e17_counterexample`, `regularizedDenominator_positive` | counterexample plus restricted-domain repair |
 
-- **`wct-sympy` audit check:** the combined curvature magnitude carries
-  inverse-length dimension.
-- **Lean theorems:**
-  - `sqrt_inverse_length_squared` (`WCTLean/Curvature.lean`)
-  - `sqrt_kappa_sq_dim` (`WCTLean/Curvature.lean`)
-  - Supporting: `kappa_sq_dim`, `tau_sq_dim`.
-- **Meaning:** curvature magnitude has inverse-length dimension. At the
-  integer-exponent level `sqrtDim(L⁻²) = some L⁻¹`, and the same holds when
-  the input is presented as `κ²`.
+## Formalization boundary
 
-## Koide domain / numeric audit
+The following SymPy results remain outside exact Lean coverage:
 
-- **`wct-sympy` audit check:** the Koide expression
-  `K(mₑ, m_μ, m_τ) = (mₑ + m_μ + m_τ) / (√mₑ + √m_μ + √m_τ)²` is evaluated
-  numerically and compared to `2/3`.
-- **Lean theorems:**
-  - `koide_denominator_positive` (`WCTLean/Koide.lean`)
-  - `koide_well_defined` (`WCTLean/Koide.lean`)
-  - `koide_positive` (`WCTLean/Koide.lean`)
-  - Supporting: `koide_sqrt_sum_pos`, `koide_numerator_positive`.
-- **Meaning:** the Koide expression is domain-safe for positive lepton
-  masses — the denominator is strictly positive (so division is justified),
-  and the whole expression is positive.
-- **Note:** Lean does **not** prove the numerical Koide equality
-  `K = 2/3`. That comparison is left to the symbolic / numeric audit.
-
-## Energy positivity skeleton
-
-- **`wct-sympy` audit check:** quadratic-energy structural sanity — a
-  quadratic form with nonnegative coefficients should be nonnegative.
-- **Lean theorem:** `positive_quadratic_energy_nonnegative`
-  (`WCTLean/Energy.lean`).
-- **Meaning:** positive coefficients give nonnegative quadratic energy,
-  `0 ≤ a, 0 ≤ b ⇒ 0 ≤ a · x² + b · y²`. Supporting positivity blocks
-  (`square_nonnegative`, `norm_sq_nonnegative`,
-  `positive_coeff_square_nonnegative`, `sum_two_nonnegative`) live in the
-  same file.
+- generalized Euler-Lagrange calculus for E13/E14;
+- the complete complex curvature operator;
+- functional-analytic Lyapunov descent for E18;
+- time-dependent CM11 ODE integration;
+- continuum loop integrals and Sobolev/PDE results;
+- empirical or numerical validation.

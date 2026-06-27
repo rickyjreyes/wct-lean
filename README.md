@@ -6,23 +6,21 @@
 **Language:** Lean 4 + Mathlib  
 **Role:** Kernel-checked formal support for the Wave Confinement Theory equation audit
 
-`wct-lean` formalizes narrow mathematical obligations associated with Wave Confinement Theory (WCT). It contains definitions, theorems, explicit assumptions, and counterexamples that can be checked by the Lean kernel.
+`wct-lean` formalizes narrow mathematical obligations associated with Wave Confinement Theory. A declaration is called proved only when the Lean kernel accepts it under the hypotheses displayed in its theorem statement.
 
-It does **not** prove WCT as a physical theory, establish the full WCT PDE program, validate experimental claims, or convert every symbolic `PASS` in `wct-sympy` into a Lean theorem.
+It does **not** prove WCT as a physical theory, establish the complete nonlinear PDE program, validate experiments, or convert every `wct-sympy` `PASS` into an unconditional theorem.
 
 ## Repository roles
 
 | Repository | Role |
 |---|---|
-| [`wct-lean`](https://github.com/rickyjreyes/wct-lean) | Kernel-checked definitions, lemmas, counterexamples, and conditional theorems |
-| [`wct-sympy`](https://github.com/rickyjreyes/wct-sympy) | Symbolic algebra, dimensional checks, limits, numerical residuals, and executable counterexamples |
-| [`geometry_of_resonance`](https://github.com/rickyjreyes/geometry_of_resonance) | Canonical master equations and the corrected 142-object equation registry |
+| `wct-lean` | Kernel-checked definitions, lemmas, counterexamples, and conditional theorems |
+| `wct-sympy` | Symbolic algebra, dimensions, limits, residuals, and executable counterexamples |
+| `geometry_of_resonance` | Canonical master equations and equation registry |
 
-A SymPy `PASS` is not a Lean proof. In this repository, **proved** means accepted by Lean under the assumptions visible in the theorem statement.
+## Maintained compiled root
 
-## Current compiled scope
-
-`WCTLean/Main.lean` imports the maintained root library:
+`WCTLean/Main.lean` imports:
 
 ```text
 WCTLean/
@@ -32,88 +30,245 @@ WCTLean/
 ├── Koide.lean
 ├── Fourier.lean
 ├── ResolvedAudit.lean
+├── DerivedAudit.lean
 └── Models/
     ├── CurvatureOperator.lean
     ├── PhaseFlux.lean
     └── RestDensity.lean
 ```
 
-The root smoke theorem checks the dimensional identity
+## Derived audit batch 1
 
-$$[\hbar/c\cdot k]=M.$$
+### E5 — Effective-wavenumber chain
 
-## Resolved equation-audit obligations
+Define
 
-### E2 — Weighted-average denominator
+$$
+k_{\mathrm{eff}}=\frac{2\pi|n|}{L_s}.
+$$
 
-For a finite density family, Lean proves
+Under exact closure
 
-$$0<\sum_i\rho_i\quad\Longrightarrow\quad\sum_i\rho_i\ne0.$$
+$$
+\oint_\Gamma\sigma\,ds=2\pi|n|
+$$
+
+and constant positive weight, Lean proves the algebraic chain
+
+$$
+k_{\mathrm{eff}}
+=
+\frac{1}{L_s}\oint_\Gamma\sigma\,ds
+=
+\langle\sigma\rangle_w.
+$$
+
+Declarations:
+
+```lean
+effectiveWavenumber_eq_loopAverage
+constantWeightedAverage_eq_loopAverage
+resolved_e5_effectiveWavenumber_chain
+```
+
+This is conditional on exact closure and constant weight. It does not prove that the full field dynamics reaches that state.
+
+### E9 — Polar phase current
+
+For the pointwise polar product
+
+$$
+\overline\psi\,\partial_x\psi
+=
+\frac12\partial_xu+i\,u\partial_x\theta,
+$$
+
+Lean proves
+
+$$
+\operatorname{Im}(\overline\psi\,\partial_x\psi)
+=u\partial_x\theta.
+$$
+
+Declarations:
+
+```lean
+polarCurrentProduct_im
+phaseCurrent_of_polar_factorization
+```
+
+The second theorem exposes the polar derivative factorization as a hypothesis rather than hiding an unformalized differentiability argument.
+
+### E13/E14 — One-mode band-pass symbol
+
+Lean proves the exact polynomial reduction
+
+$$
+rA-a(-k^2A)-b(k^4A)
+=
+(r+ak^2-bk^4)A.
+$$
 
 Declaration:
 
 ```lean
-densityWeightedAverage_denominator_ne_zero
+bandpass_oneMode_symbol
 ```
 
-The real-valued weighted average is declared `noncomputable`, as required for real division in Lean.
+This verifies the one-mode operator symbol. It is not yet the generalized Euler-Lagrange theorem for the full functional.
+
+### E18 — Positivity and gradient-flow sign
+
+Lean proves
+
+$$
+c_1G+c_2C\ge0
+$$
+
+from
+
+$$
+c_1,c_2,G,C\ge0.
+$$
+
+It also proves
+
+$$
+\dot E=-V,
+\qquad
+V\ge0
+\quad\Longrightarrow\quad
+\dot E\le0.
+$$
+
+Declarations:
+
+```lean
+resolved_e18_energy_nonnegative
+resolved_e18_gradientFlow_descent
+```
+
+The full functional chain rule remains an explicit analytical obligation.
+
+### E58 — Band-selective Green kernel
+
+For
+
+$$
+G(k)=\frac{1}{r+a(k^2-k_*^2)^2},
+\qquad
+r>0,\ a\ge0,
+$$
+
+Lean proves
+
+$$
+0<G(k)\le\frac1r,
+$$
+
+and
+
+$$
+G(k_*)=\frac1r.
+$$
+
+Declarations:
+
+```lean
+bandGreenDenominator_pos
+bandGreenDenominator_ge_offset
+bandGreenKernel_pos
+bandGreenKernel_le_inverseOffset
+bandGreenKernel_at_shell
+```
+
+### CM9 — First-order/second-order equivalence
+
+Lean proves that the photon and baryon second-order oscillator equations are algebraically equivalent to their first-order acceleration forms after velocity rate is identified with acceleration.
+
+Declarations:
+
+```lean
+photonSecondOrder_iff_firstOrder
+baryonSecondOrder_iff_firstOrder
+```
+
+### CM12, CM13, CM16 — Definitions
+
+Lean now defines:
+
+```lean
+dimensionlessPowerSpectrum
+peakPowerRatio21
+peakPowerRatio31
+peakScaleRatio21
+peakScaleRatio31
+horizonWavenumber
+```
+
+These are definitions, not theorem-level physical validations.
+
+## Earlier resolved obligations
+
+### E2 — Weighted-average denominator
+
+Lean proves
+
+$$
+0<\sum_i\rho_i
+\quad\Longrightarrow\quad
+\sum_i\rho_i\ne0.
+$$
+
+Declaration: `densityWeightedAverage_denominator_ne_zero`.
 
 ### E3 — Locking mismatch
 
 For
 
-$$\mathcal M=\sum_i\rho_i\bigl(\partial_s\varphi_i-\sigma_i\bigr)^2,$$
+$$
+\mathcal M=\sum_i\rho_i(\partial_s\varphi_i-\sigma_i)^2,
+$$
 
-Lean proves
+Lean proves nonnegativity for nonnegative weights and zero mismatch under exact finite locking.
 
-$$\rho_i\ge0\ \forall i\quad\Longrightarrow\quad\mathcal M\ge0.$$
-
-It also proves exact locking gives zero mismatch.
-
-Declarations:
-
-```lean
-lockingMismatch_nonnegative
-lockingMismatch_zero
-```
+Declarations: `lockingMismatch_nonnegative`, `lockingMismatch_zero`.
 
 ### E9 — Conservation residual
 
-For the local residual
+Lean proves
 
-$$R_{\mathrm{cons}}=\partial_tu+\nabla\cdot\mathbf S,$$
+$$
+\partial_tu+\nabla\cdot\mathbf S=0
+\quad\Longleftrightarrow\quad
+\partial_tu=-\nabla\cdot\mathbf S.
+$$
 
-Lean proves the exact algebraic equivalence
-
-$$R_{\mathrm{cons}}=0\quad\Longleftrightarrow\quad\partial_tu=-\nabla\cdot\mathbf S.$$
-
-Declaration:
-
-```lean
-conservationResidual_zero_iff
-```
-
-This does not prove that a chosen WCT evolution satisfies the conservation law; it proves the stated residual equivalence.
+Declaration: `conservationResidual_zero_iff`.
 
 ### E17 — Historical scalar denominator
 
-For the historical scalar denominator
+For
 
-$$D(\psi,\varepsilon,\alpha)=\psi+\varepsilon e^{-\alpha\psi^2},$$
+$$
+D(\psi,\varepsilon,\alpha)
+=
+\psi+\varepsilon e^{-\alpha\psi^2},
+$$
 
-Lean proves the exact counterexample
+Lean proves
 
-$$D(-1,1,0)=0.$$
+$$
+D(-1,1,0)=0,
+$$
 
-Therefore the unrestricted nonvanishing claim is false.
+and separately proves positivity on the restricted sector
 
-Lean also proves the corrected admissible sector
-
-$$\psi\ge0\ \land\ \varepsilon>0\quad\Longrightarrow\quad D(\psi,\varepsilon,\alpha)>0,$$
-
-and hence
-
-$$D(\psi,\varepsilon,\alpha)\ne0.$$
+$$
+\psi\ge0,
+\qquad
+\varepsilon>0.
+$$
 
 Declarations:
 
@@ -124,58 +279,57 @@ regularizedDenominator_ne_zero
 resolved_e17_counterexample
 ```
 
-The canonical equation registry now uses the modulus-squared complex regularizer
-
-$$R_\varepsilon(\psi)=\frac{\overline\psi}{|\psi|^2+\varepsilon^2e^{-2\alpha|\psi|^2}},$$
-
-whose denominator is strictly positive for $\varepsilon>0$. Formalizing this complete complex-valued operator is a separate Lean target; the current E17 module records the historical scalar failure and its conditional repair.
-
-## Other compiled theorem families
-
-### Dimensional algebra
-
-The library formalizes integer-exponent dimensions in mass, length, and time and proves identities including:
-
-```lean
-hbar_div_c_mul_k_is_mass
-sqrt_inverse_length_squared
-sqrt_kappa_sq_dim
-weighted_average_preserves_dimension
-```
-
-### Energy positivity
-
-The library proves elementary nonnegativity lemmas used as support for energy constructions:
-
-```lean
-square_nonnegative
-norm_sq_nonnegative
-positive_coeff_square_nonnegative
-sum_two_nonnegative
-positive_quadratic_energy_nonnegative
-```
-
-These establish positivity of the encoded finite expressions. They do not prove coercivity, global existence, or Lyapunov descent for the full WCT functional.
-
-### Koide support
-
-The library checks denominator positivity and related algebraic identities under explicit positive-mass assumptions. It does not prove that WCT dynamically derives the measured lepton masses.
-
-### Fourier support
-
-The library includes a product-to-sum theorem and explicit unfinished orthogonality scaffolding. Open work remains marked as `TODO` rather than represented as a completed proof.
+The complete modulus-squared complex regularizer remains a separate formalization target.
 
 ## Status discipline
 
 | Label | Meaning |
 |---|---|
-| `PROVED` | Lean kernel accepts the theorem under its displayed hypotheses |
-| `COUNTEREXAMPLE` | Lean proves a concrete input contradicting an unrestricted claim |
-| `CONDITIONAL` | Lean proves the conclusion only after named assumptions are supplied |
+| `PROVED` | Lean accepts the theorem under displayed hypotheses |
+| `COUNTEREXAMPLE` | Lean proves a concrete contradiction to an unrestricted claim |
+| `CONDITIONAL` | The theorem requires named assumptions |
 | `DEFINITION` | The declaration introduces an object but proves no property |
-| `TODO` / `OPEN` | No completed Lean theorem currently closes the obligation |
+| `TODO` / `OPEN` | No completed Lean theorem closes the obligation |
 
-A successful build proves only that the imported Lean declarations type-check. It does not establish empirical truth, physical completeness, PDE well-posedness, or experimental agreement.
+## Relation to the symbolic registry
+
+The current `wct-sympy` registry reports
+
+$$
+59\ \mathrm{PASS}
++27\ \mathrm{CONDITIONAL}
++26\ \mathrm{DEFINITION}
++30\ \mathrm{OPEN}
+=142.
+$$
+
+These are symbolic-audit classifications, not Lean-proof counts.
+
+The formal path is
+
+$$
+\text{paper equation}
+\rightarrow
+\text{canonical ID}
+\rightarrow
+\text{SymPy audit}
+\rightarrow
+\text{Lean theorem, definition, or counterexample}
+\rightarrow
+\text{CI}.
+$$
+
+## Remaining high-value obligations
+
+1. Complete the modulus-squared complex curvature operator.
+2. Formalize the full polar differentiation theorem for `psi = sqrt(u) exp(i theta)`.
+3. Prove the E13/E14 generalized Euler-Lagrange derivative.
+4. Prove the E18 functional chain rule and coercivity conditions.
+5. Prove the CM11 time-dependent diffusion ODE solution.
+6. Complete Fourier orthogonality.
+7. Extend finite locking to curve integrals and functional analysis.
+8. Formalize entropy/support inequalities.
+9. Develop PDE existence, regularity, uniqueness, and stability results without hidden assumptions.
 
 ## Build
 
@@ -187,45 +341,12 @@ GitHub Actions runs the Lean build on every push and pull request.
 
 ## Documentation
 
-- [`THEOREMS.md`](./THEOREMS.md) — theorem inventory and interpretation
-- [`SYMPY_MAP.md`](./SYMPY_MAP.md) — mapping between symbolic audit checks and Lean declarations
-- [`WCTLean/Main.lean`](./WCTLean/Main.lean) — maintained root import
-- [`WCTLean/ResolvedAudit.lean`](./WCTLean/ResolvedAudit.lean) — compiled equation-audit resolutions
-- [`WCT_FULL_EQUATION_LIST_CORRECTED.md`](https://github.com/rickyjreyes/geometry_of_resonance/blob/main/WCT_FULL_EQUATION_LIST_CORRECTED.md) — corrected 142-object equation registry
-- [`WCT_MASTER_EQUATIONS_UPDATED.md`](https://github.com/rickyjreyes/geometry_of_resonance/blob/main/WCT_MASTER_EQUATIONS_UPDATED.md) — audited master-equation architecture
+- [`THEOREMS.md`](./THEOREMS.md)
+- [`SYMPY_MAP.md`](./SYMPY_MAP.md)
+- [`WCTLean/DerivedAudit.lean`](./WCTLean/DerivedAudit.lean)
+- [`WCTLean/ResolvedAudit.lean`](./WCTLean/ResolvedAudit.lean)
+- [`WCTLean/Main.lean`](./WCTLean/Main.lean)
 
-## Relationship to the 142-object audit
+## Scientific boundary
 
-The current symbolic registry contains
-
-$$51\ \mathrm{PASS}+32\ \mathrm{CONDITIONAL}+23\ \mathrm{DEFINITION}+36\ \mathrm{OPEN}=142.$$
-
-Those are `wct-sympy` audit classifications. They are not counts of Lean proofs. The long-term formal path is
-
-$$\text{paper equation}\rightarrow\text{canonical ID}\rightarrow\text{SymPy audit}\rightarrow\text{Lean theorem or counterexample}\rightarrow\text{CI}.$$
-
-## Remaining high-value obligations
-
-1. Formalize the canonical modulus-squared complex curvature operator.
-2. Complete Fourier orthogonality under explicit frequency hypotheses.
-3. Extend finite-sum locking results to integral and functional-analytic settings.
-4. Separate $L^2$ curvature control from higher-regularity $L^\infty$ control.
-5. Formalize corrected Shannon entropy/support inequalities.
-6. Prove finite-band selector properties for the Swift–Hohenberg sector.
-7. Develop PDE existence, regularity, coercivity, and stability results without hiding assumptions.
-
-## Legacy contract
-
-The repository also contains the earlier `MyProject/` abstract $\Theta$-contract. It should be read as a legacy axiomatic specification, not as proof that a physical WCT operator satisfies those axioms. The maintained concrete equation formalization is under `WCTLean/`.
-
-## Scientific scope
-
-This repository is a formal audit layer. Its strongest present contribution is not a proof of the full theory, but a machine-checkable separation among:
-
-- algebraically proved support results;
-- explicit counterexamples;
-- conditional theorems;
-- definitions;
-- unresolved analytical and empirical claims.
-
-That separation is the standard by which future WCT formalization should be evaluated.
+The repository provides machine-checkable separation among proved algebraic support, counterexamples, conditional theorems, definitions, and unresolved analytical or empirical claims. It does not establish the empirical truth or physical completeness of WCT.

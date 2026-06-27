@@ -8,7 +8,7 @@ namespace WCTLean
 # Derived audit batch 1
 
 Kernel-checked algebraic consequences corresponding to the first promoted
-`wct-sympy` derivation batch.  Theorems here state their assumptions explicitly.
+`wct-sympy` derivation batch. Theorems here state their assumptions explicitly.
 They do not claim global PDE well-posedness, variational existence, or empirical
 validation.
 -/
@@ -38,7 +38,9 @@ theorem constantWeightedAverage_eq_loopAverage
     constantWeightedAverage weight integratedObservable loopLength =
       integratedObservable / loopLength := by
   unfold constantWeightedAverage
-  field_simp [hweight]
+  by_cases hloop : loopLength = 0
+  · simp [hloop]
+  · field_simp [hweight, hloop]
 
 /-- E5: exact closure and constant positive weight give the full algebraic
 wavenumber chain used by the symbolic audit. -/
@@ -55,8 +57,8 @@ theorem resolved_e5_effectiveWavenumber_chain
       weight loopCurvature loopLength (ne_of_gt hweight)
 
 /-- E9 algebraic core: polar decomposition gives
-`conj(psi) * dpsi = du/2 + i*u*dtheta`; its imaginary part is `u*dtheta`. -/
-def polarCurrentProduct (u du dtheta : ℝ) : ℂ :=
+`star psi * dpsi = du/2 + i*u*dtheta`; its imaginary part is `u*dtheta`. -/
+noncomputable def polarCurrentProduct (u du dtheta : ℝ) : ℂ :=
   (du / 2 : ℂ) + Complex.I * (u * dtheta : ℂ)
 
 @[simp] theorem polarCurrentProduct_im (u du dtheta : ℝ) :
@@ -67,8 +69,8 @@ def polarCurrentProduct (u du dtheta : ℝ) : ℂ :=
 phase-current component `u*dtheta`. -/
 theorem phaseCurrent_of_polar_factorization
     (psi dpsi : ℂ) (u du dtheta : ℝ)
-    (hpolar : Complex.conj psi * dpsi = polarCurrentProduct u du dtheta) :
-    (Complex.conj psi * dpsi).im = phaseFluxComponent u dtheta := by
+    (hpolar : star psi * dpsi = polarCurrentProduct u du dtheta) :
+    (star psi * dpsi).im = phaseFluxComponent u dtheta := by
   rw [hpolar]
   simp [phaseFluxComponent]
 
