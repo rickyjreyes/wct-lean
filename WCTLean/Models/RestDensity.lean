@@ -2,7 +2,7 @@ import Mathlib
 
 namespace WCTLean
 
-def densityWeightedAverage {ι : Type*} [Fintype ι]
+noncomputable def densityWeightedAverage {ι : Type*} [Fintype ι]
     (density observable : ι → ℝ) : ℝ :=
   (∑ i, density i * observable i) / (∑ i, density i)
 
