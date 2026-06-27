@@ -9,4 +9,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: leanprover/lean-action@v1
+      - id: lean-action
+        continue-on-error: true
+        uses: leanprover/lean-action@v1
+      - name: Capture exact Lean build output
+        shell: bash
+        run: |
+          set +e
+          lake build > lean-build.log 2>&1
+          code=$?
+          echo "$code" > lean-exit-code.txt
+          exit 0
+      - uses: actions/upload-artifact@v4
+        with:
+          name: lean-build-log
+          path: |
+            lean-build.log
+            lean-exit-code.txt
+      - name: Enforce successful build
+        shell: bash
+        run: test "$(cat lean-exit-code.txt)" = "0"
