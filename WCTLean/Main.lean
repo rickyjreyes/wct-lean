@@ -10,6 +10,7 @@ import WCTLean.Energy
 import WCTLean.Koide
 import WCTLean.Fourier
 import WCTLean.ResolvedAudit
+import WCTLean.DerivedAudit
 
 namespace WCTLean
 
