@@ -1,12 +1,33 @@
-name: Lean
+name: Lean formal reproducibility
 
 on:
   push:
+    branches: [main]
   pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
-      - uses: leanprover/lean-action@v1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install pinned Lean toolchain and build dependencies
+        uses: leanprover/lean-action@v1
+      - name: Audit source closure and emit SHA-256 manifest
+        run: python scripts/audit_formal_sources.py
+      - name: Build all maintained Lean targets
+        run: lake build
+      - name: Confirm the locked dependency graph is unchanged
+        run: git diff --exit-code -- lake-manifest.json lean-toolchain lakefile.lean
+      - name: Upload formal-source manifest
+        uses: actions/upload-artifact@v4
+        with:
+          name: formal-source-hashes-${{ github.sha }}
+          if-no-files-found: error
+          path: formal-source-hashes.json
