@@ -1,14 +1,17 @@
 PYTHON ?= python3
 
-.PHONY: audit build reproduce clean
+.PHONY: audit cache build reproduce clean
 
 audit:
 	$(PYTHON) scripts/audit_formal_sources.py
 
+cache:
+	lake exe cache get
+
 build:
 	lake build
 
-reproduce: audit build
+reproduce: audit cache build
 
 clean:
 	lake clean
