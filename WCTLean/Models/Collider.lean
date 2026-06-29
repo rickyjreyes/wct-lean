@@ -5,7 +5,7 @@ namespace WCTLean
 
 noncomputable def logMomentum (qSquared : ℝ) : ℝ := Real.log qSquared
 
-def activeDomainWinding (frequency domainWidth : ℝ) : ℝ :=
+noncomputable def activeDomainWinding (frequency domainWidth : ℝ) : ℝ :=
   frequency * domainWidth / (2 * Real.pi)
 
 structure ColliderFitEvidence where

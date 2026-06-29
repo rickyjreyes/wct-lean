@@ -11,10 +11,13 @@ theorem abs_ghostMode_le
     |ghostMode amplitude logFrequency energy referenceEnergy phase| ≤ |amplitude| := by
   unfold ghostMode
   rw [abs_mul]
+  have hcos :
+      |Real.cos (logFrequency * Real.log (energy / referenceEnergy) + phase)| ≤ 1 := by
+    exact abs_le.2 ⟨Real.neg_one_le_cos _, Real.cos_le_one _⟩
   calc
     |amplitude| * |Real.cos (logFrequency * Real.log (energy / referenceEnergy) + phase)|
         ≤ |amplitude| * 1 :=
-      mul_le_mul_of_nonneg_left (abs_cos_le_one _) (abs_nonneg amplitude)
+      mul_le_mul_of_nonneg_left hcos (abs_nonneg amplitude)
     _ = |amplitude| := by ring
 
 noncomputable def gaussianSmearingFactor (logFrequency sigmaLog : ℝ) : ℝ :=

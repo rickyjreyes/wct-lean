@@ -42,16 +42,41 @@ def main() -> None:
 
     root_text = (ROOT / "WCTLean" / "Main.lean").read_text(encoding="utf-8")
     for required in (
+        "WCTLean.Registry",
         "WCTLean.Dimension",
         "WCTLean.Curvature",
         "WCTLean.Energy",
         "WCTLean.Koide",
         "WCTLean.Fourier",
+        "WCTLean.Contracts.Analytic",
+        "WCTLean.Models.CurvatureOperator",
+        "WCTLean.Models.ComplexCurvature",
+        "WCTLean.Models.PhaseFlux",
+        "WCTLean.Models.RestDensity",
+        "WCTLean.Models.Locking",
+        "WCTLean.Models.BandPass",
+        "WCTLean.Models.AlgebraicChecks",
+        "WCTLean.Models.LogFlow",
+        "WCTLean.Models.GhostModes",
+        "WCTLean.Models.Collider",
+        "WCTLean.Models.KoideDerivation",
+        "WCTLean.Models.UnifiedOperator",
+        "WCTLean.Models.CompactDynamics",
         "WCTLean.ResolvedAudit",
         "WCTLean.DerivedAudit",
     ):
         if f"import {required}" not in root_text:
             failures.append(f"WCTLean/Main.lean does not import {required}")
+
+    registry_text = (ROOT / "WCTLean" / "Registry.lean").read_text(encoding="utf-8")
+    for required_theorem in (
+        "allEquationIds_length",
+        "allEquationIds_nodup",
+        "statusPartition_complete",
+        "canonicalRegistry_length",
+    ):
+        if f"theorem {required_theorem}" not in registry_text:
+            failures.append(f"WCTLean/Registry.lean lacks {required_theorem}")
 
     manifest = json.loads((ROOT / "lake-manifest.json").read_text(encoding="utf-8"))
     mathlib = next((row for row in manifest.get("packages", []) if row.get("name") == "mathlib"), None)
@@ -59,7 +84,7 @@ def main() -> None:
         failures.append("lake-manifest.json has no mathlib package")
 
     output = {
-        "schema_version": "1.0.0",
+        "schema_version": "2.0.0",
         "lean_toolchain": toolchain,
         "mathlib_input_revision": mathlib.get("inputRev") if mathlib else None,
         "mathlib_commit": mathlib.get("rev") if mathlib else None,

@@ -1,61 +1,168 @@
 # WCT Lean Formal Coverage Index
 
-This page separates the **complete 142-object WCT equation registry** from the smaller subset that currently has direct or supporting Lean declarations.
+This index distinguishes **canonical registration** from **typed Lean support** and **kernel-proved content**.
 
 ## Canonical navigation
 
-- [Full corrected equation registry](https://github.com/rickyjreyes/geometry_of_resonance/blob/main/WCT_FULL_EQUATION_LIST_CORRECTED.md)
+- [Corrected 142-object equation registry](https://github.com/rickyjreyes/geometry_of_resonance/blob/main/WCT_FULL_EQUATION_LIST_CORRECTED.md)
 - [Master equation architecture](https://github.com/rickyjreyes/geometry_of_resonance/blob/main/WCT_MASTER_EQUATIONS_UPDATED.md)
-- [Complete SymPy classification of all 142 objects](https://github.com/rickyjreyes/wct-sympy/blob/main/VERIFICATION_INDEX.md)
+- [Complete SymPy classification](https://github.com/rickyjreyes/wct-sympy/blob/main/VERIFICATION_INDEX.md)
 - [Lean theorem inventory](THEOREMS.md)
-- [SymPy-to-Lean relationship map](SYMPY_MAP.md)
-- [Public cross-repository corpus map](https://rickyjreyes.github.io/research-corpus/)
+- [SymPy-to-Lean map](SYMPY_MAP.md)
+- [Public research-corpus map](https://rickyjreyes.github.io/research-corpus/)
 
-The canonical registry defines the equation text, symbols, assumptions, and scientific boundary. Lean only claims what is accepted by the kernel under the hypotheses written in each declaration.
+The canonical equation registry defines equation text, symbols, assumptions, and scientific boundaries. Lean claims only what its declarations encode and what the kernel accepts under displayed hypotheses.
 
-## Registry accounting
+## Layer 1 — Compiled canonical registration: 142 / 142
 
-The complete WCT registry contains 142 objects. The current Lean repository has direct or supporting mappings for 18 canonical IDs; the other 124 objects have no direct completed Lean mapping in the maintained index.
+`WCTLean/Registry.lean` compiles every canonical ID:
 
-## IDs with direct or supporting Lean declarations — 18
+| Family | Count |
+|---|---:|
+| Master systems | 9 |
+| Canonical equations | 83 |
+| Curvature-locked electron equations | 10 |
+| Auxiliary equations | 5 |
+| Cosmology equations | 20 |
+| Topology equations | 9 |
+| Correction equations | 6 |
+| **Total** | **142** |
 
-`E1A E1B E2 E3 E5 E6 E7 E9 E13 E14 E17 E18 E58 E78 CM9 CM12 CM13 CM16`
+Lean proves:
 
-These do not all have the same strength:
+```lean
+masterIds_length
+canonicalIds_length
+electronIds_length
+auxiliaryIds_length
+cosmologyIds_length
+topologyIds_length
+correctionIds_length
+allEquationIds_length
+allEquationIds_nodup
+statusPartition_length
+statusPartition_nodup
+statusPartition_complete
+every_registered_id_has_status
+every_registered_id_has_family
+canonicalRegistry_length
+```
 
-- `E1A`, `E1B`, `E6`, `E7`: dimensional support only.
-- `E2`, `E3`, `E5`, `E9`, `E18`, `E58`, `CM9`: kernel-checked algebraic or order-theoretic support under displayed hypotheses.
-- `E13`, `E14`: one-mode or positivity support, not the full generalized variational theorem.
-- `E17`: counterexample to the historical scalar denominator plus restricted-sector repairs; the complete complex operator remains open.
-- `E78`: adjacent TODO proposition, not a proof.
-- `CM12`, `CM13`, `CM16`: definitions, not theorem-level physical validation.
+The effective status partition is compiled as:
 
-See [`THEOREMS.md`](THEOREMS.md) for declaration names and exact boundaries.
+| Symbolic-audit status | Count |
+|---|---:|
+| `PASS` | 59 |
+| `CONDITIONAL` | 27 |
+| `DEFINITION` | 26 |
+| `OPEN` | 30 |
+| **Total** | **142** |
 
-## Registry IDs without a direct completed Lean mapping — 124
+These are inherited symbolic-audit classifications. They are not Lean theorem counts.
 
-`M1 M2 M3 M4 M5 M6A M6B M7 M8 E4 E8 E10 E11 E12 E15 E16 E19 E20 E21 E22`
+## Layer 2 — Non-registry typed Lean support: 50 IDs
 
-`E23 E24 E25 E26 E27 E28 E29 E30 E31 E32 E33 E34 E35 E36 E37 E38 E39 E40 E41 E42`
+The following IDs have a maintained Lean definition, proposition, theorem, counterexample, or analytic contract beyond registry metadata:
 
-`E43 E44 E45 E46 E47 E48 E49 E50 E51 E52 E53 E54 E55 E56 E57 E59 E60 E61 E62 E63`
+```text
+M1 M2 M3 M6A M7
+E1A E1B E2 E3 E4 E5 E6 E7 E8 E9
+E12 E13 E14 E17 E18 E20
+E24 E25 E26 E27 E28 E33
+E45 E47 E49 E51 E53
+E57 E58 E59 E61 E62 E64
+E65 E66 E67 E68 E69 E70
+E78 E81
+CM9 CM12 CM13 CM16
+```
 
-`E64 E65 E66 E67 E68 E69 E70 E71 E72 E73 E74 E75 E76 E77 E79 E80 E81 E82 CLE1 CLE2`
+### Direct algebraic or order-theoretic theorem support
 
-`CLE3 CLE4 CLE5 CLE6 CLE7 CLE8 CLE9 CLE10 G1 EX EY EZ FA CM1 CM2 CM3 CM4 CM5 CM6 CM7`
+```text
+M1 M2 M3 M7
+E2 E3 E4 E5 E8 E9
+E12 E13 E14 E17 E18 E20 E28 E33
+E45 E47 E49 E51 E53
+E57 E58 E59 E61 E62 E64 E81
+CM9
+```
 
-`CM8 CM10 CM11 CM14 CM15 CM17 CM18 CM19 CM20 TOP1 TOP2 TOP3 TOP4 TOP5 TOP6 TOP7 TOP8 TOP9 CORR1 CORR2`
+This category includes conditional theorems and finite analogues. It does not imply full PDE, variational, or physical closure.
 
-`CORR3 CORR4 CORR5 CORR6`
+### Dimensional support
 
-“No direct completed Lean mapping” does not mean false. It means this repository does not currently expose a maintained kernel-checked declaration that closes that canonical object.
+```text
+E1A E1B E6 E7
+```
 
-## Status rule
+### Definitions or model skeletons
 
-- `PROVED`: the Lean kernel accepts the declaration under displayed hypotheses.
-- `COUNTEREXAMPLE`: Lean proves a concrete contradiction to an unrestricted or historical claim.
-- `CONDITIONAL`: named assumptions are required.
-- `DEFINITION`: an object is introduced without proving a property.
-- `TODO` or `OPEN`: no completed Lean theorem closes the obligation.
+```text
+M6A E25 E27 E65 CM12 CM13 CM16
+```
 
-A SymPy `PASS` must never be reported as a Lean proof, and a Lean proof must never be reported as empirical validation.
+### Explicit analytic contracts or predicates
+
+```text
+E24 E26 E66 E67 E68 E69 E70
+```
+
+The contracts expose missing Sobolev, regularity, interpolation, and stability hypotheses rather than assuming them silently.
+
+### Counterexample or unresolved proposition support
+
+```text
+E17 E78
+```
+
+E17 includes both the historical scalar-denominator counterexample and the corrected complex denominator theorem. E78 remains an adjacent proposition/TODO rather than a completed Fisher-information theorem.
+
+## Layer 3 — Registry-only coverage: 92 IDs
+
+The remaining 92 IDs are compiled with family and status metadata but do not yet have a maintained equation-specific typed declaration that captures their substantive mathematical content.
+
+Registry-only does **not** mean false. It means the ID is inventoried and classified, but its formula or claim has not yet been closed in Lean.
+
+## Major compiled modules
+
+| Module | Principal coverage |
+|---|---|
+| `WCTLean/Registry.lean` | all 142 IDs, families, effective statuses, completeness proofs |
+| `WCTLean/Models/ComplexCurvature.lean` | corrected M2/E17 complex regularizer and global denominator positivity |
+| `WCTLean/Models/Locking.lean` | M1, E3, E4, E8 finite locking algebra |
+| `WCTLean/Models/BandPass.lean` | M3, M7, E12, E57, E61, E64 finite-band algebra |
+| `WCTLean/Models/AlgebraicChecks.lean` | E20, E28, E33, E45, E47, E49, E51, E53, E59, E62, E81 |
+| `WCTLean/Contracts/Analytic.lean` | E24–E27 and E65–E70 analytic boundaries/contracts |
+| `WCTLean/DerivedAudit.lean` | E5, E9, E13/E14, E18, E58, CM9, CM12, CM13, CM16 |
+| `WCTLean/ResolvedAudit.lean` | E2, E3, E9, historical E17 counterexample |
+| `WCTLean/Models/KoideDerivation.lean` | spin-dependent Koide algebra outside the canonical-ID count |
+| `WCTLean/Models/GhostModes.lean` | bounded ghost-mode and smearing definitions |
+| `WCTLean/Models/Collider.lean` | collider log-coordinate and winding definitions |
+| `WCTLean/Models/CompactDynamics.lean` | contractive-update norm bound |
+
+## Status discipline
+
+| Label | Meaning |
+|---|---|
+| `PROVED` | Lean accepts a theorem under its displayed hypotheses |
+| `COUNTEREXAMPLE` | Lean proves a concrete failure of an unrestricted or historical claim |
+| `CONDITIONAL` | named assumptions are required |
+| `DEFINITION` | an object is introduced but no substantive property is proved |
+| `CONTRACT` | an analytical requirement is represented explicitly as a hypothesis-bearing interface |
+| `REGISTRY-ONLY` | ID, family, and status compile, but no equation-specific typed support is maintained |
+| `TODO` / `OPEN` | no completed theorem closes the obligation |
+
+A SymPy `PASS` must never be reported as a Lean proof. A Lean theorem must never be reported as empirical validation.
+
+## Reproducibility
+
+CI runs:
+
+```bash
+lake update
+lake exe cache get
+python scripts/audit_formal_sources.py
+lake build
+```
+
+The audit rejects `sorry` and `admit`, verifies the public import closure, hashes every Lean source file, and confirms the pinned dependency graph remains unchanged.

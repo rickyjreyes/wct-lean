@@ -21,7 +21,7 @@ structure SobolevCurvatureContract where
   curvature_iff : ∀ n, curvatureBounded n ↔ h2SubcriticalDimension n
 
 /-- E25/E65: critical Sobolev exponent, defined for real-valued n. -/
-def criticalSobolevExponent (n : ℝ) : ℝ := (n + 2) / (n - 2)
+noncomputable def criticalSobolevExponent (n : ℝ) : ℝ := (n + 2) / (n - 2)
 
 /-- E27: finite-energy confinement is represented as a predicate on the two
 nonnegative integral contributions. -/
