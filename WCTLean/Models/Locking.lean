@@ -5,7 +5,7 @@ namespace WCTLean
 /-!
 # Curvature-phase locking algebra
 
-Finite and integrated algebraic forms supporting M1 and E3-E8.  These results
+Finite and integrated algebraic forms supporting M1 and E3-E8. These results
 state the nonzero-weight and nonzero-denominator hypotheses explicitly; they do
 not assert existence of a stationary field solution.
 -/
@@ -43,9 +43,7 @@ theorem pointwiseLocked_weighted
   rw [hlock]
   field_simp [hweight]
 
-/-- Finite analogue of the corrected E8 identity:
-`sum w phi' = sum w sigma + alpha L`, where the counting measure has total
-length equal to the number of samples. -/
+/-- Finite analogue of the corrected E8 identity. -/
 theorem correctedWeightedLockIdentity
     {ι : Type*} [Fintype ι]
     (phaseGradient sigma weight : ι → ℝ) (alpha : ℝ)
@@ -62,7 +60,7 @@ theorem correctedWeightedLockIdentity
         (phaseGradient i) (sigma i) (weight i) alpha (hweight i) (hlock i)
     _ = (∑ i, weight i * sigma i) + alpha * Fintype.card ι := by
       rw [Finset.sum_add_distrib]
-      simp
+      simp [mul_comm]
 
 /-- E3 finite mismatch action. -/
 def finiteLockingAction
