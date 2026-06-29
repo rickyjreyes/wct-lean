@@ -35,21 +35,37 @@ These theorems prove registry integrity, not the mathematical content of all 142
 | Declaration | Equation | Content |
 |---|---|---|
 | `complex_normSq_nonnegative` | M2/E17 | complex modulus-square is nonnegative |
-| `complexRegularizerDenominator_positive` | M2/E17 | corrected denominator is positive for every complex field value when `ε > 0` |
-| `complexRegularizerDenominator_ne_zero` | M2/E17 | corrected denominator never vanishes under `ε > 0` |
+| `complexRegularizerDenominator_positive` | M2/E17/M6B | corrected denominator is positive for every complex field value when `ε > 0` |
+| `complexRegularizerDenominator_ne_zero` | M2/E17 | corrected real denominator never vanishes under `ε > 0` |
+| `thetaComplex_canonical_formula` | M6B | typed operator equals the canonical modulus-squared quotient |
+| `thetaComplex_denominator_ne_zero` | M6B | cast complex denominator is nonzero for `ε > 0` |
 | `complexRegularizerDenominator_at_zero` | M2/E17 | node denominator equals `ε²` |
 | `complexRegularizedReciprocal_at_zero` | M2/E17 | regularized reciprocal is defined and zero at a node |
-| `thetaComplex_zero_state` | M2/E17 | supplied zero field/Laplacian state gives zero local curvature product |
+| `thetaComplex_zero_state` | M2/E17/M6B | supplied zero field/Laplacian state gives zero local curvature product |
 
-## Locking algebra (`WCTLean/Models/Locking.lean`)
+The M6B results establish exact local operator form and denominator safety. They do not prove uniqueness of the nonlinear closure or PDE well-posedness.
+
+## Curvature-phase locking (`WCTLean/Models/Locking.lean`)
 
 | Declaration | Equation | Content | Boundary |
 |---|---|---|---|
 | `alphaLock_closure` | E4 | stated integration constant solves scalar winding closure | denominator assumed nonzero |
-| `pointwiseLocked_weighted` | E4/E8 | multiplying pointwise lock by nonzero weight yields local weighted identity | finite scalar theorem |
-| `correctedWeightedLockIdentity` | E8 | finite sum of weighted phase gradients equals weighted curvature sum plus constant term | finite counting measure, not curve integration |
+| `pointwiseLocked_weighted` | E4/E8 | multiplying pointwise lock by nonzero weight gives local weighted identity | finite scalar theorem |
+| `correctedWeightedLockIdentity` | E8 | finite weighted phase-gradient sum equals curvature sum plus constant term | finite counting measure |
 | `finiteLockingAction_nonnegative` | M1/E3 | finite mismatch action is nonnegative | nonnegative weights |
 | `finiteLockingAction_zero` | M1/E3 | exact finite lock makes mismatch action zero | finite model |
+
+## Phase flux and quantization (`WCTLean/Models/PhaseFlux.lean`)
+
+| Declaration | Equation | Content |
+|---|---|---|
+| `RadialShellQuantized` | E10 | exact radial shell quantization predicate |
+| `WindingQuantized` | E11 | exact winding quantization predicate |
+| `radialShellQuantized_add` | E10 | shell-quantized phase integrals are closed under addition |
+| `windingQuantized_add` | E11 | quantized circulations are closed under addition |
+| `radialShellQuantized_iff_windingQuantized` | E10/E11 | both predicates implement the same integer law for a supplied observable |
+
+These are exact algebraic closure theorems, not dynamical selection or defect-existence results.
 
 ## Finite-band selector (`WCTLean/Models/BandPass.lean`)
 
@@ -70,6 +86,9 @@ These theorems prove registry integrity, not the mathematical content of all 142
 |---|---|---|
 | `cavityQuadratic_nonnegative` | E20 | cavity quadratic sector is nonnegative under positive-semidefinite coefficient conditions |
 | `alphaDrop_lt_one` | E28 | corrected beta condition implies alpha-drop below one |
+| `entropyPrunedUpperBound_nonnegative` | E29 | encoded pruning bound is nonnegative for nonnegative mode count |
+| `entropyPrunedUpperBound_le_modeCount` | E29 | nonnegative entropy drop cannot increase the bound |
+| `entropyPrunedUpperBound_antitone` | E29 | bound is antitone in entropy drop |
 | `exp_entropy_le_support` | E33 | `H ≤ log K` implies `exp H ≤ K` |
 | `effectiveQualityFactor_positive` | E45 | corrected quality factor is positive for positive inputs |
 | `stationaryPowerBalance_iff` | E47 | zero energy rate is equivalent to source/sink balance |
@@ -78,6 +97,46 @@ These theorems prove registry integrity, not the mathematical content of all 142
 | `curvaturePressureDensity_nonnegative` | E53 | local curvature pressure is nonnegative under nonnegative inputs |
 | `maskProjection_idempotent` | E59 | a fixed coordinate mask is an idempotent projection |
 | `spectralEnergyFraction_mem_unitInterval` | E62 | annular spectral-energy fraction lies in `[0,1]` |
+
+## Compact bounded dynamics (`WCTLean/Models/CompactDynamics.lean`)
+
+| Declaration | Equation | Content | Boundary |
+|---|---|---|---|
+| `averagedUpdate` | E36 | finite-dimensional convex update definition | special case of general WCC update |
+| `averagedUpdate_fixed_of_average_fixed` | E36 | fixed points of the averaging map remain fixed | exact algebraic theorem |
+| `averagedUpdate_norm_le` | M5/E36 | update does not increase norm under convex mixing and local nonexpansiveness | pointwise finite-dimensional theorem |
+| `InNormBound` | M5 | explicit bounded-resource predicate | definition |
+| `averagedUpdate_preserves_normBound` | M5 | bounded norm ball is forward invariant | assumes local nonexpansiveness |
+| `BandLimitedInvariantSet` | M5 | explicit invariant finite-band contract structure | contract, not existence proof |
+
+These statements do not prove polynomial complexity or equivalence with classical complexity classes.
+
+## Logarithmic flow and filament localization (`WCTLean/Models/LogFlow.lean`)
+
+| Declaration | Equation | Content | Boundary |
+|---|---|---|---|
+| `logField` | EX | logarithmic field definition | real scalar model |
+| `exp_logField_eq` | EX | exponentiation inverts `logField` for positive fields | positivity required |
+| `logCurvatureResidual` | EY | nonlinear logarithmic residual | definition |
+| `diffusionResidual` | EZ | linear diffusion residual | definition |
+| `coleHopf_residual_factorization` | EY/EZ | diffusion residual equals field times logarithmic residual | temporal and Laplacian chain rules assumed |
+| `diffusionResidual_zero_iff_logCurvatureResidual_zero` | EY/EZ | zero residuals are equivalent on a nonzero field sector | chain rules and nonzero field assumed |
+| `filamentLocalizationMismatch` | FA | scalar localization mismatch | definition |
+| `filamentLocalizationCondition_iff_mismatch_zero` | FA | localization condition iff mismatch vanishes | scalar equivalence |
+| `exp_chain_rule_algebra` | EX/EY/EZ | commutative algebra used in exponential differentiation | algebra only |
+
+## Ghost mode (`WCTLean/Models/GhostModes.lean`)
+
+| Declaration | Equation | Content |
+|---|---|---|
+| `ghostMode` | G1 | log-periodic modulation definition |
+| `abs_ghostMode_le` | G1 | modulation magnitude is bounded by absolute amplitude |
+| `gaussianSmearingFactor` | related | smearing definition |
+| `smearedGhostAmplitude` | related | smeared amplitude definition |
+| `junoResolution` | related | detector-resolution definition |
+| `deltaC9` | related | collider modulation definition |
+
+No empirical fit or physical-origin claim is proved.
 
 ## Unified operator (`WCTLean/Models/UnifiedOperator.lean`)
 
@@ -92,8 +151,8 @@ These theorems prove registry integrity, not the mathematical content of all 142
 
 | Declaration | Equation | Status |
 |---|---|---|
-| `h2Subcritical_iff_le_three` | E24/E67 | proved arithmetic equivalence `n < 4 ↔ n ≤ 3` for natural dimensions |
-| `SobolevCurvatureContract` | E24/E26/E67/E69 | contract/interface, not proof of Sobolev embedding or curvature boundedness |
+| `h2Subcritical_iff_le_three` | M4/E24/E67 | proved arithmetic equivalence `n < 4 ↔ n ≤ 3` |
+| `SobolevCurvatureContract` | M4/E24/E26/E67/E69 | contract/interface, not proof of Sobolev embedding or curvature boundedness |
 | `criticalSobolevExponent` | E25/E65 | definition |
 | `FiniteConfinementEnergy` | E27 | definition |
 | `GagliardoNirenbergBound` | E66 | proposition encoding the required inequality |
