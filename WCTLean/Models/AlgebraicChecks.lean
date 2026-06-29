@@ -18,7 +18,7 @@ def cavityQuadratic (kappa theta gamma S P : ℝ) : ℝ :=
 sector nonnegative. -/
 theorem cavityQuadratic_nonnegative
     (kappa theta gamma S P : ℝ)
-    (hkappa : 0 < kappa) (htheta : 0 ≤ theta)
+    (hkappa : 0 < kappa) (_htheta : 0 ≤ theta)
     (hdet : gamma ^ 2 ≤ 4 * kappa * theta) :
     0 ≤ cavityQuadratic kappa theta gamma S P := by
   have hsquare : 0 ≤ (2 * kappa * S - gamma * P) ^ 2 := sq_nonneg _
@@ -36,7 +36,7 @@ theorem cavityQuadratic_nonnegative
   nlinarith
 
 /-- E28 scalar alpha-drop expression. -/
-def alphaDropValue (logRetainedSum beta n : ℝ) : ℝ :=
+noncomputable def alphaDropValue (logRetainedSum beta n : ℝ) : ℝ :=
   1 + logRetainedSum / n + beta
 
 /-- E28: the corrected beta inequality is sufficient for alpha-drop below one. -/
@@ -44,11 +44,12 @@ theorem alphaDrop_lt_one
     (logRetainedSum beta n : ℝ)
     (hbeta : beta < -logRetainedSum / n) :
     alphaDropValue logRetainedSum beta n < 1 := by
+  rw [neg_div] at hbeta
   unfold alphaDropValue
   linarith
 
 /-- E29 one-step entropy-pruning upper bound. -/
-def entropyPrunedUpperBound (modeCount entropyDrop : ℝ) : ℝ :=
+noncomputable def entropyPrunedUpperBound (modeCount entropyDrop : ℝ) : ℝ :=
   Real.exp (-entropyDrop) * modeCount
 
 /-- E33: exponentiating `H ≤ log K` gives the corrected support inequality
@@ -103,7 +104,7 @@ noncomputable def effectiveMassSqFromGap
       hbar ^ 2 / c ^ 4 * frequencyGap := rfl
 
 /-- E51 scalar component of the curvature-gradient commutator. -/
-def curvatureGradientCommutator
+noncomputable def curvatureGradientCommutator
     (lapPsi gradLapPsi denominator gradDenominator : ℝ) : ℝ :=
   (-(gradLapPsi * denominator - lapPsi * gradDenominator) /
       denominator ^ 2) - (-gradLapPsi / denominator)
