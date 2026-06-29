@@ -17,10 +17,19 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Install pinned Lean toolchain and build dependencies
-        uses: leanprover/lean-action@v1
-        with:
-          use-github-cache: false
+      - name: Install elan and the repository-pinned Lean toolchain
+        shell: bash
+        run: |
+          curl --proto '=https' --tlsv1.2 -sSf \
+            https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh \
+            | sh -s -- -y
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+          "$HOME/.elan/bin/lean" --version
+          "$HOME/.elan/bin/lake" --version
+      - name: Fetch locked dependencies and Mathlib cache
+        run: |
+          lake update
+          lake exe cache get
       - name: Audit source closure and emit SHA-256 manifest
         run: python scripts/audit_formal_sources.py
       - name: Build all maintained Lean targets
