@@ -29,8 +29,8 @@ inductive AuditStatus where
   | openClaim
   deriving DecidableEq, Repr, BEq
 
-def numberedIds (prefix : String) (start count : Nat) : List EquationId :=
-  (List.range count).map fun offset => prefix ++ toString (start + offset)
+def numberedIds (stem : String) (start count : Nat) : List EquationId :=
+  (List.range count).map fun offset => stem ++ toString (start + offset)
 
 def masterIds : List EquationId :=
   ["M1", "M2", "M3", "M4", "M5", "M6A", "M6B", "M7", "M8"]
