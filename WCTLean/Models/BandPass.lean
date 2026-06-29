@@ -24,7 +24,9 @@ theorem finiteBandPenalty_nonpositive
     (b k kStar : ℝ) (hb : 0 ≤ b) :
     finiteBandPenalty b k kStar ≤ 0 := by
   unfold finiteBandPenalty
-  exact neg_nonpos.mpr (mul_nonneg hb (sq_nonneg _))
+  have h : 0 ≤ b * (k ^ 2 - kStar ^ 2) ^ 2 :=
+    mul_nonneg hb (sq_nonneg _)
+  nlinarith
 
 /-- The fourth-order penalty vanishes on the selected shell. -/
 @[simp] theorem finiteBandPenalty_at_shell (b kStar : ℝ) :
@@ -38,7 +40,8 @@ theorem finiteBandPenalty_strict_off_shell
   unfold finiteBandPenalty
   have hdiff : k ^ 2 - kStar ^ 2 ≠ 0 := sub_ne_zero.mpr hoff
   have hsq : 0 < (k ^ 2 - kStar ^ 2) ^ 2 := sq_pos_of_ne_zero hdiff
-  exact neg_lt_zero.mpr (mul_pos hb hsq)
+  have hprod : 0 < b * (k ^ 2 - kStar ^ 2) ^ 2 := mul_pos hb hsq
+  nlinarith
 
 /-- The linear growth rate never exceeds its on-shell value `mu`. -/
 theorem swiftHohenbergLinearSymbol_le_mu
