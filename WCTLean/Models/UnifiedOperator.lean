@@ -14,7 +14,7 @@ def unifiedShellTerm (c2 laplaceSymbol kStarSq : ℝ) : ℝ :=
   -c2 * (laplaceSymbol + kStarSq) ^ 2
 
 /-- M6A linear Fourier-symbol skeleton with corrected ultraviolet sign. -/
-def unifiedLinearSymbol
+noncomputable def unifiedLinearSymbol
     (c1 c2 c3 c4 laplaceSymbol sigmaSq kStarSq winding radius scalingExponent : ℝ) : ℂ :=
   (c1 * (laplaceSymbol + sigmaSq) +
     unifiedShellTerm c2 laplaceSymbol kStarSq +
@@ -26,7 +26,9 @@ theorem unifiedShellTerm_nonpositive
     (c2 laplaceSymbol kStarSq : ℝ) (hc2 : 0 ≤ c2) :
     unifiedShellTerm c2 laplaceSymbol kStarSq ≤ 0 := by
   unfold unifiedShellTerm
-  exact neg_nonpos.mpr (mul_nonneg hc2 (sq_nonneg _))
+  have h : 0 ≤ c2 * (laplaceSymbol + kStarSq) ^ 2 :=
+    mul_nonneg hc2 (sq_nonneg _)
+  nlinarith
 
 /-- The shell contribution is zero on the represented Fourier shell. -/
 theorem unifiedShellTerm_zero_on_shell
