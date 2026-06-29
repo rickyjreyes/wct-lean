@@ -42,7 +42,6 @@ theorem pointwiseLocked_weighted
   unfold PointwiseLocked at hlock
   rw [hlock]
   field_simp [hweight]
-  ring
 
 /-- Finite analogue of the corrected E8 identity:
 `sum w phi' = sum w sigma + alpha L`, where the counting measure has total
@@ -64,7 +63,6 @@ theorem correctedWeightedLockIdentity
     _ = (∑ i, weight i * sigma i) + alpha * Fintype.card ι := by
       rw [Finset.sum_add_distrib]
       simp
-      ring
 
 /-- E3 finite mismatch action. -/
 def finiteLockingAction
