@@ -55,6 +55,7 @@ def main() -> None:
         "WCTLean.Models.RestDensity",
         "WCTLean.Models.Locking",
         "WCTLean.Models.BandPass",
+        "WCTLean.Models.AlgebraicChecks",
         "WCTLean.Models.LogFlow",
         "WCTLean.Models.GhostModes",
         "WCTLean.Models.Collider",
