@@ -19,6 +19,8 @@ jobs:
           python-version: "3.12"
       - name: Install pinned Lean toolchain and build dependencies
         uses: leanprover/lean-action@v1
+        with:
+          use-github-cache: false
       - name: Audit source closure and emit SHA-256 manifest
         run: python scripts/audit_formal_sources.py
       - name: Build all maintained Lean targets
