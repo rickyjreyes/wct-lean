@@ -33,10 +33,21 @@ jobs:
       - name: Audit source closure and emit SHA-256 manifest
         run: python scripts/audit_formal_sources.py
       - name: Build all maintained Lean targets
-        run: lake build
+        shell: bash
+        run: |
+          set -o pipefail
+          lake build 2>&1 | tee lean-build.log
       - name: Confirm the locked dependency graph is unchanged
         run: git diff --exit-code -- lake-manifest.json lean-toolchain lakefile.lean
+      - name: Upload Lean build diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lean-build-log-${{ github.sha }}
+          if-no-files-found: error
+          path: lean-build.log
       - name: Upload formal-source manifest
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: formal-source-hashes-${{ github.sha }}
