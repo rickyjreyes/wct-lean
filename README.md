@@ -3,310 +3,41 @@
 [![Lean](https://github.com/rickyjreyes/wct-lean/actions/workflows/lean.yml/badge.svg)](https://github.com/rickyjreyes/wct-lean/actions/workflows/lean.yml)
 
 **Author:** Richard J. Reyes  
-**Language:** Lean 4 + Mathlib  
-**Role:** Kernel-checked formal support for the Wave Confinement Theory equation audit
+**Language:** Lean 4.23.0 + Mathlib 4.23.0  
+**Role:** Kernel-checked formal support and complete canonical inventory for Wave Confinement Theory
 
-`wct-lean` formalizes narrow mathematical obligations associated with Wave Confinement Theory. A declaration is called proved only when the Lean kernel accepts it under the hypotheses displayed in its theorem statement.
+`wct-lean` separates four different things that must not be conflated:
 
-It does **not** prove WCT as a physical theory, establish the complete nonlinear PDE program, validate experiments, or convert every `wct-sympy` `PASS` into an unconditional theorem.
+1. **canonical registration** — an equation ID is present in the compiled Lean registry;
+2. **typed representation** — Lean contains a definition, proposition, contract, or counterexample for the equation;
+3. **kernel proof** — Lean accepts a theorem under its displayed hypotheses;
+4. **physical validation** — an empirical claim is supported by experiment or observation.
 
-## Start with the equations and coverage map
+Only item 3 is a Lean proof. This repository does not prove WCT as a complete physical theory, establish the full nonlinear PDE program, or convert a symbolic `PASS` into empirical validation.
 
-Lean declarations support canonical WCT equation IDs; this repository is not the canonical equation text and does not yet formalize all 142 objects.
+## Current state
 
-- **Complete 142-object Lean coverage accounting:** [`FORMAL_COVERAGE_INDEX.md`](FORMAL_COVERAGE_INDEX.md)
-- **Full corrected WCT equation registry:** [`WCT_FULL_EQUATION_LIST_CORRECTED.md`](https://github.com/rickyjreyes/geometry_of_resonance/blob/main/WCT_FULL_EQUATION_LIST_CORRECTED.md)
-- **Audited master equation architecture:** [`WCT_MASTER_EQUATIONS_UPDATED.md`](https://github.com/rickyjreyes/geometry_of_resonance/blob/main/WCT_MASTER_EQUATIONS_UPDATED.md)
-- **Complete SymPy classification:** [`wct-sympy/VERIFICATION_INDEX.md`](https://github.com/rickyjreyes/wct-sympy/blob/main/VERIFICATION_INDEX.md)
-- **Exact Lean theorem inventory:** [`THEOREMS.md`](THEOREMS.md)
-- **Public cross-repository corpus map:** [WCT Research Corpus](https://rickyjreyes.github.io/research-corpus/)
-
-Use the canonical registry for equation text, symbols, assumptions, and scientific boundaries. Use `FORMAL_COVERAGE_INDEX.md` to determine whether a canonical ID has direct Lean support, partial support, a definition, a counterexample, a TODO, or no maintained mapping.
-
-## Repository roles
-
-| Repository | Role |
-|---|---|
-| [`wct-lean`](https://github.com/rickyjreyes/wct-lean) | Kernel-checked definitions, lemmas, counterexamples, and conditional theorems |
-| [`wct-sympy`](https://github.com/rickyjreyes/wct-sympy) | Symbolic algebra, dimensions, limits, residuals, and executable counterexamples |
-| [`geometry_of_resonance`](https://github.com/rickyjreyes/geometry_of_resonance) | Canonical master equations and full equation registry |
-
-## Maintained compiled root
-
-`WCTLean/Main.lean` imports:
-
-```text
-WCTLean/
-├── Dimension.lean
-├── Curvature.lean
-├── Energy.lean
-├── Koide.lean
-├── Fourier.lean
-├── ResolvedAudit.lean
-├── DerivedAudit.lean
-└── Models/
-    ├── CurvatureOperator.lean
-    ├── PhaseFlux.lean
-    └── RestDensity.lean
-```
-
-## Derived audit batch 1
-
-### E5 — Effective-wavenumber chain
-
-Define
+The public root now compiles a **142-object canonical registry**:
 
 $$
-k_{\mathrm{eff}}=\frac{2\pi|n|}{L_s}.
+9\ \text{master}
++83\ \text{canonical}
++10\ \text{electron}
++5\ \text{auxiliary}
++20\ \text{cosmology}
++9\ \text{topology}
++6\ \text{correction}
+=142.
 $$
 
-Under exact closure
-
-$$
-\oint_\Gamma\sigma\,ds=2\pi|n|
-$$
-
-and constant positive weight, Lean proves the algebraic chain
-
-$$
-k_{\mathrm{eff}}
-=
-\frac{1}{L_s}\oint_\Gamma\sigma\,ds
-=
-\langle\sigma\rangle_w.
-$$
-
-Declarations:
-
-```lean
-effectiveWavenumber_eq_loopAverage
-constantWeightedAverage_eq_loopAverage
-resolved_e5_effectiveWavenumber_chain
-```
-
-This is conditional on exact closure and constant weight. It does not prove that the full field dynamics reaches that state.
-
-### E9 — Polar phase current
-
-For the pointwise polar product
-
-$$
-\overline\psi\,\partial_x\psi
-=
-\frac12\partial_xu+i\,u\partial_x\theta,
-$$
-
-Lean proves
-
-$$
-\operatorname{Im}(\overline\psi\,\partial_x\psi)
-=u\partial_x\theta.
-$$
-
-Declarations:
-
-```lean
-polarCurrentProduct_im
-phaseCurrent_of_polar_factorization
-```
-
-The second theorem exposes the polar derivative factorization as a hypothesis rather than hiding an unformalized differentiability argument.
-
-### E13/E14 — One-mode band-pass symbol
-
-Lean proves the exact polynomial reduction
-
-$$
-rA-a(-k^2A)-b(k^4A)
-=
-(r+ak^2-bk^4)A.
-$$
-
-Declaration:
-
-```lean
-bandpass_oneMode_symbol
-```
-
-This verifies the one-mode operator symbol. It is not yet the generalized Euler-Lagrange theorem for the full functional.
-
-### E18 — Positivity and gradient-flow sign
-
-Lean proves
-
-$$
-c_1G+c_2C\ge0
-$$
-
-from
-
-$$
-c_1,c_2,G,C\ge0.
-$$
-
-It also proves
-
-$$
-\dot E=-V,
-\qquad
-V\ge0
-\quad\Longrightarrow\quad
-\dot E\le0.
-$$
-
-Declarations:
-
-```lean
-resolved_e18_energy_nonnegative
-resolved_e18_gradientFlow_descent
-```
-
-The full functional chain rule remains an explicit analytical obligation.
-
-### E58 — Band-selective Green kernel
-
-For
-
-$$
-G(k)=\frac{1}{r+a(k^2-k_*^2)^2},
-\qquad
-r>0,\ a\ge0,
-$$
-
-Lean proves
-
-$$
-0<G(k)\le\frac1r,
-$$
-
-and
-
-$$
-G(k_*)=\frac1r.
-$$
-
-Declarations:
-
-```lean
-bandGreenDenominator_pos
-bandGreenDenominator_ge_offset
-bandGreenKernel_pos
-bandGreenKernel_le_inverseOffset
-bandGreenKernel_at_shell
-```
-
-### CM9 — First-order/second-order equivalence
-
-Lean proves that the photon and baryon second-order oscillator equations are algebraically equivalent to their first-order acceleration forms after velocity rate is identified with acceleration.
-
-Declarations:
-
-```lean
-photonSecondOrder_iff_firstOrder
-baryonSecondOrder_iff_firstOrder
-```
-
-### CM12, CM13, CM16 — Definitions
-
-Lean now defines:
-
-```lean
-dimensionlessPowerSpectrum
-peakPowerRatio21
-peakPowerRatio31
-peakScaleRatio21
-peakScaleRatio31
-horizonWavenumber
-```
-
-These are definitions, not theorem-level physical validations.
-
-## Earlier resolved obligations
-
-### E2 — Weighted-average denominator
-
-Lean proves
-
-$$
-0<\sum_i\rho_i
-\quad\Longrightarrow\quad
-\sum_i\rho_i\ne0.
-$$
-
-Declaration: `densityWeightedAverage_denominator_ne_zero`.
-
-### E3 — Locking mismatch
-
-For
-
-$$
-\mathcal M=\sum_i\rho_i(\partial_s\varphi_i-\sigma_i)^2,
-$$
-
-Lean proves nonnegativity for nonnegative weights and zero mismatch under exact finite locking.
-
-Declarations: `lockingMismatch_nonnegative`, `lockingMismatch_zero`.
-
-### E9 — Conservation residual
-
-Lean proves
-
-$$
-\partial_tu+\nabla\cdot\mathbf S=0
-\quad\Longleftrightarrow\quad
-\partial_tu=-\nabla\cdot\mathbf S.
-$$
-
-Declaration: `conservationResidual_zero_iff`.
-
-### E17 — Historical scalar denominator
-
-For
-
-$$
-D(\psi,\varepsilon,\alpha)
-=
-\psi+\varepsilon e^{-\alpha\psi^2},
-$$
-
-Lean proves
-
-$$
-D(-1,1,0)=0,
-$$
-
-and separately proves positivity on the restricted sector
-
-$$
-\psi\ge0,
-\qquad
-\varepsilon>0.
-$$
-
-Declarations:
-
-```lean
-regularizedDenominator_counterexample
-regularizedDenominator_positive
-regularizedDenominator_ne_zero
-resolved_e17_counterexample
-```
-
-The complete modulus-squared complex regularizer remains a separate formalization target.
-
-## Status discipline
-
-| Label | Meaning |
-|---|---|
-| `PROVED` | Lean accepts the theorem under displayed hypotheses |
-| `COUNTEREXAMPLE` | Lean proves a concrete contradiction to an unrestricted claim |
-| `CONDITIONAL` | The theorem requires named assumptions |
-| `DEFINITION` | The declaration introduces an object but proves no property |
-| `TODO` / `OPEN` | No completed Lean theorem closes the obligation |
-
-## Relation to the symbolic registry
-
-The current `wct-sympy` registry reports
+Lean proves that:
+
+- the registry has length `142`;
+- all IDs are unique;
+- every registered ID has exactly one family;
+- every registered ID has an effective audit status;
+- the status partition is complete and duplicate-free;
+- the compiled status counts are
 
 $$
 59\ \mathrm{PASS}
@@ -316,52 +47,205 @@ $$
 =142.
 $$
 
-These are symbolic-audit classifications, not Lean-proof counts. The complete object-by-object distinction is recorded in [`FORMAL_COVERAGE_INDEX.md`](FORMAL_COVERAGE_INDEX.md).
+These status counts reproduce the corrected symbolic audit. They are **not Lean theorem counts**.
 
-The formal path is
+The maintained source audit rejects `sorry` and `admit`, verifies the public import closure, records SHA-256 hashes for every Lean source file, and checks the pinned dependency graph.
+
+## Canonical sources
+
+- [Complete Lean coverage index](FORMAL_COVERAGE_INDEX.md)
+- [Exact theorem inventory](THEOREMS.md)
+- [Corrected 142-object equation registry](https://github.com/rickyjreyes/geometry_of_resonance/blob/main/WCT_FULL_EQUATION_LIST_CORRECTED.md)
+- [Audited master-equation architecture](https://github.com/rickyjreyes/geometry_of_resonance/blob/main/WCT_MASTER_EQUATIONS_UPDATED.md)
+- [Complete SymPy audit](https://github.com/rickyjreyes/wct-sympy/blob/main/VERIFICATION_INDEX.md)
+- [Public research-corpus map](https://rickyjreyes.github.io/research-corpus/)
+
+The `geometry_of_resonance` registry remains the source of equation text, notation, and scientific boundaries. `wct-lean` is the kernel-checked formal layer.
+
+## Maintained compiled root
+
+`WCTLean/Main.lean` imports the complete maintained library:
+
+```text
+WCTLean/
+├── Registry.lean
+├── Dimension.lean
+├── Curvature.lean
+├── Energy.lean
+├── Koide.lean
+├── Fourier.lean
+├── ResolvedAudit.lean
+├── DerivedAudit.lean
+├── Contracts/
+│   └── Analytic.lean
+└── Models/
+    ├── CurvatureOperator.lean
+    ├── ComplexCurvature.lean
+    ├── PhaseFlux.lean
+    ├── RestDensity.lean
+    ├── Locking.lean
+    ├── BandPass.lean
+    ├── AlgebraicChecks.lean
+    ├── LogFlow.lean
+    ├── GhostModes.lean
+    ├── Collider.lean
+    ├── KoideDerivation.lean
+    ├── UnifiedOperator.lean
+    └── CompactDynamics.lean
+```
+
+## Major formal additions
+
+### Complete canonical registry
+
+`WCTLean/Registry.lean` gives every canonical object a compiled ID, family, and effective symbolic-audit status. The following are kernel-checked:
+
+```lean
+allEquationIds_length
+allEquationIds_nodup
+statusPartition_length
+statusPartition_nodup
+statusPartition_complete
+every_registered_id_has_status
+every_registered_id_has_family
+canonicalRegistry_length
+```
+
+Registration records coverage and status; it does not prove the equation represented by an ID.
+
+### Corrected complex curvature denominator — M2 / E17
+
+The corrected denominator is
 
 $$
-\text{paper equation}
-\rightarrow
-\text{canonical ID}
-\rightarrow
-\text{SymPy audit}
-\rightarrow
-\text{Lean theorem, definition, or counterexample}
-\rightarrow
-\text{CI}.
+D_\varepsilon(\psi)
+=
+|\psi|^2+\varepsilon^2e^{-2\alpha|\psi|^2}.
 $$
 
-## Remaining high-value obligations
+For `ε > 0`, Lean proves
 
-1. Complete the modulus-squared complex curvature operator.
-2. Formalize the full polar differentiation theorem for `psi = sqrt(u) exp(i theta)`.
-3. Prove the E13/E14 generalized Euler-Lagrange derivative.
-4. Prove the E18 functional chain rule and coercivity conditions.
-5. Prove the CM11 time-dependent diffusion ODE solution.
-6. Complete Fourier orthogonality.
-7. Extend finite locking to curve integrals and functional analysis.
-8. Formalize entropy/support inequalities.
-9. Develop PDE existence, regularity, uniqueness, and stability results without hidden assumptions.
+$$
+D_\varepsilon(\psi)>0
+$$
 
-## Build
+for every complex `ψ`, including nodes. This formally replaces the historical scalar denominator that admits zeros.
+
+Key declarations:
+
+```lean
+complexRegularizerDenominator_positive
+complexRegularizerDenominator_ne_zero
+complexRegularizerDenominator_at_zero
+complexRegularizedReciprocal_at_zero
+```
+
+### Curvature-phase locking — M1 / E3 / E4 / E8
+
+Lean formalizes the finite locking action, its nonnegativity, the E4 integration constant, the winding-closure algebra, and the corrected weighted E8 identity.
+
+Key declarations:
+
+```lean
+alphaLock_closure
+pointwiseLocked_weighted
+correctedWeightedLockIdentity
+finiteLockingAction_nonnegative
+finiteLockingAction_zero
+```
+
+These are finite algebraic theorems. Curve-integral existence and variational regularity remain separate analytical obligations.
+
+### Finite-band selector — M3 / M7 / E12 / E57 / E61 / E64
+
+For
+
+$$
+-b(k^2-k_\star^2)^2,
+\qquad b\ge0,
+$$
+
+Lean proves nonpositive off-shell contribution, strict damping away from the shell when `b > 0`, zero shell penalty, the completed-square form of the quartic growth law, and positivity of the corrected selected wavelength.
+
+Key declarations:
+
+```lean
+finiteBandPenalty_nonpositive
+finiteBandPenalty_strict_off_shell
+swiftHohenbergLinearSymbol_le_mu
+swiftHohenbergLinearSymbol_at_shell
+quarticGrowthSymbol_completedSquare
+selectedWavelength_positive
+```
+
+### Canonical algebraic checks
+
+`WCTLean/Models/AlgebraicChecks.lean` contains kernel proofs supporting:
+
+- E20 cavity-sector positive semidefiniteness;
+- E28 corrected alpha-drop implication;
+- E33 corrected entropy/support direction;
+- E45 quality-factor positivity;
+- E47 stationary power balance;
+- E49 effective-mass gap identity;
+- E51 curvature-gradient commutator;
+- E53 curvature-pressure nonnegativity;
+- E59 projection idempotence;
+- E62 spectral-energy fraction bounds.
+
+### Analytic contracts
+
+`WCTLean/Contracts/Analytic.lean` distinguishes arithmetic consequences from unproved functional analysis. It formalizes the integer threshold
+
+$$
+n<4\iff n\le3,
+$$
+
+and packages Sobolev embedding, curvature boundedness, Gagliardo-Nirenberg, localized-energy, and dimensional-stability assumptions as explicit contracts rather than hidden premises.
+
+## Support layers
+
+The repository currently has non-registry typed support for 50 canonical IDs:
+
+```text
+M1 M2 M3 M6A M7
+E1A E1B E2 E3 E4 E5 E6 E7 E8 E9
+E12 E13 E14 E17 E18 E20
+E24 E25 E26 E27 E28 E33
+E45 E47 E49 E51 E53
+E57 E58 E59 E61 E62 E64
+E65 E66 E67 E68 E69 E70
+E78 E81
+CM9 CM12 CM13 CM16
+```
+
+The strength varies by ID: theorem, conditional theorem, counterexample, definition, analytic contract, or TODO proposition. See [FORMAL_COVERAGE_INDEX.md](FORMAL_COVERAGE_INDEX.md) and [THEOREMS.md](THEOREMS.md) for the exact boundary.
+
+## Build and reproducibility
 
 ```bash
+lake update
+lake exe cache get
+python scripts/audit_formal_sources.py
 lake build
 ```
 
-GitHub Actions runs the Lean build on every push and pull request.
+GitHub Actions performs the same sequence on every pull request and push to `main`. CI also verifies that `lake-manifest.json`, `lean-toolchain`, and `lakefile.lean` remain unchanged after dependency resolution.
 
-## Documentation
+## Remaining mathematical closure
 
-- [`FORMAL_COVERAGE_INDEX.md`](FORMAL_COVERAGE_INDEX.md) — all 142 canonical IDs accounted for
-- [Canonical full equation registry](https://github.com/rickyjreyes/geometry_of_resonance/blob/main/WCT_FULL_EQUATION_LIST_CORRECTED.md)
-- [`THEOREMS.md`](./THEOREMS.md)
-- [`SYMPY_MAP.md`](./SYMPY_MAP.md)
-- [`WCTLean/DerivedAudit.lean`](./WCTLean/DerivedAudit.lean)
-- [`WCTLean/ResolvedAudit.lean`](./WCTLean/ResolvedAudit.lean)
-- [`WCTLean/Main.lean`](./WCTLean/Main.lean)
+The registry is complete; the research program is not. The highest-value unresolved formal work is:
+
+1. exact functional variation of the full WCT action, including denominator derivatives and higher-order terms;
+2. admissible function spaces and boundary conditions;
+3. local and global well-posedness for the full nonlinear evolution;
+4. existence, localization, finite-energy, decay, and non-box-induced confinement;
+5. linearized spectrum and orbital or Lyapunov stability under nonsymmetric perturbations;
+6. control of the regularized quotient as `ε → 0`;
+7. full Fourier orthogonality and spectral projection on function spaces;
+8. curve-integral locking on manifolds;
+9. theorem-level bridges from confined solutions to physical mass, force, gauge, gravity, cosmology, and experiments.
 
 ## Scientific boundary
 
-The repository provides machine-checkable separation among proved algebraic support, counterexamples, conditional theorems, definitions, and unresolved analytical or empirical claims. It does not establish the empirical truth or physical completeness of WCT.
+A green Lean build means the encoded declarations are syntactically valid, type-correct, and accepted by the Lean kernel under their explicit hypotheses. It does not establish that the hypotheses hold in nature or that WCT is empirically correct.
