@@ -18,6 +18,7 @@ import WCTLean.Models.PhaseFlux
 import WCTLean.Models.RestDensity
 import WCTLean.Models.Locking
 import WCTLean.Models.BandPass
+import WCTLean.Models.AlgebraicChecks
 import WCTLean.Models.LogFlow
 import WCTLean.Models.GhostModes
 import WCTLean.Models.Collider
