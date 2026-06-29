@@ -49,6 +49,24 @@ theorem complexRegularizerDenominator_ne_zero
     complexRegularizerDenominator psi epsilon alpha ≠ 0 :=
   ne_of_gt (complexRegularizerDenominator_positive psi epsilon alpha hepsilon)
 
+/-- M6B: the typed nonlinear curvature operator is exactly the canonical
+modulus-squared quotient after reassociating multiplication and division. -/
+theorem thetaComplex_canonical_formula
+    (lapPsi psi : ℂ) (epsilon alpha : ℝ) :
+    thetaComplex lapPsi psi epsilon alpha =
+      (-lapPsi * star psi) /
+        (complexRegularizerDenominator psi epsilon alpha : ℂ) := by
+  simp only [thetaComplex, complexRegularizedReciprocal, div_eq_mul_inv]
+  ring
+
+/-- M6B: for positive regulator amplitude, the denominator occurring in the
+canonical nonlinear operator is globally nonzero. -/
+theorem thetaComplex_denominator_ne_zero
+    (psi : ℂ) (epsilon alpha : ℝ) (hepsilon : 0 < epsilon) :
+    (complexRegularizerDenominator psi epsilon alpha : ℂ) ≠ 0 := by
+  exact_mod_cast
+    complexRegularizerDenominator_ne_zero psi epsilon alpha hepsilon
+
 /-- At a field node, the denominator is exactly `epsilon^2`, not zero. -/
 @[simp] theorem complexRegularizerDenominator_at_zero
     (epsilon alpha : ℝ) :

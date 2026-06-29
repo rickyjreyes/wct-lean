@@ -52,6 +52,37 @@ theorem alphaDrop_lt_one
 noncomputable def entropyPrunedUpperBound (modeCount entropyDrop : ℝ) : ℝ :=
   Real.exp (-entropyDrop) * modeCount
 
+/-- E29: nonnegative mode count gives a nonnegative pruning bound. -/
+theorem entropyPrunedUpperBound_nonnegative
+    (modeCount entropyDrop : ℝ) (hmode : 0 ≤ modeCount) :
+    0 ≤ entropyPrunedUpperBound modeCount entropyDrop := by
+  unfold entropyPrunedUpperBound
+  exact mul_nonneg (le_of_lt (Real.exp_pos _)) hmode
+
+/-- E29: a nonnegative entropy drop cannot increase the encoded mode-count
+upper bound. -/
+theorem entropyPrunedUpperBound_le_modeCount
+    (modeCount entropyDrop : ℝ)
+    (hmode : 0 ≤ modeCount) (hdrop : 0 ≤ entropyDrop) :
+    entropyPrunedUpperBound modeCount entropyDrop ≤ modeCount := by
+  have hexp : Real.exp (-entropyDrop) ≤ 1 := by
+    have h := Real.exp_le_exp.mpr (neg_nonpos.mpr hdrop)
+    simpa using h
+  unfold entropyPrunedUpperBound
+  simpa using mul_le_mul_of_nonneg_right hexp hmode
+
+/-- E29: for a fixed nonnegative mode count, the bound is antitone in the
+entropy drop. -/
+theorem entropyPrunedUpperBound_antitone
+    (modeCount drop₁ drop₂ : ℝ)
+    (hmode : 0 ≤ modeCount) (hdrops : drop₁ ≤ drop₂) :
+    entropyPrunedUpperBound modeCount drop₂ ≤
+      entropyPrunedUpperBound modeCount drop₁ := by
+  unfold entropyPrunedUpperBound
+  have hexp : Real.exp (-drop₂) ≤ Real.exp (-drop₁) :=
+    Real.exp_le_exp.mpr (neg_le_neg hdrops)
+  exact mul_le_mul_of_nonneg_right hexp hmode
+
 /-- E33: exponentiating `H ≤ log K` gives the corrected support inequality
 `exp H ≤ K` for positive support size. -/
 theorem exp_entropy_le_support
