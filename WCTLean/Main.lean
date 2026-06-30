@@ -25,7 +25,6 @@ import WCTLean.Models.Collider
 import WCTLean.Models.KoideDerivation
 import WCTLean.Models.UnifiedOperator
 import WCTLean.Models.CompactDynamics
-import WCTLean.Models.ClosedResults
 import WCTLean.ResolvedAudit
 import WCTLean.DerivedAudit
 
