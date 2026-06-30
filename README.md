@@ -76,6 +76,19 @@ The support strength varies by object:
 
 See [`FORMAL_COVERAGE_INDEX.md`](FORMAL_COVERAGE_INDEX.md) for the complete partition and [`THEOREMS.md`](THEOREMS.md) for the declaration-level inventory.
 
+## Newly closed algebraic results
+
+`WCTLean/Models/ClosedResults.lean` now kernel-checks the following narrow results:
+
+- strict positivity of the corrected modulus-squared reciprocal denominator for `ε > 0`;
+- the pure-gauge no-go result for a single smooth Abelian scalar phase when mixed derivatives commute;
+- equivalence between exact loop locking and zero winding mismatch;
+- algebraic decomposition of the winding-corrected conditional mass law;
+- the exact logarithmic-frequency/discrete-scale relation `log(exp(2π/k)) = 2π/k`;
+- positivity of the associated scaling ratio.
+
+These results close algebraic obligations only. They do not prove existence or stability of a full WCT confined mode, establish a universal physical mass law, derive a non-Abelian gauge theory, quantize WCT, or complete gravitational backreaction.
+
 ## Non-shallow mapping batch
 
 The current expansion adds substantive support for twelve previously registry-only IDs.
@@ -185,7 +198,8 @@ WCTLean/
     ├── Collider.lean
     ├── KoideDerivation.lean
     ├── UnifiedOperator.lean
-    └── CompactDynamics.lean
+    ├── CompactDynamics.lean
+    └── ClosedResults.lean
 ```
 
 ## Canonical sources
