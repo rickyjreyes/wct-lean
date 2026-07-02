@@ -1,0 +1,59 @@
+title: "[Formalization Proposal] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Propose a new theorem, definition, proof audit, counterexample search, or bridge from an informal WCT claim to a precise Lean statement.
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Definitions and foundational types
+        - Units and dimensional analysis
+        - Algebra and positivity
+        - Fourier analysis
+        - PDE or variational foundations
+        - Stability or existence
+        - Claim dependency graph
+        - Counterexample formalization
+        - Automation or proof engineering
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: informal
+    attributes:
+      label: Informal claim
+      description: Quote or paraphrase the exact WCT claim and identify its source.
+    validations:
+      required: true
+  - type: textarea
+    id: statement
+    attributes:
+      label: Proposed formal statement
+      description: Give a Lean-style theorem signature or precise quantified mathematical statement.
+      render: lean
+    validations:
+      required: true
+  - type: textarea
+    id: assumptions
+    attributes:
+      label: Definitions and assumptions
+      description: List domains, regularity, positivity, nonzero conditions, units, boundary conditions, and imported theorems.
+    validations:
+      required: true
+  - type: textarea
+    id: strategy
+    attributes:
+      label: Proof strategy or counterexample plan
+      description: Outline intermediate lemmas, existing mathlib results, automation, or a route to disproof.
+    validations:
+      required: true
+  - type: textarea
+    id: completion
+    attributes:
+      label: Completion criteria
+      description: Define what counts as proved, disproved, blocked, or incomplete, and which informal claims would be affected.
+    validations:
+      required: true
