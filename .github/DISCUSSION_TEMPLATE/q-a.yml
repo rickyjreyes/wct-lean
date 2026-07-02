@@ -1,0 +1,67 @@
+title: "[Lean Question] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Ask about a theorem, definition, proof obligation, build failure, imported dependency, or the mathematical meaning of a formalized result. Include a minimal Lean example when possible.
+  - type: dropdown
+    id: topic
+    attributes:
+      label: Topic
+      options:
+        - Build or environment
+        - Definition or type design
+        - Dimensional closure
+        - Positivity or domain safety
+        - Curvature dimensions
+        - Koide support lemma
+        - Fourier identity
+        - Proof strategy
+        - Connection to an informal WCT claim
+        - Other
+    validations:
+      required: true
+  - type: input
+    id: reference
+    attributes:
+      label: Exact reference
+      description: File, namespace, theorem, definition, line, commit, or claim identifier.
+    validations:
+      required: true
+  - type: textarea
+    id: intent
+    attributes:
+      label: Mathematical intent
+      description: State the informal proposition and why it matters.
+    validations:
+      required: true
+  - type: textarea
+    id: snippet
+    attributes:
+      label: Minimal Lean snippet
+      description: Include imports, declarations, theorem statement, and failing proof fragment.
+      render: lean
+    validations:
+      required: false
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment and build command
+      description: Include Lean, Lake, mathlib, commit SHA, operating system, and exact command.
+      render: shell
+    validations:
+      required: false
+  - type: textarea
+    id: result
+    attributes:
+      label: Actual and expected result
+      description: Paste the error or proof state and explain the expected theorem or behavior.
+    validations:
+      required: true
+  - type: checkboxes
+    id: scope
+    attributes:
+      label: Scope check
+      options:
+        - label: I understand that a checked support lemma proves only its formal statement under its encoded assumptions.
+          required: true
