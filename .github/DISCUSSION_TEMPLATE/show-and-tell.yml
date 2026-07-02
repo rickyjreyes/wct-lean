@@ -1,0 +1,71 @@
+title: "[Formal Result or Proof Attempt] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Share a checked theorem, failed proof attempt, counterexample, refactor, independent build, or formal link to an informal WCT claim. Negative and blocked results are useful.
+  - type: dropdown
+    id: result_type
+    attributes:
+      label: Result type
+      options:
+        - Checked theorem
+        - Failed or blocked proof
+        - Counterexample or inconsistency
+        - Independent build reproduction
+        - Definition or theorem refactor
+        - Automation or tactic improvement
+        - Informal-to-formal claim mapping
+    validations:
+      required: true
+  - type: input
+    id: target
+    attributes:
+      label: Theorem or claim target
+      description: Give the file, namespace, theorem name, source claim, and commit.
+    validations:
+      required: true
+  - type: textarea
+    id: statement
+    attributes:
+      label: Formal statement
+      description: Paste the checked or attempted theorem signature.
+      render: lean
+    validations:
+      required: true
+  - type: textarea
+    id: assumptions
+    attributes:
+      label: Encoded assumptions
+      description: List all typeclass, domain, positivity, regularity, nonzero, unit, and boundary assumptions.
+    validations:
+      required: true
+  - type: textarea
+    id: build
+    attributes:
+      label: Environment and build command
+      description: Include Lean, Lake, mathlib, OS, commit SHA, and exact command.
+      render: shell
+    validations:
+      required: true
+  - type: textarea
+    id: result
+    attributes:
+      label: Result and proof status
+      description: Report checked, disproved, blocked, or incomplete, with the relevant proof state or compiler output.
+    validations:
+      required: true
+  - type: textarea
+    id: artifacts
+    attributes:
+      label: Auditable artifacts
+      description: Link the branch, pull request, proof file, build log, dependency lockfile, or archived release.
+    validations:
+      required: true
+  - type: textarea
+    id: interpretation
+    attributes:
+      label: Scope of the result
+      description: Explain exactly which formal statement is established and which broader WCT claims remain unproved.
+    validations:
+      required: true
