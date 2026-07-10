@@ -1,0 +1,42 @@
+name: Lean container CI
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "Dockerfile"
+      - ".dockerignore"
+      - "lean-toolchain"
+      - "lakefile.lean"
+      - "lake-manifest.json"
+      - "WCTLean/**"
+      - "scripts/**"
+      - ".github/workflows/container-ci.yml"
+  pull_request:
+    paths:
+      - "Dockerfile"
+      - ".dockerignore"
+      - "lean-toolchain"
+      - "lakefile.lean"
+      - "lake-manifest.json"
+      - "WCTLean/**"
+      - "scripts/**"
+      - ".github/workflows/container-ci.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: container-ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  container-build:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build pinned Lean image
+        run: docker build --tag wct-lean-ci .
+      - name: Re-run maintained Lean build in the image
+        run: docker run --rm wct-lean-ci
