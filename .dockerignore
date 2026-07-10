@@ -1,0 +1,7 @@
+.git
+.github
+.lake/
+__pycache__/
+*.py[cod]
+*.log
+formal-source-hashes.json
