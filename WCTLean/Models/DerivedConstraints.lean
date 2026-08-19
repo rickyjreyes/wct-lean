@@ -104,8 +104,8 @@ theorem iterated_count_retention_bound
       have hlast := hstep steps (Nat.lt_succ_self steps)
       have hretLast : 0 ≤ retention steps := hret steps (Nat.lt_succ_self steps)
       calc
-        count (Nat.succ steps) = count (steps + 1) := by omega
-        _ ≤ retention steps * count steps := hlast
+        count (Nat.succ steps) ≤ retention steps * count steps := by
+          simpa [Nat.succ_eq_add_one] using hlast
         _ ≤ retention steps * (count 0 * retentionProduct retention steps) :=
           mul_le_mul_of_nonneg_left ihBound hretLast
         _ = count 0 * retentionProduct retention (Nat.succ steps) := by
