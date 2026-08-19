@@ -128,4 +128,62 @@ theorem curvatureScalarSq_iff_lockedEigenEquation
   unfold scalarCurvatureQuotient
   exact div_eq_iff hfield
 
+/-- CLE5/CLE8: flat-product torus eigenvalue for integer Fourier labels.
+Writing each term as a squared ratio makes the nonnegativity structure explicit. -/
+noncomputable def flatProductTorusEigenvalue
+    (m n : ℤ) (majorRadius minorRadius : ℝ) : ℝ :=
+  ((m : ℝ) / majorRadius) ^ 2 + ((n : ℝ) / minorRadius) ^ 2
+
+/-- CLE5: the flat-product torus Fourier eigenvalue is nonnegative. -/
+theorem flatProductTorusEigenvalue_nonnegative
+    (m n : ℤ) (majorRadius minorRadius : ℝ) :
+    0 ≤ flatProductTorusEigenvalue m n majorRadius minorRadius := by
+  unfold flatProductTorusEigenvalue
+  positivity
+
+/-- CLE8: after fixing winding/chirality to `n = +1`, the `m = 0` mode has no
+larger flat-product eigenvalue than any other integer `m`. -/
+theorem flatProductTorus_fixedWinding_one_minimal
+    (m : ℤ) (majorRadius minorRadius : ℝ) :
+    flatProductTorusEigenvalue 0 1 majorRadius minorRadius ≤
+      flatProductTorusEigenvalue m 1 majorRadius minorRadius := by
+  unfold flatProductTorusEigenvalue
+  nlinarith [sq_nonneg ((m : ℝ) / majorRadius)]
+
+/-- CLE8: for nonzero major radius, equality with the selected `m = 0, n = 1`
+eigenvalue occurs only for integer `m = 0`. -/
+theorem flatProductTorus_fixedWinding_one_eq_iff
+    (m : ℤ) (majorRadius minorRadius : ℝ)
+    (hmajor : majorRadius ≠ 0) :
+    flatProductTorusEigenvalue m 1 majorRadius minorRadius =
+        flatProductTorusEigenvalue 0 1 majorRadius minorRadius ↔
+      m = 0 := by
+  unfold flatProductTorusEigenvalue
+  constructor
+  · intro h
+    have hq : ((m : ℝ) / majorRadius) = 0 := by
+      nlinarith [sq_nonneg ((m : ℝ) / majorRadius)]
+    have hmreal : (m : ℝ) = 0 := by
+      exact (div_eq_zero_iff).mp hq |>.resolve_right hmajor
+    exact_mod_cast hmreal
+  · intro hm
+    subst m
+    norm_num
+
+/-- TOP3: finite-dimensional exact negative-gradient flow has nonpositive
+instantaneous energy rate `-Σᵢ gᵢ²`. This is the algebraic core of the Hilbert
+space descent identity under the differentiability hypotheses. -/
+noncomputable def finiteGradientFlowEnergyRate
+    {n : ℕ} (gradient : Fin n → ℝ) : ℝ :=
+  -∑ i, (gradient i) ^ 2
+
+/-- TOP3: the exact negative-gradient-flow rate is never positive. -/
+theorem finiteGradientFlowEnergyRate_nonpositive
+    {n : ℕ} (gradient : Fin n → ℝ) :
+    finiteGradientFlowEnergyRate gradient ≤ 0 := by
+  unfold finiteGradientFlowEnergyRate
+  have hsum : 0 ≤ ∑ i, (gradient i) ^ 2 := by
+    exact Finset.sum_nonneg (fun i _ => sq_nonneg (gradient i))
+  linarith
+
 end WCTLean
