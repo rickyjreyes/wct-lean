@@ -48,7 +48,7 @@ every_registered_id_has_family
 canonicalRegistry_length
 ```
 
-The effective symbolic-audit partition is:
+The effective symbolic-audit partition inherited from the current `wct-sympy` main branch is:
 
 | Status | Count |
 |---|---:|
@@ -60,29 +60,28 @@ The effective symbolic-audit partition is:
 
 These are inherited symbolic-audit classifications, not Lean theorem counts.
 
-## Layer 2 — Non-registry typed Lean support: 62 IDs
+## Layer 2 — Non-registry typed Lean support: 69 IDs
 
 The following IDs have a maintained equation-specific definition, proposition, theorem, counterexample, or analytic contract beyond registry metadata:
 
 ```text
 M1 M2 M3 M4 M5 M6A M6B M7
 E1A E1B E2 E3 E4 E5 E6 E7 E8 E9 E10 E11
-E12 E13 E14 E17 E18 E20
-E24 E25 E26 E27 E28 E29 E33 E36
+E12 E13 E14 E16 E17 E18 E20
+E24 E25 E26 E27 E28 E29 E33 E36 E37 E38
 E45 E47 E49 E51 E53
 E57 E58 E59 E61 E62 E64
 E65 E66 E67 E68 E69 E70
 E78 E81
+CLE4 CLE9 CLE10
 G1 EX EY EZ FA
-CM9 CM12 CM13 CM16
+CM9 CM11 CM12 CM13 CM16
 ```
 
-The new non-shallow mapping batch adds twelve IDs:
+The latest kernel-checked coverage expansion adds seven IDs:
 
 ```text
-M4 M5 M6B
-E10 E11 E29 E36
-G1 EX EY EZ FA
+E16 E37 E38 CLE4 CLE9 CLE10 CM11
 ```
 
 ### Direct algebraic, order-theoretic, or finite-dynamical theorem support
@@ -90,11 +89,12 @@ G1 EX EY EZ FA
 ```text
 M1 M2 M3 M4 M5 M6B M7
 E2 E3 E4 E5 E8 E9 E10 E11
-E12 E13 E14 E17 E18 E20 E28 E29 E33 E36
+E12 E13 E14 E16 E17 E18 E20 E28 E29 E33 E36 E37 E38
 E45 E47 E49 E51 E53
 E57 E58 E59 E61 E62 E64 E81
+CLE4 CLE9 CLE10
 G1 EX EY EZ FA
-CM9
+CM9 CM11
 ```
 
 This category includes conditional theorems, finite analogues, scalar reductions, and exact algebraic bridges. It does not imply full PDE, variational, continuum, or physical closure.
@@ -127,7 +127,31 @@ E17 E78
 
 E17 includes both the historical scalar-denominator counterexample and the corrected complex denominator theorem. E78 remains a proposition/TODO rather than a completed Fisher-information theorem.
 
-## New non-shallow mappings
+## Latest coverage expansion
+
+### E16 — linearized spectral selection
+
+`linearModePower_nonnegative` proves that nonnegative initial mode power stays nonnegative in the supplied exponential-growth model. `linearModePower_selects_larger_growth` proves that, for equal positive initial power and positive time, the mode with the larger supplied growth rate has strictly larger linearized power.
+
+This is a linearized mode-selection theorem, not a proof of nonlinear global pattern selection.
+
+### E37 and E38 — resource-scale algebra
+
+`energyBandlimit_nonnegative` proves nonnegativity of the encoded energy-limited wavenumber scale under nonnegative coefficient/energy and positive `hbar,c`. `channelCapacityUpperBound_nonnegative` proves nonnegativity of the scalar channel-capacity upper-bound expression under nonnegative factors.
+
+These results validate the encoded scalar structure; they do not derive the physical constants or prove the full computational-complexity interpretation.
+
+### CM11 — Gaussian damping envelope
+
+`curvatureDampingEnvelope_positive` proves strict positivity of the Gaussian envelope, while `curvatureDampingEnvelope_zero` proves exact zero-wavenumber normalization.
+
+### CLE4, CLE9, and CLE10 — curvature-lock algebra
+
+`curvatureLock_iff_lockedEigenEquation` proves, away from field zeros, equivalence between the scalar curvature quotient and the locked eigen-equation. `curvatureRadius_mul_curvature` proves the reciprocal radius identity for nonzero curvature. `curvatureScalarSq_iff_lockedEigenEquation` proves the corresponding squared-curvature eigen-equation equivalence.
+
+These are scalar algebraic closures and do not prove existence or uniqueness of a toroidal electron solution.
+
+## Earlier non-shallow mappings
 
 ### M4 — dimensional threshold
 
@@ -183,9 +207,9 @@ for nonnegative mode count `K`.
 
 These results do not supply the missing function-space chain rule or PDE regularity theorem.
 
-## Layer 3 — Registry-only coverage: 80 IDs
+## Layer 3 — Registry-only coverage: 73 IDs
 
-The remaining 80 IDs compile with family and status metadata but do not yet have a maintained equation-specific typed declaration that captures substantive mathematical content.
+The remaining 73 IDs compile with family and status metadata but do not yet have a maintained equation-specific typed declaration that captures substantive mathematical content.
 
 Registry-only does **not** mean false. It means the object is inventoried and classified, but its formula or claim has not yet been represented beyond metadata in the maintained Lean library.
 
@@ -199,6 +223,7 @@ Registry-only does **not** mean false. It means the object is inventoried and cl
 | `WCTLean/Models/BandPass.lean` | M3, M7, E12, E57, E61, E64 finite-band algebra |
 | `WCTLean/Models/PhaseFlux.lean` | E9, E10, E11 phase flux and additive quantization closure |
 | `WCTLean/Models/AlgebraicChecks.lean` | E20, E28, E29, E33, E45, E47, E49, E51, E53, E59, E62, E81 |
+| `WCTLean/Models/CoverageExpansion.lean` | E16, E37, E38, CLE4, CLE9, CLE10, CM11 theorem-level support |
 | `WCTLean/Models/CompactDynamics.lean` | M5, E36 fixed points, norm nonincrease, bounded-set invariance |
 | `WCTLean/Models/LogFlow.lean` | EX, EY, EZ, FA logarithmic and diffusion residual bridge |
 | `WCTLean/Models/GhostModes.lean` | G1 bounded ghost-mode modulation and smearing definitions |
