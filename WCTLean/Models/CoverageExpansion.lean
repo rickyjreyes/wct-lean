@@ -149,7 +149,7 @@ theorem flatProductTorus_fixedWinding_one_minimal
       flatProductTorusEigenvalue m 1 majorRadius minorRadius := by
   unfold flatProductTorusEigenvalue
   norm_num
-  exact le_add_of_nonneg_left (sq_nonneg ((m : ℝ) / majorRadius))
+  exact sq_nonneg ((m : ℝ) / majorRadius)
 
 /-- CLE8: for nonzero major radius, equality with the selected `m = 0, n = 1`
 eigenvalue occurs only for integer `m = 0`. -/
@@ -163,13 +163,7 @@ theorem flatProductTorus_fixedWinding_one_eq_iff
   constructor
   · intro h
     norm_num at h
-    have hsquare : ((m : ℝ) / majorRadius) ^ 2 = 0 := by
-      linarith
-    have hq : ((m : ℝ) / majorRadius) = 0 := by
-      nlinarith [sq_nonneg ((m : ℝ) / majorRadius)]
-    have hmreal : (m : ℝ) = 0 := by
-      exact (div_eq_zero_iff).mp hq |>.resolve_right hmajor
-    exact_mod_cast hmreal
+    exact h.resolve_right hmajor
   · intro hm
     subst m
     norm_num
