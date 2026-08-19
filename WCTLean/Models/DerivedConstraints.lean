@@ -124,17 +124,18 @@ theorem alphaFromRetentionLogSum_exponent_identity
     n * alphaFromRetentionLogSum n logRetentionSum beta =
       n * (1 + beta) + logRetentionSum := by
   unfold alphaFromRetentionLogSum
-  field_simp [hn] <;> ring
+  field_simp [hn]
+  ring
 
 /-- E22: raw derivative entry in the proposed complex-field metric correction. -/
 noncomputable def complexMetricDerivativeEntry
     (a b : ℂ) : ℂ :=
-  Complex.conj a * b
+  star a * b
 
 /-- E22: the raw complex derivative correction is Hermitian under index swap. -/
 theorem complexMetricDerivativeEntry_hermitian
     (a b : ℂ) :
-    Complex.conj (complexMetricDerivativeEntry a b) =
+    star (complexMetricDerivativeEntry a b) =
       complexMetricDerivativeEntry b a := by
   simp [complexMetricDerivativeEntry, mul_comm]
 
@@ -156,7 +157,7 @@ theorem complexMetricDerivativeEntry_realPart_symmetric
       (complexMetricDerivativeEntry b a).re := by
   calc
     (complexMetricDerivativeEntry a b).re =
-        (Complex.conj (complexMetricDerivativeEntry a b)).re := by simp
+        (star (complexMetricDerivativeEntry a b)).re := by simp
     _ = (complexMetricDerivativeEntry b a).re := by
       rw [complexMetricDerivativeEntry_hermitian]
 
