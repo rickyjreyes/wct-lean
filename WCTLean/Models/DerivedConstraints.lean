@@ -126,4 +126,38 @@ theorem alphaFromRetentionLogSum_exponent_identity
   unfold alphaFromRetentionLogSum
   field_simp [hn] <;> ring
 
+/-- E22: raw derivative entry in the proposed complex-field metric correction. -/
+noncomputable def complexMetricDerivativeEntry
+    (a b : ℂ) : ℂ :=
+  Complex.conj a * b
+
+/-- E22: the raw complex derivative correction is Hermitian under index swap. -/
+theorem complexMetricDerivativeEntry_hermitian
+    (a b : ℂ) :
+    Complex.conj (complexMetricDerivativeEntry a b) =
+      complexMetricDerivativeEntry b a := by
+  simp [complexMetricDerivativeEntry, mul_comm]
+
+/-- E22: Hermitian is not the same as real symmetric.  The admissible derivative
+pair `d₀ψ = 1`, `d₁ψ = i` gives opposite imaginary off-diagonal entries. -/
+theorem complexMetricDerivativeEntry_not_symmetric_example :
+    complexMetricDerivativeEntry (1 : ℂ) Complex.I ≠
+      complexMetricDerivativeEntry Complex.I (1 : ℂ) := by
+  intro h
+  have him := congrArg Complex.im h
+  norm_num [complexMetricDerivativeEntry] at him
+
+/-- E22: taking the real part of the Hermitian derivative entry restores
+symmetry under index exchange.  Nondegeneracy and Lorentzian signature remain
+separate obligations. -/
+theorem complexMetricDerivativeEntry_realPart_symmetric
+    (a b : ℂ) :
+    (complexMetricDerivativeEntry a b).re =
+      (complexMetricDerivativeEntry b a).re := by
+  calc
+    (complexMetricDerivativeEntry a b).re =
+        (Complex.conj (complexMetricDerivativeEntry a b)).re := by simp
+    _ = (complexMetricDerivativeEntry b a).re := by
+      rw [complexMetricDerivativeEntry_hermitian]
+
 end WCTLean
