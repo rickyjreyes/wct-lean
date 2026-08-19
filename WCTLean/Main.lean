@@ -20,6 +20,7 @@ import WCTLean.Models.Locking
 import WCTLean.Models.BandPass
 import WCTLean.Models.AlgebraicChecks
 import WCTLean.Models.CoverageExpansion
+import WCTLean.Models.DerivedConstraints
 import WCTLean.Models.LogFlow
 import WCTLean.Models.GhostModes
 import WCTLean.Models.Collider
