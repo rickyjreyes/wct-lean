@@ -69,7 +69,7 @@ theorem iterated_count_retention_bound
     (count retention : ℕ → ℝ) (steps : ℕ) :
     (∀ t < steps, 0 ≤ retention t) →
     (∀ t < steps, count (t + 1) ≤ retention t * count t) →
-    count steps ≤ count 0 * ∏ t in Finset.range steps, retention t := by
+    count steps ≤ count 0 * (∏ t in Finset.range steps, retention t) := by
   induction steps with
   | zero =>
       intro _ _
@@ -89,16 +89,16 @@ theorem iterated_count_retention_bound
         count (Nat.succ steps) = count (steps + 1) := by omega
         _ ≤ retention steps * count steps := hlast
         _ ≤ retention steps *
-            (count 0 * ∏ t in Finset.range steps, retention t) :=
+            (count 0 * (∏ t in Finset.range steps, retention t)) :=
           mul_le_mul_of_nonneg_left ihBound hretLast
-        _ = count 0 * ∏ t in Finset.range (Nat.succ steps), retention t := by
+        _ = count 0 * (∏ t in Finset.range (Nat.succ steps), retention t) := by
           rw [Finset.prod_range_succ]
           ring
 
 /-- E28/E41/E72 exponent bookkeeping: once the logarithmic retention sum and
 correction exponent use the same normalization, the `alpha*n` exponent splits
 into the base count, correction, and retention contributions exactly. -/
-def alphaFromRetentionLogSum
+noncomputable def alphaFromRetentionLogSum
     (n logRetentionSum beta : ℝ) : ℝ :=
   1 + logRetentionSum / n + beta
 
