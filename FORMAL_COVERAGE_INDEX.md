@@ -60,7 +60,7 @@ The effective symbolic-audit partition inherited from the current `wct-sympy` ma
 
 These are inherited symbolic-audit classifications, not Lean theorem counts.
 
-## Layer 2 — Non-registry typed Lean support: 69 IDs
+## Layer 2 — Non-registry typed Lean support: 72 IDs
 
 The following IDs have a maintained equation-specific definition, proposition, theorem, counterexample, or analytic contract beyond registry metadata:
 
@@ -73,15 +73,16 @@ E45 E47 E49 E51 E53
 E57 E58 E59 E61 E62 E64
 E65 E66 E67 E68 E69 E70
 E78 E81
-CLE4 CLE9 CLE10
+CLE4 CLE5 CLE8 CLE9 CLE10
 G1 EX EY EZ FA
 CM9 CM11 CM12 CM13 CM16
+TOP3
 ```
 
-The latest kernel-checked coverage expansion adds seven IDs:
+The branch's kernel-checked coverage expansion adds ten IDs relative to the original 62-ID baseline:
 
 ```text
-E16 E37 E38 CLE4 CLE9 CLE10 CM11
+E16 E37 E38 CLE4 CLE5 CLE8 CLE9 CLE10 CM11 TOP3
 ```
 
 ### Direct algebraic, order-theoretic, or finite-dynamical theorem support
@@ -92,9 +93,10 @@ E2 E3 E4 E5 E8 E9 E10 E11
 E12 E13 E14 E16 E17 E18 E20 E28 E29 E33 E36 E37 E38
 E45 E47 E49 E51 E53
 E57 E58 E59 E61 E62 E64 E81
-CLE4 CLE9 CLE10
+CLE4 CLE5 CLE8 CLE9 CLE10
 G1 EX EY EZ FA
 CM9 CM11
+TOP3
 ```
 
 This category includes conditional theorems, finite analogues, scalar reductions, and exact algebraic bridges. It does not imply full PDE, variational, continuum, or physical closure.
@@ -128,6 +130,18 @@ E17 E78
 E17 includes both the historical scalar-denominator counterexample and the corrected complex denominator theorem. E78 remains a proposition/TODO rather than a completed Fisher-information theorem.
 
 ## Latest coverage expansion
+
+### CLE5 and CLE8 — flat-product torus selection
+
+`flatProductTorusEigenvalue_nonnegative` proves nonnegativity of the integer Fourier-mode eigenvalue encoded as the sum of squared radius-scaled mode labels. For fixed winding/chirality `n = +1`, `flatProductTorus_fixedWinding_one_minimal` proves that the `m = 0` mode minimizes the flat-product eigenvalue, and `flatProductTorus_fixedWinding_one_eq_iff` proves that for nonzero major radius equality occurs only at integer `m = 0`.
+
+These are exact statements for the flat-product torus spectrum. They do not prove that the full curved torus has the same spectrum without approximation, nor do they derive the physical winding/selection rule.
+
+### TOP3 — exact negative-gradient-flow descent
+
+`finiteGradientFlowEnergyRate_nonpositive` proves that the finite-dimensional exact negative-gradient-flow rate `-Σᵢ gᵢ²` is nonpositive. This is the algebraic core of the continuum identity `dE/dt = -||δE/δγ||² ≤ 0` under the differentiability and regularity hypotheses.
+
+It does not establish well-posedness of the topology dynamics or differentiability of a singular self-avoidance functional.
 
 ### E16 — linearized spectral selection
 
@@ -207,9 +221,9 @@ for nonnegative mode count `K`.
 
 These results do not supply the missing function-space chain rule or PDE regularity theorem.
 
-## Layer 3 — Registry-only coverage: 73 IDs
+## Layer 3 — Registry-only coverage: 70 IDs
 
-The remaining 73 IDs compile with family and status metadata but do not yet have a maintained equation-specific typed declaration that captures substantive mathematical content.
+The remaining 70 IDs compile with family and status metadata but do not yet have a maintained equation-specific typed declaration that captures substantive mathematical content.
 
 Registry-only does **not** mean false. It means the object is inventoried and classified, but its formula or claim has not yet been represented beyond metadata in the maintained Lean library.
 
@@ -223,7 +237,7 @@ Registry-only does **not** mean false. It means the object is inventoried and cl
 | `WCTLean/Models/BandPass.lean` | M3, M7, E12, E57, E61, E64 finite-band algebra |
 | `WCTLean/Models/PhaseFlux.lean` | E9, E10, E11 phase flux and additive quantization closure |
 | `WCTLean/Models/AlgebraicChecks.lean` | E20, E28, E29, E33, E45, E47, E49, E51, E53, E59, E62, E81 |
-| `WCTLean/Models/CoverageExpansion.lean` | E16, E37, E38, CLE4, CLE9, CLE10, CM11 theorem-level support |
+| `WCTLean/Models/CoverageExpansion.lean` | E16, E37, E38, CLE4, CLE5, CLE8, CLE9, CLE10, CM11, TOP3 theorem-level support |
 | `WCTLean/Models/CompactDynamics.lean` | M5, E36 fixed points, norm nonincrease, bounded-set invariance |
 | `WCTLean/Models/LogFlow.lean` | EX, EY, EZ, FA logarithmic and diffusion residual bridge |
 | `WCTLean/Models/GhostModes.lean` | G1 bounded ghost-mode modulation and smearing definitions |
