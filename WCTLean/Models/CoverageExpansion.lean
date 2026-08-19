@@ -184,4 +184,52 @@ theorem finiteGradientFlowEnergyRate_nonpositive
     exact Finset.sum_nonneg (fun i _ => sq_nonneg (gradient i))
   linarith
 
+/-- E32: corrected alpha-drop value written in terms of the retained-fraction
+logarithmic average `A` and the correction `beta`. -/
+def alphaDropFromAverage (avgLog beta : ℝ) : ℝ :=
+  1 + avgLog + beta
+
+/-- E32: a uniform positive margin below the E28 threshold gives the exact
+pointwise tail bound `alpha <= 1-delta`. -/
+theorem alphaDrop_uniform_margin_bound
+    (avgLog beta delta : ℝ)
+    (hdelta : 0 < delta)
+    (hmargin : beta ≤ -avgLog - delta) :
+    alphaDropFromAverage avgLog beta ≤ 1 - delta := by
+  unfold alphaDropFromAverage
+  linarith
+
+/-- E32: the same positive margin places every such tail value strictly below
+one. Applied uniformly for all sufficiently large indices, this is the algebraic
+core of the canonical `limsup alpha < 1` condition. -/
+theorem alphaDrop_uniform_margin_lt_one
+    (avgLog beta delta : ℝ)
+    (hdelta : 0 < delta)
+    (hmargin : beta ≤ -avgLog - delta) :
+    alphaDropFromAverage avgLog beta < 1 := by
+  have hbound := alphaDrop_uniform_margin_bound avgLog beta delta hdelta hmargin
+  linarith
+
+/-- E50: scalar phase-coherence integrand. -/
+noncomputable def phaseCoherenceIntegrand
+    (density gradientMagnitude : ℝ) : ℝ :=
+  density / gradientMagnitude
+
+/-- E50: a positive phase-gradient floor gives the exact pointwise coherence
+bound used to control the continuum integral. -/
+theorem phaseCoherenceIntegrand_bound
+    (density gradientMagnitude delta : ℝ)
+    (hdensity : 0 ≤ density)
+    (hdelta : 0 < delta)
+    (hgradient : delta ≤ gradientMagnitude) :
+    0 ≤ phaseCoherenceIntegrand density gradientMagnitude ∧
+      phaseCoherenceIntegrand density gradientMagnitude ≤ density / delta := by
+  have hgradientPos : 0 < gradientMagnitude := lt_of_lt_of_le hdelta hgradient
+  constructor
+  · unfold phaseCoherenceIntegrand
+    exact div_nonneg hdensity (le_of_lt hgradientPos)
+  · unfold phaseCoherenceIntegrand
+    apply (div_le_div_iff₀ hgradientPos hdelta).2
+    exact mul_le_mul_of_nonneg_left hgradient hdensity
+
 end WCTLean
