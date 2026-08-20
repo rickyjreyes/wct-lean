@@ -52,8 +52,8 @@ The effective symbolic-audit partition inherited from the current `wct-sympy` ma
 
 | Status | Count |
 |---|---:|
-| `PASS` | 59 |
-| `CONDITIONAL` | 27 |
+| `PASS` | 68 |
+| `CONDITIONAL` | 18 |
 | `DEFINITION` | 26 |
 | `OPEN` | 30 |
 | **Total** | **142** |
