@@ -35,8 +35,8 @@ Lean proves registry length, uniqueness, family assignment, status assignment, a
 The inherited symbolic-audit partition is:
 
 ```text
-59 PASS
-27 CONDITIONAL
+68 PASS
+18 CONDITIONAL
 26 DEFINITION
 30 OPEN
 142 total
@@ -46,22 +46,24 @@ These are symbolic classifications, not Lean theorem counts.
 
 ## Typed Lean support
 
-The maintained library now has non-registry equation-specific support for **62 of 142 IDs**:
+The maintained library now has non-registry equation-specific support for **80 of 142 IDs**:
 
 ```text
 M1 M2 M3 M4 M5 M6A M6B M7
 E1A E1B E2 E3 E4 E5 E6 E7 E8 E9 E10 E11
-E12 E13 E14 E17 E18 E20
-E24 E25 E26 E27 E28 E29 E33 E36
-E45 E47 E49 E51 E53
+E12 E13 E14 E16 E17 E18 E19 E20 E22
+E24 E25 E26 E27 E28 E29 E32 E33 E36 E37 E38 E41
+E45 E47 E49 E50 E51 E53
 E57 E58 E59 E61 E62 E64
-E65 E66 E67 E68 E69 E70
+E65 E66 E67 E68 E69 E70 E72
 E78 E81
+CLE4 CLE5 CLE8 CLE9 CLE10
 G1 EX EY EZ FA
-CM9 CM12 CM13 CM16
+CM9 CM11 CM12 CM13 CM16
+TOP3 TOP7 CORR2
 ```
 
-The remaining **80 IDs** are registry-only. Registry-only means inventoried and classified, not false.
+The remaining **62 IDs** are registry-only. Registry-only means inventoried and classified, not false.
 
 The support strength varies by object:
 
@@ -75,6 +77,8 @@ The support strength varies by object:
 - unresolved proposition.
 
 See [`FORMAL_COVERAGE_INDEX.md`](FORMAL_COVERAGE_INDEX.md) for the complete partition and [`THEOREMS.md`](THEOREMS.md) for the declaration-level inventory.
+
+The latest merged expansion adds 18 IDs beyond the original 62-ID baseline, including exact or conditional support for `E16`, `E19`, `E22`, `E32`, `E37`, `E38`, `E41`, `E50`, `E72`, `CLE4`, `CLE5`, `CLE8`, `CLE9`, `CLE10`, `CM11`, `TOP3`, `TOP7`, and `CORR2`. Several of these are constraints or diagnostics rather than full physical closure.
 
 ## Newly closed algebraic results
 
