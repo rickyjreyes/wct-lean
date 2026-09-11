@@ -95,7 +95,6 @@ theorem helixCurvatureSq_add_torsionSq
       1 / (R ^ 2 + p ^ 2) := by
   unfold helixCurvature helixTorsion
   field_simp [hden]
-  ring
 
 /-- Substituting `p = n eta R` gives the aspect-ratio form of the inverse
 squared curvature scale. -/
