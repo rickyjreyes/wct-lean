@@ -1,0 +1,41 @@
+name: Create formal-upgrades release
+
+on:
+  push:
+    paths:
+      - .github/workflows/create-formal-upgrades-release.yml
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    if: github.event.before == 'd38be87fca50bb0eb30ac7afd178e713e9298f4a'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create tag and GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: v2026.09.11-formal-upgrades
+          TARGET_SHA: d38be87fca50bb0eb30ac7afd178e713e9298f4a
+        run: |
+          cat > /tmp/release-notes.md <<'EOF'
+          ## September 2026 formal upgrades
+
+          This release captures the kernel-checked algebraic upgrade batch merged on September 11, 2026.
+
+          - Formalizes the toroidal selector behind `eta^2 = 1/2`.
+          - Formalizes the completed-square finite-band Hessian maximum and selected shell.
+          - Formalizes the helix curvature/torsion scale and aspect-ratio substitution.
+          - Formalizes the radial-core threshold reduction `p > 1/2`.
+          - Formalizes the corrected constrained curvature-lock stationarity relation.
+          - Formalizes the perturbed contraction margin.
+          - Both the normal Lean build and pinned-container build passed before merge.
+
+          These are algebraic implications under explicit hypotheses; the release does not claim full nonlinear PDE closure or physical validation.
+          EOF
+          gh release create "$TAG" \
+            --repo "$GITHUB_REPOSITORY" \
+            --target "$TARGET_SHA" \
+            --title "September 2026 Formal Upgrades" \
+            --notes-file /tmp/release-notes.md
