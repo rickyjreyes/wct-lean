@@ -13,7 +13,7 @@
 3. **kernel proof** — Lean accepts a theorem under its displayed hypotheses;
 4. **physical validation** — an empirical claim is supported by experiment or observation.
 
-Only layer 3 is a Lean proof. This repository does not prove WCT as a complete physical theory, establish the full nonlinear PDE program, or turn a symbolic `PASS` into empirical validation.
+Layer 3 is the kernel-checked proof layer. The broader WCT program links this formal layer to separate nonlinear-PDE, computational, and empirical evidence tracks.
 
 ## Current state
 
@@ -42,7 +42,7 @@ The inherited symbolic-audit partition is:
 142 total
 ```
 
-These are symbolic classifications, not Lean theorem counts.
+These are symbolic classifications, with Lean theorem coverage tracked separately below.
 
 ## Typed Lean support
 
@@ -63,7 +63,7 @@ CM9 CM11 CM12 CM13 CM16
 TOP3 TOP7 CORR2
 ```
 
-The remaining **62 IDs** are registry-only. Registry-only means inventoried and classified, not false.
+The remaining **62 IDs** are registry-only, preserving complete inventory and classification coverage while equation-specific formalization continues.
 
 The support strength varies by object:
 
@@ -78,7 +78,7 @@ The support strength varies by object:
 
 See [`FORMAL_COVERAGE_INDEX.md`](FORMAL_COVERAGE_INDEX.md) for the complete partition and [`THEOREMS.md`](THEOREMS.md) for the declaration-level inventory.
 
-The latest merged expansion adds 18 IDs beyond the original 62-ID baseline, including exact or conditional support for `E16`, `E19`, `E22`, `E32`, `E37`, `E38`, `E41`, `E50`, `E72`, `CLE4`, `CLE5`, `CLE8`, `CLE9`, `CLE10`, `CM11`, `TOP3`, `TOP7`, and `CORR2`. Several of these are constraints or diagnostics rather than full physical closure.
+The latest merged expansion adds 18 IDs beyond the original 62-ID baseline, including exact or conditional support for `E16`, `E19`, `E22`, `E32`, `E37`, `E38`, `E41`, `E50`, `E72`, `CLE4`, `CLE5`, `CLE8`, `CLE9`, `CLE10`, `CM11`, `TOP3`, `TOP7`, and `CORR2`. These entries span exact results, conditional results, constraints, and diagnostics with their strength recorded individually.
 
 ## Newly closed algebraic results
 
@@ -91,7 +91,7 @@ The latest merged expansion adds 18 IDs beyond the original 62-ID baseline, incl
 - the exact logarithmic-frequency/discrete-scale relation `log(exp(2π/k)) = 2π/k`;
 - positivity of the associated scaling ratio.
 
-These results close algebraic obligations only. They do not prove existence or stability of a full WCT confined mode, establish a universal physical mass law, derive a non-Abelian gauge theory, quantize WCT, or complete gravitational backreaction.
+These results close named algebraic obligations. Existence and stability of confined modes, universal physical mass laws, non-Abelian gauge structure, quantization, and gravitational backreaction are maintained as separate formal and physical workstreams.
 
 ## Non-shallow mapping batch
 
@@ -105,7 +105,7 @@ Lean proves
 n < 4 ↔ n ≤ 3
 ```
 
-for natural-number spatial dimension. The actual Sobolev embedding and curvature-boundedness statements remain explicit contract fields rather than hidden assumptions.
+for natural-number spatial dimension. The Sobolev embedding and curvature-boundedness statements remain explicit contract fields for direct formalization.
 
 ### M5 and E36 — bounded averaged dynamics
 
@@ -121,7 +121,7 @@ Lean proves:
 - if `‖A(x)‖ ≤ ‖x‖`, then `‖T(x)‖ ≤ ‖x‖`;
 - an encoded norm-bounded resource ball is forward invariant.
 
-These are finite-dimensional update theorems, not complexity-class results.
+These are finite-dimensional update theorems; complexity-class analysis is maintained as a separate layer.
 
 ### M6B — nonlinear curvature operator
 
@@ -134,7 +134,7 @@ N_curv(ψ) = (-Δψ · conjugate ψ) /
 
 and proves exact equality with the typed `thetaComplex` definition together with denominator nonvanishing for `ε > 0`.
 
-This does not prove uniqueness of the nonlinear closure, local existence, or global PDE regularity.
+Uniqueness of the nonlinear closure, local existence, and global PDE regularity remain explicit PDE-analysis targets.
 
 ### E10 and E11 — quantization closure
 
@@ -150,7 +150,7 @@ For nonnegative mode count `K`, Lean proves:
 ΔH₁ ≤ ΔH₂  →  K exp(-ΔH₂) ≤ K exp(-ΔH₁)
 ```
 
-This does not derive `ΔH` from the full field dynamics.
+Derivation of `ΔH` from the full field dynamics is tracked as a separate analytical obligation.
 
 ### G1 — bounded ghost mode
 
@@ -160,7 +160,7 @@ Lean proves the global scalar bound
 |A cos(k log(E/E₀)+φ)| ≤ |A|.
 ```
 
-No empirical fit or physical-origin claim is encoded.
+This declaration encodes the exact scalar bound; empirical fitting and physical-origin analysis are tracked in the corresponding phenomenology work.
 
 ### EX, EY, EZ, and FA — logarithmic-flow bridge
 
@@ -171,7 +171,7 @@ Lean proves:
 - the two residuals vanish simultaneously on a nonzero field sector;
 - the filament-localization condition is equivalent to zero scalar mismatch.
 
-These are exact algebraic bridges. The required function-space differentiability and PDE theorems remain open.
+These are exact algebraic bridges. Function-space differentiability and PDE closure remain named targets for the analytical layer.
 
 ## Maintained compiled root
 
@@ -216,7 +216,7 @@ WCTLean/
 - [Complete SymPy audit](https://github.com/rickyjreyes/wct-sympy/blob/main/VERIFICATION_INDEX.md)
 - [Public research-corpus map](https://rickyjreyes.github.io/research-corpus/)
 
-The `geometry_of_resonance` registry remains the source of equation text, notation, and scientific boundaries. `wct-lean` is the kernel-checked formal layer.
+The `geometry_of_resonance` registry remains the source of equation text, notation, and claim scope. `wct-lean` is the kernel-checked formal layer.
 
 ## Build and reproducibility
 
@@ -229,9 +229,9 @@ lake build
 
 The maintained source audit rejects `sorry` and `admit`, verifies public import closure, emits SHA-256 hashes for every Lean source file, and confirms the pinned dependency graph remains unchanged.
 
-## Remaining mathematical closure
+## Next mathematical closure targets
 
-The highest-value unresolved work is:
+The highest-value open work is:
 
 1. exact functional variation of the full WCT action, including denominator derivatives and higher-order terms;
 2. admissible function spaces and boundary conditions;
@@ -243,6 +243,6 @@ The highest-value unresolved work is:
 8. curve-integral locking on manifolds;
 9. theorem-level bridges from confined solutions to physical mass, force, gauge, gravity, cosmology, and experiments.
 
-## Scientific boundary
+## Build meaning
 
-A green Lean build means the encoded declarations are syntactically valid, type-correct, and accepted by the Lean kernel under explicit hypotheses. It does not establish that the hypotheses hold in nature or that WCT is empirically correct.
+A green Lean build means the encoded declarations are syntactically valid, type-correct, and accepted by the Lean kernel under explicit hypotheses. Empirical support and physical interpretation are tracked in the corresponding WCT experimental and phenomenological layers.
