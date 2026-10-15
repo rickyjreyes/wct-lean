@@ -278,3 +278,4 @@ Not closed by the current theorem set:
 | `informationMetricEntry_symmetric`, `informationMetricEntry_diagonal_nonnegative`, `informationMetricQuadratic_nonnegative` (E82) | properties of real curvature-derivative Gram form | derivative input and empirical identification not derived |
 | `cos_opposite_integer_frequency`, `cos_one_mode_integral_sq`, `cos_orthogonality_TODO_false` | signed-frequency counterexample to historical incorrect integral proposition | proper separated-frequency orthogonality and E78 Fisher bound remain open |
 
+| `phaseCoherenceIntegrable` (E50) | proves genuine `MeasureTheory.Integrable` quotient on arbitrary measured space from measurable input, integrable a.e. nonnegative density, and a.e. positive gradient floor | does not prove WCT dynamics maintains this floor |
