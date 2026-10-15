@@ -94,3 +94,14 @@ The complete count and object list are maintained in [`FORMAL_COVERAGE_INDEX.md`
 | `M6B` | `BasicRegulatorConstraints`, `basic_regulator_constraints_nonunique` | proves **non-uniqueness** under positivity, node normalization and epsilon=0 compatibility; stronger operator-selection hypotheses remain open |
 | all 142 IDs | `equationSpecificIds`, `registryOnlyIds`, count/disjointness theorems | mechanical audit of the curated 80-ID typed baseline and 62 registry-only complement, without upgrading symbolic statuses |
 
+
+## Stacked PR #31 formal additions
+
+| Canonical ID | Declaration(s) | Relationship and boundary |
+|---|---|---|
+| M2 / E17 / M6B | `radialCurvatureDenominator_hasDerivAt`, `correctedCurvatureDirection_quotient` | exact denominator and local corrected complex quotient variation; full integrated action remains open |
+| E79 | `entropyProductionRate`, `entropyProductionRate_nonnegative` | exact formula and conditional sign under positive temperature / nonnegative terms |
+| E82 | `informationMetricEntry`, `informationMetricEntry_symmetric`, `informationMetricQuadratic_nonnegative` | typed real symmetric information-Gram sector from supplied derivatives; no physical identification |
+| E78 | `cos_orthogonality_TODO_false` | **orthogonal Fourier scaffold correction only**; the separate canonical curvature–Fisher inequality is not proved or refuted |
+
+Curated typed support rises from 80 to **82 / 142** solely by substantive E79 and E82 additions. The registry-only complement falls to **60**.
