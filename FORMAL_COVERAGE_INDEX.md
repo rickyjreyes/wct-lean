@@ -60,7 +60,7 @@ The effective symbolic-audit partition inherited from the current `wct-sympy` ma
 
 These are inherited symbolic-audit classifications, not Lean theorem counts. The active SymPy expansion PR is intentionally tracked separately until it is merged to `wct-sympy` main.
 
-## Layer 2 — Non-registry typed Lean support: 80 IDs
+## Layer 2 — Non-registry typed Lean support: 82 IDs
 
 The following IDs have a maintained equation-specific definition, proposition, theorem, counterexample, analytic contract, or kernel-checked constraint beyond registry metadata:
 
@@ -72,7 +72,7 @@ E24 E25 E26 E27 E28 E29 E32 E33 E36 E37 E38 E41
 E45 E47 E49 E50 E51 E53
 E57 E58 E59 E61 E62 E64
 E65 E66 E67 E68 E69 E70 E72
-E78 E81
+E78 E79 E81 E82
 CLE4 CLE5 CLE8 CLE9 CLE10
 G1 EX EY EZ FA
 CM9 CM11 CM12 CM13 CM16
@@ -97,7 +97,7 @@ M1 M2 M3 M4 M5 M6B M7
 E2 E3 E4 E5 E8 E9 E10 E11
 E12 E13 E14 E16 E17 E18 E19 E20 E22 E28 E29 E32 E33 E36 E37 E38 E41
 E45 E47 E49 E50 E51 E53
-E57 E58 E59 E61 E62 E64 E72 E81
+E57 E58 E59 E61 E62 E64 E72 E79 E81 E82
 CLE4 CLE5 CLE8 CLE9 CLE10
 G1 EX EY EZ FA
 CM9 CM11
@@ -116,7 +116,7 @@ E1A E1B E6 E7
 ### Definitions or model skeletons
 
 ```text
-M6A E25 E27 E65 CM12 CM13 CM16
+M6A E25 E27 E65 E79 E82 CM12 CM13 CM16
 ```
 
 ### Explicit analytic contracts or predicates
@@ -352,3 +352,12 @@ This batch does not prove action variation (#17), full H² setting (#18), well-p
 - **#18** `CartesianDomain`, `freeSpaceDomain`, `DirichletZero` and `ComponentwisePeriodic` expose actual domain and boundary types and simple field-addition closure. H² spaces, trace existence, periodic quotient topology and integration by parts remain open.
 - **#21** `D4RadiusConditions`, `d4_radius_margin`, `d4_contraction_factor_range` and `d4_maps_closed_ball` prove scalar certificate consequences and conditional self-mapping in an arbitrary normed additive group. The necessary validated residual, inverse, infinite-tail and coercivity certificates from the specific D4 PDE are not supplied. No full fixed-point existence or Lyapunov theorem is claimed.
 - **#28** `ContinuumClosureObligations` names all eight independent outstanding proof targets. It is deliberately uninhabited in this module, hence a checklist of mathematical assumptions, not a proof of them.
+
+## Stacked #31: evidence-strength changes
+
+- **E79:** `entropyProductionRate` defines the canonical formula. `entropyProductionRate_nonnegative` derives its sign under three independent assumptions: nonnegative entropy rate and curvature energy, and strictly positive effective temperature. This does not derive the underlying field entropy balance.
+- **E82:** `informationMetricEntry` is the *real* Gram pairing for supplied complex curvature derivatives; the symmetry and nonnegative diagonal are proved. `informationMetricQuadratic` is the squared modulus of a finite directional combination and is nonnegative. Neither nonlinear operator differentiability nor an experimentally inferred information metric is claimed.
+- **#17:** `radialCurvatureDenominator_hasDerivAt` and `correctedCurvatureDirection_quotient` prove nonconstant denominator and local quotient-rule variation; full action gradient/higher-order integration remains open.
+- **#23:** `cos_one_mode_integral_sq` and `cos_orthogonality_TODO_false` establish that the old all-integer n ≠ m proposition is outright false. This correction is not a proof or falsification of canonical E78 (Fisher information), and the repaired Fourier projection theorem is still open.
+
+**Counts:** 142 registered, 82 equation-specific typed, 60 registry-only. Canonical scientific audit statuses are unchanged (59/27/26/30).
