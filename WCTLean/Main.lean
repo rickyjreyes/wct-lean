@@ -14,6 +14,7 @@ import WCTLean.Koide
 import WCTLean.Fourier
 import WCTLean.Contracts.Analytic
 import WCTLean.Contracts.Spatial
+import WCTLean.Contracts.ContinuumTargets
 import WCTLean.Models.CurvatureOperator
 import WCTLean.Models.ComplexCurvature
 import WCTLean.Models.CurvatureLimit
