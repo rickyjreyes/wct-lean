@@ -28,7 +28,9 @@ theorem complexRegularizerDenominator_tendsto_zero
       complexRegularizerDenominator psi epsilon alpha) := by
     unfold complexRegularizerDenominator
     fun_prop
-  simpa using hc.continuousAt.tendsto
+  have h0 : ContinuousAt (fun epsilon : ℝ =>
+      complexRegularizerDenominator psi epsilon alpha) (0 : ℝ) := hc.continuousAt
+  simpa [complexRegularizerDenominator] using h0.tendsto
 
 /-- The reciprocal at epsilon=0 agrees with the unregularized quotient as
 a formula. The equality does not assert that this formula is defined at nodes
@@ -54,6 +56,7 @@ theorem complex_quotient_regularization_error
   have haC : (a : ℂ) ≠ 0 := by exact_mod_cast ha
   have habC : ((a + b : ℝ) : ℂ) ≠ 0 := by exact_mod_cast hab
   field_simp [haC, habC]
+  push_cast
   ring
 
 /-- Away from nodes, the exact quotient error is the regulator contribution
@@ -69,10 +72,18 @@ theorem complexRegularizedReciprocal_error
       Real.exp (-2 * alpha * Complex.normSq psi)) : ℂ)) /
       ((complexRegularizerDenominator psi epsilon alpha : ℂ) *
         (Complex.normSq psi : ℂ)) := by
-  simpa [complexRegularizedReciprocal, complexRegularizerDenominator] using
-    (complex_quotient_regularization_error (star psi)
-      (Complex.normSq psi)
-      (epsilon ^ 2 * Real.exp (-2 * alpha * Complex.normSq psi))
-      hnorm (by simpa [complexRegularizerDenominator] using hden))
+  unfold complexRegularizedReciprocal
+  change star psi / ((Complex.normSq psi + epsilon ^ 2 *
+    Real.exp (-2 * alpha * Complex.normSq psi) : ℝ) : ℂ) -
+      star psi / (Complex.normSq psi : ℂ) =
+    -(star psi * ((epsilon ^ 2 *
+      Real.exp (-2 * alpha * Complex.normSq psi)) : ℂ)) /
+      (((Complex.normSq psi + epsilon ^ 2 *
+        Real.exp (-2 * alpha * Complex.normSq psi) : ℝ) : ℂ) *
+        (Complex.normSq psi : ℂ))
+  exact complex_quotient_regularization_error (star psi)
+    (Complex.normSq psi)
+    (epsilon ^ 2 * Real.exp (-2 * alpha * Complex.normSq psi))
+    hnorm (by simpa [complexRegularizerDenominator] using hden)
 
 end WCTLean
