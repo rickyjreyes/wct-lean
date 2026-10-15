@@ -27,6 +27,7 @@ RUN elan toolchain install "$(cat lean-toolchain)" \
 COPY . .
 
 RUN python3 scripts/audit_formal_sources.py \
-    && lake build
+    && python3 scripts/audit_coverage.py --check \
+    && lake build MyProject WCTLean my_project
 
-CMD ["lake", "build"]
+CMD ["lake", "build", "MyProject", "WCTLean", "my_project"]
