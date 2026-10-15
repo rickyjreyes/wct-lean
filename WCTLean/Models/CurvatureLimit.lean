@@ -81,9 +81,10 @@ theorem complexRegularizedReciprocal_error
       (((Complex.normSq psi + epsilon ^ 2 *
         Real.exp (-2 * alpha * Complex.normSq psi) : ℝ) : ℂ) *
         (Complex.normSq psi : ℂ))
-  exact complex_quotient_regularization_error (star psi)
+  convert (complex_quotient_regularization_error (star psi)
     (Complex.normSq psi)
     (epsilon ^ 2 * Real.exp (-2 * alpha * Complex.normSq psi))
-    hnorm (by simpa [complexRegularizerDenominator] using hden)
+    hnorm (by simpa [complexRegularizerDenominator] using hden)) using 1 <;>
+    push_cast <;> ring
 
 end WCTLean
