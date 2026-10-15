@@ -361,3 +361,5 @@ This batch does not prove action variation (#17), full H² setting (#18), well-p
 - **#23:** `cos_one_mode_integral_sq` and `cos_orthogonality_TODO_false` establish that the old all-integer n ≠ m proposition is outright false. This correction is not a proof or falsification of canonical E78 (Fisher information), and the repaired Fourier projection theorem is still open.
 
 **Counts:** 142 registered, 82 equation-specific typed, 60 registry-only. Canonical scientific audit statuses are unchanged (59/27/26/30).
+
+- **E50 analytic obligation (PR #31):** `phaseCoherenceIntegrable` discharges measurability + integrability of the phase-coherence quotient under named density, gradient-measurability and strictly positive almost-everywhere gradient-floor assumptions. The unconditional field-theoretic lower bound remains open; canonical E50 scientific status is unchanged.
