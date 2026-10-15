@@ -56,6 +56,8 @@ def main() -> None:
         "WCTLean.Models.ComplexCurvature",
         "WCTLean.Models.CurvatureLimit",
         "WCTLean.Models.ClosureNonuniqueness",
+        "WCTLean.Models.VariationalKernel",
+        "WCTLean.Models.InformationGeometry",
         "WCTLean.Models.PhaseFlux",
         "WCTLean.Models.RestDensity",
         "WCTLean.Models.Locking",
