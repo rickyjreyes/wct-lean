@@ -241,3 +241,18 @@ Not closed by the current theorem set:
 - complete Fourier integral orthogonality;
 - curve-integral locking on manifolds;
 - theorem-level derivation of particle masses, forces, gauge fields, gravity, cosmology, or experimental claims.
+
+## October 2026 scoped proof batch (PR #30; M2/E17/M6B and coverage audit)
+
+| Declaration | Formal scope | Boundary |
+|---|---|---|
+| `complexRegularizerDenominator_zero_regulator` | exact epsilon=0 denominator | says nothing about reciprocal at nodes |
+| `complexRegularizerDenominator_tendsto_zero` | real denominator continuity in epsilon | not full PDE limit |
+| `complexRegularizedReciprocal_zero_regulator` / `complexRegularizedReciprocal_node_all_epsilon` | exact local formula and totalized node value | not continuous extension of inverse field |
+| `complex_quotient_regularization_error` / `complexRegularizedReciprocal_error` | algebraic error identity with both denominators nonzero | requires nonnodal lower bounds for quantitative norm convergence |
+| `modifiedRegularizerDenominator_positive` | positivity under beta >= 0 and epsilon > 0 | local candidate denominator |
+| `modifiedRegularizerDenominator_at_node` / `modifiedRegularizerDenominator_at_zero_epsilon` | exact shared node and zero-regulator properties | does not uniquely select an operator |
+| `canonical_has_basic_constraints` / `modified_has_basic_constraints` | verifies the same named predicate for two families | three explicitly weak constraints only |
+| `modified_denominator_differs_from_canonical` / `basic_regulator_constraints_nonunique` | genuine mathematical counterexample to basic operator selection uniqueness | not PDE-solution nonuniqueness |
+| `equationSpecificIds_length` / `registryOnlyIds_length` / `registryOnlyIds_avoids_promoted` | checked 80/62 inventory separation | registry/coverage integrity, not a physics proof |
+
