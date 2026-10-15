@@ -52,8 +52,8 @@ The effective symbolic-audit partition inherited from the current `wct-sympy` ma
 
 | Status | Count |
 |---|---:|
-| `PASS` | 68 |
-| `CONDITIONAL` | 18 |
+| `PASS` | 59 |
+| `CONDITIONAL` | 27 |
 | `DEFINITION` | 26 |
 | `OPEN` | 30 |
 | **Total** | **142** |
@@ -338,3 +338,11 @@ lake build
 ```
 
 The audit rejects `sorry` and `admit`, verifies the public import closure, hashes every Lean source file, and confirms the pinned dependency graph remains unchanged.
+
+## October 2026 scoped proof batch (PR #30)
+
+- **#22 M2/E17:** `complexRegularizerDenominator_zero_regulator`, `complexRegularizerDenominator_tendsto_zero`, `complexRegularizedReciprocal_zero_regulator`, `complexRegularizedReciprocal_node_all_epsilon`, and `complexRegularizedReciprocal_error` (under nonzero denominator and nonnodal assumptions). Denominator continuity and exact local algebra do not imply field-function-space convergence, uniform node control, energy convergence or convergence of weak PDE formulations.
+- **#26 M6B:** `modifiedRegularizerDenominator_positive`, `modifiedRegularizerDenominator_at_node`, `modifiedRegularizerDenominator_at_zero_epsilon`, `canonical_has_basic_constraints`, `modified_has_basic_constraints`, and `basic_regulator_constraints_nonunique`. This resolves non-uniqueness **within the stated weak admissible class only**. Full physical uniqueness/selection remains conditional on additional axioms.
+- **#27 registry-only drift guard:** `equationSpecificIds` is the curated 80-ID typed support baseline; `registryOnlyIds` is its computed complement. Lean checks `equationSpecificIds_length`, `equationSpecificIds_nodup`, `equationSpecificIds_subset`, `registryOnlyIds_length`, `registryOnlyIds_nodup` and `registryOnlyIds_avoids_promoted`. Count remains **80 / 142**; no newly promoted equation ID is claimed.
+
+This batch does not prove action variation (#17), full H² setting (#18), well-posedness (#19), free-space existence (#20), D4 continuum stability (#21), full E78 projection/Fisher theorem (#23), manifold winding (#24), observable bridges (#25), or the eight continuum obligations (#28).
