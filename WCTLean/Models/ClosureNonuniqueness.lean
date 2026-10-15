@@ -13,7 +13,7 @@ or an independently justified selection principle is required.
 -/
 
 /-- A concrete, strictly larger family depending only on the field modulus,
-with a nonnegative dimensionless coefficient `beta`. -/
+with a nonnegative coefficient `beta` (no dimensional-selection axiom is imposed). -/
 noncomputable def modifiedRegularizerDenominator
     (beta : ℝ) (psi : ℂ) (epsilon alpha : ℝ) : ℝ :=
   complexRegularizerDenominator psi epsilon alpha +
