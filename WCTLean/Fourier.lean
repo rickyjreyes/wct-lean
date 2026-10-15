@@ -43,7 +43,7 @@ theorem cos_opposite_integer_frequency (n : ℤ) (x : ℝ) :
 /-- Exact normalization of the first nonconstant cosine mode. -/
 theorem cos_one_mode_integral_sq :
     (∫ x in (0 : ℝ)..(2 * Real.pi), Real.cos x ^ 2) = Real.pi := by
-  rw [Real.integral_cos_sq]
+  rw [intervalIntegral.integral_cos_sq]
   simp
   ring
 
