@@ -6,14 +6,19 @@
 -/
 
 import WCTLean.Registry
+import WCTLean.CoverageLedger
 import WCTLean.Dimension
 import WCTLean.Curvature
 import WCTLean.Energy
 import WCTLean.Koide
 import WCTLean.Fourier
 import WCTLean.Contracts.Analytic
+import WCTLean.Contracts.Spatial
+import WCTLean.Contracts.ContinuumTargets
 import WCTLean.Models.CurvatureOperator
 import WCTLean.Models.ComplexCurvature
+import WCTLean.Models.CurvatureLimit
+import WCTLean.Models.ClosureNonuniqueness
 import WCTLean.Models.PhaseFlux
 import WCTLean.Models.RestDensity
 import WCTLean.Models.Locking
@@ -28,6 +33,7 @@ import WCTLean.Models.KoideDerivation
 import WCTLean.Models.UnifiedOperator
 import WCTLean.Models.CompactDynamics
 import WCTLean.Models.ClosureFormalization
+import WCTLean.Models.D4Radius
 import WCTLean.Models.FormalUpgrades
 import WCTLean.ResolvedAudit
 import WCTLean.DerivedAudit
