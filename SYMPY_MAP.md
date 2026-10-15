@@ -85,3 +85,12 @@ The following remain outside substantive equation-specific Lean closure:
 - theorem-level particle-mass, force, gauge, gravity, and experimental bridges.
 
 The complete count and object list are maintained in [`FORMAL_COVERAGE_INDEX.md`](FORMAL_COVERAGE_INDEX.md).
+
+## October 2026 mapping additions (PR #30)
+
+| Canonical ID | Lean declarations | Strength / boundary |
+|---|---|---|
+| `M2 / E17` | `complexRegularizerDenominator_tendsto_zero`, `complexRegularizedReciprocal_error` | denominator continuity and exact nonnodal local error; no full continuum limit |
+| `M6B` | `BasicRegulatorConstraints`, `basic_regulator_constraints_nonunique` | proves **non-uniqueness** under positivity, node normalization and epsilon=0 compatibility; stronger operator-selection hypotheses remain open |
+| all 142 IDs | `equationSpecificIds`, `registryOnlyIds`, count/disjointness theorems | mechanical audit of the curated 80-ID typed baseline and 62 registry-only complement, without upgrading symbolic statuses |
+
