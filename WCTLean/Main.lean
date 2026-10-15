@@ -6,6 +6,7 @@
 -/
 
 import WCTLean.Registry
+import WCTLean.CoverageLedger
 import WCTLean.Dimension
 import WCTLean.Curvature
 import WCTLean.Energy
@@ -14,6 +15,8 @@ import WCTLean.Fourier
 import WCTLean.Contracts.Analytic
 import WCTLean.Models.CurvatureOperator
 import WCTLean.Models.ComplexCurvature
+import WCTLean.Models.CurvatureLimit
+import WCTLean.Models.ClosureNonuniqueness
 import WCTLean.Models.PhaseFlux
 import WCTLean.Models.RestDensity
 import WCTLean.Models.Locking
