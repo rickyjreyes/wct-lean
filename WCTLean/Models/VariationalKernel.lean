@@ -86,7 +86,6 @@ theorem correctedCurvatureDirection_quotient
   unfold correctedCurvatureDirection
   dsimp
   field_simp [hDC]
-  ring
 
 /-- For epsilon > 0 the exact quotient variation is globally algebraically
 well-defined even at nodes. This is a local identity, not integration of
