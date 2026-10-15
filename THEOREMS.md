@@ -256,3 +256,13 @@ Not closed by the current theorem set:
 | `modified_denominator_differs_from_canonical` / `basic_regulator_constraints_nonunique` | genuine mathematical counterexample to basic operator selection uniqueness | not PDE-solution nonuniqueness |
 | `equationSpecificIds_length` / `registryOnlyIds_length` / `registryOnlyIds_avoids_promoted` | checked 80/62 inventory separation | registry/coverage integrity, not a physics proof |
 
+## Spatial, D4 and continuum-contract additions (PR #30)
+
+| Declaration | Scope |
+|---|---|
+| `CartesianDomain`, `freeSpaceDomain`, `DirichletZero`, `ComponentwisePeriodic` | Concrete Cartesian region/boundary and field predicates; no H² embedding/trace theorem |
+| `freeSpace_dirichlet_vacuous`, `dirichletZero_add`, `componentwisePeriodic_add` | Exact elementary boundary-data theorems |
+| `D4RadiusConditions`, `d4_radius_margin`, `d4_contraction_factor_range` | Conditional a posteriori inequalities with no asserted verified constants |
+| `d4_maps_closed_ball` | Normed-additive-group self-mapping theorem under supplied center residual and local Taylor bound; not a D4 state/root certificate |
+| `ContinuumClosureObligations`, `HasContinuumClosure` | Eight open continuum theorem targets packaged as a non-instantiated contract |
+
