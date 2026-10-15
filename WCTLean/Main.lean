@@ -31,6 +31,7 @@ import WCTLean.Models.KoideDerivation
 import WCTLean.Models.UnifiedOperator
 import WCTLean.Models.CompactDynamics
 import WCTLean.Models.ClosureFormalization
+import WCTLean.Models.D4Radius
 import WCTLean.Models.FormalUpgrades
 import WCTLean.ResolvedAudit
 import WCTLean.DerivedAudit
