@@ -242,3 +242,9 @@ The highest-value open work is:
 ## Build meaning
 
 A green Lean build means the encoded declarations are syntactically valid, type-correct, and accepted by the Lean kernel under explicit hypotheses. Empirical support and physical interpretation are tracked in the corresponding WCT experimental and phenomenological layers.
+
+## Additional conditional foundations in PR #30
+
+- `Contracts/Spatial.lean` (#18): typed Cartesian free-space domain, explicit boundary set and closure containment, pointwise Dirichlet data and Cartesian componentwise periodicity, with elementary closure under field addition. **Not** an H² Sobolev/trace or manifold theorem.
+- `Models/D4Radius.lean` (#21): a conditional scalar D4 certificate and Banach-space closed-radius-ball self-mapping theorem **if supplied residual and Taylor bounds hold**. It does not certify computed D4 constants, a continuum root, coercivity or global orbital stability. D4 is the separate square-symmetric 2D periodic model, not four-dimensional space or the full WCT action.
+- `Contracts/ContinuumTargets.lean` (#28): all eight remaining analysis steps are named as fields of an uninstantiated Lean proof-obligation record. None is silently discharged.
