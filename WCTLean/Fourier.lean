@@ -7,6 +7,7 @@
 -/
 
 import Mathlib
+import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
 
 namespace WCTLean
 
