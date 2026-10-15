@@ -266,3 +266,15 @@ Not closed by the current theorem set:
 | `d4_maps_closed_ball` | Normed-additive-group self-mapping theorem under supplied center residual and local Taylor bound; not a D4 state/root certificate |
 | `ContinuumClosureObligations`, `HasContinuumClosure` | Eight open continuum theorem targets packaged as a non-instantiated contract |
 
+
+## PR #31: exact local variation, E79/E82, and corrected Fourier boundary
+
+| Declaration | Mathematical result | Limitation |
+|---|---|---|
+| `radialCurvatureDenominator_hasDerivAt` | derivative of `q + ε² exp(-2αq)` is `1 - 2α ε² exp(-2αq)` | q is supplied squared modulus; no full function-space calculus |
+| `complexDenominatorDirection`, `curvatureNumeratorDirection` | full local real-direction tangent ingredients | supplied direction and Laplacian variation |
+| `correctedCurvatureDirection_quotient`, `correctedCurvatureDirection_positive_regulator` | exact rational local quotient-rule first variation with nonzero denominator | not the first variation of integrated fourth-order action |
+| `entropyProductionRate_nonnegative` (E79) | sign from nonnegative entropy rate, curvature energy, positive T | no independent second-law derivation |
+| `informationMetricEntry_symmetric`, `informationMetricEntry_diagonal_nonnegative`, `informationMetricQuadratic_nonnegative` (E82) | properties of real curvature-derivative Gram form | derivative input and empirical identification not derived |
+| `cos_opposite_integer_frequency`, `cos_one_mode_integral_sq`, `cos_orthogonality_TODO_false` | signed-frequency counterexample to historical incorrect integral proposition | proper separated-frequency orthogonality and E78 Fisher bound remain open |
+
