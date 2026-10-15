@@ -35,8 +35,8 @@ Lean proves registry length, uniqueness, family assignment, status assignment, a
 The inherited symbolic-audit partition is:
 
 ```text
-68 PASS
-18 CONDITIONAL
+59 PASS
+27 CONDITIONAL
 26 DEFINITION
 30 OPEN
 142 total
@@ -80,18 +80,12 @@ See [`FORMAL_COVERAGE_INDEX.md`](FORMAL_COVERAGE_INDEX.md) for the complete part
 
 The latest merged expansion adds 18 IDs beyond the original 62-ID baseline, including exact or conditional support for `E16`, `E19`, `E22`, `E32`, `E37`, `E38`, `E41`, `E50`, `E72`, `CLE4`, `CLE5`, `CLE8`, `CLE9`, `CLE10`, `CM11`, `TOP3`, `TOP7`, and `CORR2`. These entries span exact results, conditional results, constraints, and diagnostics with their strength recorded individually.
 
-## Newly closed algebraic results
+## October 14, 2026: scoped formalization progress (PR #30)
 
-`WCTLean/Models/ClosedResults.lean` now kernel-checks the following narrow results:
-
-- strict positivity of the corrected modulus-squared reciprocal denominator for `ε > 0`;
-- the pure-gauge no-go result for a single smooth Abelian scalar phase when mixed derivatives commute;
-- equivalence between exact loop locking and zero winding mismatch;
-- algebraic decomposition of the winding-corrected conditional mass law;
-- the exact logarithmic-frequency/discrete-scale relation `log(exp(2π/k)) = 2π/k`;
-- positivity of the associated scaling ratio.
-
-These results close named algebraic obligations. Existence and stability of confined modes, universal physical mass laws, non-Abelian gauge structure, quantization, and gravitational backreaction are maintained as separate formal and physical workstreams.
+- `Models/ClosureNonuniqueness.lean`: a mathematical counterexample to uniqueness of the canonical M6B denominator **under only three specified basic constraints** (positive for epsilon > 0, exact node normalization, and agreement at epsilon = 0). This is not PDE solution non-uniqueness; stricter operator-selection requirements may recover uniqueness.
+- `Models/CurvatureLimit.lean`: epsilon = 0 identities, continuity of the denominator, and a pointwise error formula away from zeros. It does **not** establish norm, energy or weak-PDE convergence.
+- `CoverageLedger.lean`: an audited 80-ID support list with a computed 62-ID registry-only complement and mechanically checked disjointness/count assertions. This batch does not inflate the 80-ID total.
+- The issue ledger remains open where full acceptance criteria require continuum analytical proofs. See `THEOREMS.md` and `FORMAL_COVERAGE_INDEX.md`.
 
 ## Non-shallow mapping batch
 
@@ -134,7 +128,7 @@ N_curv(ψ) = (-Δψ · conjugate ψ) /
 
 and proves exact equality with the typed `thetaComplex` definition together with denominator nonvanishing for `ε > 0`.
 
-Uniqueness of the nonlinear closure, local existence, and global PDE regularity remain explicit PDE-analysis targets.
+The three weak denominator constraints do not establish uniqueness: an explicit distinct positive alternative is formalized in `Models/ClosureNonuniqueness.lean`. Selection under stronger structural/physical constraints, local existence and global PDE regularity remain open.
 
 ### E10 and E11 — quantization closure
 
@@ -180,6 +174,7 @@ These are exact algebraic bridges. Function-space differentiability and PDE clos
 ```text
 WCTLean/
 ├── Registry.lean
+├── CoverageLedger.lean
 ├── Dimension.lean
 ├── Curvature.lean
 ├── Energy.lean
@@ -203,7 +198,8 @@ WCTLean/
     ├── KoideDerivation.lean
     ├── UnifiedOperator.lean
     ├── CompactDynamics.lean
-    └── ClosedResults.lean
+    ├── ClosureNonuniqueness.lean
+    └── CurvatureLimit.lean
 ```
 
 ## Canonical sources
