@@ -43,14 +43,19 @@ def main() -> None:
     root_text = (ROOT / "WCTLean" / "Main.lean").read_text(encoding="utf-8")
     for required in (
         "WCTLean.Registry",
+        "WCTLean.CoverageLedger",
         "WCTLean.Dimension",
         "WCTLean.Curvature",
         "WCTLean.Energy",
         "WCTLean.Koide",
         "WCTLean.Fourier",
         "WCTLean.Contracts.Analytic",
+        "WCTLean.Contracts.Spatial",
+        "WCTLean.Contracts.ContinuumTargets",
         "WCTLean.Models.CurvatureOperator",
         "WCTLean.Models.ComplexCurvature",
+        "WCTLean.Models.CurvatureLimit",
+        "WCTLean.Models.ClosureNonuniqueness",
         "WCTLean.Models.PhaseFlux",
         "WCTLean.Models.RestDensity",
         "WCTLean.Models.Locking",
@@ -62,6 +67,7 @@ def main() -> None:
         "WCTLean.Models.KoideDerivation",
         "WCTLean.Models.UnifiedOperator",
         "WCTLean.Models.CompactDynamics",
+        "WCTLean.Models.D4Radius",
         "WCTLean.ResolvedAudit",
         "WCTLean.DerivedAudit",
     ):
