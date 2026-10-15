@@ -346,3 +346,9 @@ The audit rejects `sorry` and `admit`, verifies the public import closure, hashe
 - **#27 registry-only drift guard:** `equationSpecificIds` is the curated 80-ID typed support baseline; `registryOnlyIds` is its computed complement. Lean checks `equationSpecificIds_length`, `equationSpecificIds_nodup`, `equationSpecificIds_subset`, `registryOnlyIds_length`, `registryOnlyIds_nodup` and `registryOnlyIds_avoids_promoted`. Count remains **80 / 142**; no newly promoted equation ID is claimed.
 
 This batch does not prove action variation (#17), full H² setting (#18), well-posedness (#19), free-space existence (#20), D4 continuum stability (#21), full E78 projection/Fisher theorem (#23), manifold winding (#24), observable bridges (#25), or the eight continuum obligations (#28).
+
+### Additional contract boundaries, PR #30
+
+- **#18** `CartesianDomain`, `freeSpaceDomain`, `DirichletZero` and `ComponentwisePeriodic` expose actual domain and boundary types and simple field-addition closure. H² spaces, trace existence, periodic quotient topology and integration by parts remain open.
+- **#21** `D4RadiusConditions`, `d4_radius_margin`, `d4_contraction_factor_range` and `d4_maps_closed_ball` prove scalar certificate consequences and conditional self-mapping in an arbitrary normed additive group. The necessary validated residual, inverse, infinite-tail and coercivity certificates from the specific D4 PDE are not supplied. No full fixed-point existence or Lyapunov theorem is claimed.
+- **#28** `ContinuumClosureObligations` names all eight independent outstanding proof targets. It is deliberately uninhabited in this module, hence a checklist of mathematical assumptions, not a proof of them.
