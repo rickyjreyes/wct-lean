@@ -49,6 +49,7 @@ theorem informationMetricEntry_diagonal_nonnegative
     {ι : Type*} (dTheta : ι → ℂ) (i : ι) :
     0 ≤ informationMetricEntry dTheta i i := by
   have h : (star (dTheta i) * dTheta i).re = Complex.normSq (dTheta i) := by
+    simp only [Complex.star_def]
     rw [← Complex.normSq_eq_conj_mul_self]
     simp
   unfold informationMetricEntry
@@ -57,14 +58,14 @@ theorem informationMetricEntry_diagonal_nonnegative
 
 /-- E82: finite weighted directional curvature variation. The weights are
 real and the result is an actual complex directional derivative combination. -/
-def weightedCurvatureVariation {ι : Type*} [Fintype ι]
+noncomputable def weightedCurvatureVariation {ι : Type*} [Fintype ι]
     (dTheta : ι → ℂ) (v : ι → ℝ) : ℂ :=
   ∑ i, (v i : ℂ) * dTheta i
 
 /-- E82: its squared norm is a nonnegative quadratic form, including
 nonsymmetric direction vectors. Identifying the resulting form with a PDE
 Fisher metric remains a separate operator/regularity obligation. -/
-def informationMetricQuadratic {ι : Type*} [Fintype ι]
+noncomputable def informationMetricQuadratic {ι : Type*} [Fintype ι]
     (dTheta : ι → ℂ) (v : ι → ℝ) : ℝ :=
   Complex.normSq (weightedCurvatureVariation dTheta v)
 
