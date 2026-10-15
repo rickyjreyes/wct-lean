@@ -105,3 +105,5 @@ The complete count and object list are maintained in [`FORMAL_COVERAGE_INDEX.md`
 | E78 | `cos_orthogonality_TODO_false` | **orthogonal Fourier scaffold correction only**; the separate canonical curvature–Fisher inequality is not proved or refuted |
 
 Curated typed support rises from 80 to **82 / 142** solely by substantive E79 and E82 additions. The registry-only complement falls to **60**.
+
+| E50 | `phaseCoherenceIntegrable` | true continuum integrability proof conditional on named measurable density and a.e. positive phase-gradient floor; not just pointwise algebra |
