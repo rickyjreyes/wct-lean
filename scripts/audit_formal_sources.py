@@ -58,6 +58,7 @@ def main() -> None:
         "WCTLean.Models.ClosureNonuniqueness",
         "WCTLean.Models.VariationalKernel",
         "WCTLean.Models.InformationGeometry",
+        "WCTLean.Models.ModalEntropyBounds",
         "WCTLean.Models.PhaseCoherenceIntegral",
         "WCTLean.Models.PhaseFlux",
         "WCTLean.Models.RestDensity",

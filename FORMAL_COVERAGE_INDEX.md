@@ -60,15 +60,15 @@ The effective symbolic-audit partition inherited from the current `wct-sympy` ma
 
 These are inherited symbolic-audit classifications, not Lean theorem counts. The active SymPy expansion PR is intentionally tracked separately until it is merged to `wct-sympy` main.
 
-## Layer 2 — Non-registry typed Lean support: 82 IDs
+## Layer 2 — Non-registry typed Lean support: 84 IDs
 
 The following IDs have a maintained equation-specific definition, proposition, theorem, counterexample, analytic contract, or kernel-checked constraint beyond registry metadata:
 
 ```text
 M1 M2 M3 M4 M5 M6A M6B M7
 E1A E1B E2 E3 E4 E5 E6 E7 E8 E9 E10 E11
-E12 E13 E14 E16 E17 E18 E19 E20 E22
-E24 E25 E26 E27 E28 E29 E32 E33 E36 E37 E38 E41
+E12 E13 E14 E15 E16 E17 E18 E19 E20 E22
+E24 E25 E26 E27 E28 E29 E31 E32 E33 E36 E37 E38 E41
 E45 E47 E49 E50 E51 E53
 E57 E58 E59 E61 E62 E64
 E65 E66 E67 E68 E69 E70 E72
@@ -95,7 +95,7 @@ Some of these are exact conditional constraints rather than proofs of the full p
 ```text
 M1 M2 M3 M4 M5 M6B M7
 E2 E3 E4 E5 E8 E9 E10 E11
-E12 E13 E14 E16 E17 E18 E19 E20 E22 E28 E29 E32 E33 E36 E37 E38 E41
+E12 E13 E14 E15 E16 E17 E18 E19 E20 E22 E28 E29 E31 E32 E33 E36 E37 E38 E41
 E45 E47 E49 E50 E51 E53
 E57 E58 E59 E61 E62 E64 E72 E79 E81 E82
 CLE4 CLE5 CLE8 CLE9 CLE10
@@ -285,9 +285,9 @@ for nonnegative mode count `K`.
 
 These results do not supply the missing function-space chain rule or PDE regularity theorem.
 
-## Layer 3 — Registry-only coverage: 62 IDs
+## Layer 3 — Registry-only coverage: 58 IDs
 
-The remaining 62 IDs compile with family and status metadata but do not yet have a maintained equation-specific typed declaration that captures substantive mathematical content.
+The remaining 58 IDs compile with family and status metadata but do not yet have a maintained equation-specific typed declaration that captures substantive mathematical content.
 
 Registry-only does **not** mean false. It means the object is inventoried and classified, but its formula or claim has not yet been represented beyond metadata in the maintained Lean library.
 
@@ -363,3 +363,24 @@ This batch does not prove action variation (#17), full H² setting (#18), well-p
 **Counts:** 142 registered, 82 equation-specific typed, 60 registry-only. Canonical scientific audit statuses are unchanged (59/27/26/30).
 
 - **E50 analytic obligation (PR #31):** `phaseCoherenceIntegrable` discharges measurability + integrability of the phase-coherence quotient under named density, gradient-measurability and strictly positive almost-everywhere gradient-floor assumptions. The unconditional field-theoretic lower bound remains open; canonical E50 scientific status is unchanged.
+
+## 2026-10-15 equation-specific batch (stacked on PR #31)
+
+<!-- coverage-audit: registered=142 typed=84 registry_only=58 -->
+
+Main remains at 80 typed IDs; PR #31 proposes 82 but its inspected head failed
+CI because `integral_cos_sq` was incorrectly namespaced. This batch repairs
+that import use and proposes 84/142, conditional on the complete Lean build.
+The generated `coverage_ledger.json` contains all 58 registry-only IDs.
+`python scripts/audit_coverage.py --check` rejects count, declaration and
+document-summary drift. Scientific registry classifications remain unchanged.
+
+| Canonical ID | Module and declarations | Exact scope |
+|---|---|---|
+| E15 | `Models/ModalEntropyBounds.lean`: `modalGrowthRhs`, `ModalGrowthBound`, `modalGrowth_nonpositive_above_threshold` | Actual differentiable modal-power inequality as a contract; nonpositive derivative above the supplied saturation threshold. The nonlinear projection hypothesis is not derived. |
+| E31 | Same module: `spectralEntropyDrop`, `EntropyDissipationBound`, `entropy_nonincreasing_of_dissipation_bound`, `cumulative_dissipation_le_entropy_drop` | Given independent nonnegative dissipation and the canonical step inequality, proves monotonic entropy and the finite telescoping budget. No field entropy law or complexity-class claim. |
+
+Canonical source: `geometry_of_resonance` at
+`31d346e7b62c5a61042a57fdab9c5bec3e825e95`,
+`WCT_FULL_EQUATION_LIST_CORRECTED.md`, E15 and E31.
+Maintained public targets: `lake build MyProject WCTLean my_project`.

@@ -17,8 +17,8 @@ def equationSpecificIds : List EquationId :=
   [
   "M1", "M2", "M3", "M4", "M5", "M6A", "M6B", "M7", "E1A", "E1B",
   "E2", "E3", "E4", "E5", "E6", "E7", "E8", "E9", "E10", "E11",
-  "E12", "E13", "E14", "E16", "E17", "E18", "E19", "E20", "E22", "E24",
-  "E25", "E26", "E27", "E28", "E29", "E32", "E33", "E36", "E37", "E38",
+  "E12", "E13", "E14", "E15", "E16", "E17", "E18", "E19", "E20", "E22", "E24",
+  "E25", "E26", "E27", "E28", "E29", "E31", "E32", "E33", "E36", "E37", "E38",
   "E41", "E45", "E47", "E49", "E50", "E51", "E53", "E57", "E58", "E59",
   "E61", "E62", "E64", "E65", "E66", "E67", "E68", "E69", "E70", "E72",
   "E78", "E79", "E81", "E82", "CLE4", "CLE5", "CLE8", "CLE9", "CLE10", "G1", "EX", "EY",
@@ -28,7 +28,7 @@ def equationSpecificIds : List EquationId :=
 def registryOnlyIds : List EquationId :=
   allEquationIds.filter (fun id => id ∉ equationSpecificIds)
 
-theorem equationSpecificIds_length : equationSpecificIds.length = 82 := by
+theorem equationSpecificIds_length : equationSpecificIds.length = 84 := by
   native_decide
 
 theorem equationSpecificIds_nodup : equationSpecificIds.Nodup := by
@@ -38,7 +38,7 @@ theorem equationSpecificIds_subset :
     ∀ id ∈ equationSpecificIds, id ∈ allEquationIds := by
   native_decide
 
-theorem registryOnlyIds_length : registryOnlyIds.length = 60 := by
+theorem registryOnlyIds_length : registryOnlyIds.length = 58 := by
   native_decide
 
 theorem registryOnlyIds_nodup : registryOnlyIds.Nodup := by
