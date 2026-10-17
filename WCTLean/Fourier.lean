@@ -7,6 +7,7 @@
 -/
 
 import Mathlib
+import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
 
 namespace WCTLean
 
@@ -32,5 +33,35 @@ theorem two_cos_mul_cos (a b : ℝ) :
 def cos_orthogonality_TODO : Prop :=
   ∀ n m : ℤ, n ≠ m →
     (∫ x in (0 : ℝ)..(2 * Real.pi), Real.cos (n * x) * Real.cos (m * x)) = 0
+
+/-- The opposite integer frequency is the same real cosine mode. This is
+why the original `n ≠ m` integral-orthogonality TODO is not a true theorem
+over all integers: one must additionally exclude `n = -m`. -/
+theorem cos_opposite_integer_frequency (n : ℤ) (x : ℝ) :
+    Real.cos (((-n : ℤ) : ℝ) * x) = Real.cos ((n : ℝ) * x) := by
+  simp
+
+/-- Exact normalization of the first nonconstant cosine mode. -/
+theorem cos_one_mode_integral_sq :
+    (∫ x in (0 : ℝ)..(2 * Real.pi), Real.cos x ^ 2) = Real.pi := by
+  rw [integral_cos_sq]
+  simp <;> ring
+
+/-- The historical integer-frequency orthogonality proposition is false:
+n=1 and m=-1 are distinct indices for the same nonzero cosine mode. This
+counterexample is distinct from canonical E78's Fisher-information claim. -/
+theorem cos_orthogonality_TODO_false : ¬ cos_orthogonality_TODO := by
+  intro h
+  have hbad := h 1 (-1) (by norm_num)
+  have hz : (∫ x in (0 : ℝ)..(2 * Real.pi), Real.cos x ^ 2) = 0 := by
+    simpa [pow_two, Real.cos_neg] using hbad
+  rw [cos_one_mode_integral_sq] at hz
+  exact (ne_of_gt Real.pi_pos) hz
+
+/-- Corrected nondegenerate frequency-separation requirement: distinct
+cosine functions require that their integer labels are neither equal nor
+opposite. This predicate is only the index condition; the integral theorem
+itself is still a separate task. -/
+def CosineModesSeparated (n m : ℤ) : Prop := n ≠ m ∧ n ≠ -m
 
 end WCTLean
