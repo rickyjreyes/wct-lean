@@ -1,0 +1,5 @@
+'WCTLean.D4.frozen_below_threshold' depends on axioms: [propext, Classical.choice, Quot.sound]
+'WCTLean.D4.frozen_I2_strict_binding' depends on axioms: [propext, Classical.choice, Quot.sound]
+'WCTLean.D4.frozen_minimizers_nonempty' depends on axioms: [propext, Classical.choice, Quot.sound]
+'WCTLean.D4.stability_from_energy_trapping' depends on axioms: [propext, Classical.choice, Quot.sound]
+'WCTLean.D4.quantitative_gap' depends on axioms: [propext, Classical.choice, Quot.sound]

@@ -346,7 +346,7 @@ Canonical source: geometry_of_resonance PR36 head `31f322c94d2ef32b20acea7418845
 | Classification | Declarations / content | Undischarged boundary |
 |---|---|---|
 | Definition | `WholeSpaceData`, `State`, `mass`, `hamiltonian`, `I2`, `minimizers` | H² membership and weak Laplacian are explicit inputs; actual Sobolev space, integrability and bounded/nonempty infimum set remain uninstantiated |
-| Fully instantiated kernel theorem (after successful build) | `frozen_beta_pos`, `frozen_mass_pos`, `frozen_rho_pos`, `frozen_rho_exact`, `frozen_margin_exact`, `frozen_margin_pos`, `frozen_threshold_pos`, `frozen_below_threshold` | Exact dyadic constants; no analytic assumptions |
+| Fully instantiated kernel-checked theorem | `frozen_beta_pos`, `frozen_mass_pos`, `frozen_rho_pos`, `frozen_rho_exact`, `frozen_margin_exact`, `frozen_margin_pos`, `frozen_threshold_pos`, `frozen_below_threshold` | Exact dyadic constants; no analytic assumptions |
 | Conditional kernel theorem | `nonlinear_square_completion`, `dilation_polynomial`, `dilation_gap`, `dilation_lower_bound`, `dilation_unique_positive`, `dilation_virial`, `improved_square_identity`, `improved_D_bound` | Exact scalar algebra with displayed sign/nonzero/virial premises; functional change-of-variables and integrated square identity are not yet proved |
 | Conditional kernel theorem | `sobolev_cap_from_D_bound`, `L6_L4_ratio_from_cap`, `amplitude_ratio_from_L6_bound`, `amplitude_bound` | Fourier/Sobolev estimate and integral comparison are explicit premises |
 | Typed analytic input | `BindingSequenceInputs` | Negative infimum, adjusted minimizing sequences, applied ratio estimate, and admissible amplitude trials; no strict binding assumption |
