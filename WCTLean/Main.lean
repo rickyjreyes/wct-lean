@@ -5,6 +5,7 @@
   definitions, and resolved equation audit.
 -/
 
+import WCTLean.Models.D4Binding
 import WCTLean.Registry
 import WCTLean.Dimension
 import WCTLean.Curvature
