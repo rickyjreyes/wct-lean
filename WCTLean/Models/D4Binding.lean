@@ -255,24 +255,24 @@ theorem frozen_I2_strict_binding (data : WholeSpaceData)
 /-- Sequential compactness modulo translations is an explicit analytic input.
 No minimizer or attained infimum is assumed. -/
 structure VariationalCompactnessInputs (X : Type*) [TopologicalSpace X]
-    (M H : X → ℝ) (I : ℝ → ℝ) (translate : Plane → X → X) : Prop where
+    (M H : X → ℝ) (I : ℝ → ℝ) (translate : Plane → X → X) (m : ℝ) : Prop where
   mass_continuous : Continuous M
   energy_continuous : Continuous H
   translation_mass : ∀ y u, M (translate y u) = M u
   translation_energy : ∀ y u, H (translate y u) = H u
-  minimizing_sequence : ∀ m, 0 < m → ∃ u : ℕ → X,
+  minimizing_sequence : ∃ u : ℕ → X,
     (∀ n, M (u n) = m) ∧ Tendsto (fun n => H (u n)) atTop (𝓝 (I m))
-  compactness : ∀ m, 0 < m → ∀ u : ℕ → X,
+  compactness : ∀ u : ℕ → X,
     (∀ n, M (u n) = m) → Tendsto (fun n => H (u n)) atTop (𝓝 (I m)) →
     ∃ (φ : ℕ → ℕ) (y : ℕ → Plane) (v : X),
       StrictMono φ ∧ Tendsto (fun n => translate (y n) (u (φ n))) atTop (𝓝 v)
 
 theorem attainment_of_compactness (X : Type*) [TopologicalSpace X]
     (M H : X → ℝ) (I : ℝ → ℝ) (translate : Plane → X → X)
-    (inputs : VariationalCompactnessInputs X M H I translate) (m : ℝ) (hm : 0 < m) :
+    (m : ℝ) (inputs : VariationalCompactnessInputs X M H I translate m) :
     ∃ v : X, M v = m ∧ H v = I m := by
-  obtain ⟨u, hM, hH⟩ := inputs.minimizing_sequence m hm
-  obtain ⟨φ, y, v, hφ, hv⟩ := inputs.compactness m hm u hM hH
+  obtain ⟨u, hM, hH⟩ := inputs.minimizing_sequence
+  obtain ⟨φ, y, v, hφ, hv⟩ := inputs.compactness u hM hH
   have hmseq : Tendsto (fun n => M (translate (y n) (u (φ n)))) atTop (𝓝 m) := by
     simpa only [inputs.translation_mass, hM] using
       (tendsto_const_nhds : Tendsto (fun _ : ℕ => m) atTop (𝓝 m))
@@ -284,9 +284,9 @@ theorem attainment_of_compactness (X : Type*) [TopologicalSpace X]
 theorem frozen_minimizers_nonempty (data : WholeSpaceData)
     [TopologicalSpace (State data)] (translate : Plane → State data → State data)
     (inputs : VariationalCompactnessInputs (State data) (mass data)
-      (hamiltonian data 1 frozenBeta frozenBeta) (I2 data 1 frozenBeta frozenBeta) translate) :
+      (hamiltonian data 1 frozenBeta frozenBeta) (I2 data 1 frozenBeta frozenBeta) translate frozenMass) :
     (minimizers data 1 frozenBeta frozenBeta frozenMass).Nonempty :=
-  attainment_of_compactness _ _ _ _ translate inputs frozenMass frozen_mass_pos
+  attainment_of_compactness _ _ _ _ translate frozenMass inputs
 
 /-- Conservation and energy trapping imply all-time control. The H² distance
 to the full minimizing set and the analytic hypotheses remain to be instantiated. -/

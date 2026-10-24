@@ -42,6 +42,7 @@ def main() -> None:
 
     root_text = (ROOT / "WCTLean" / "Main.lean").read_text(encoding="utf-8")
     for required in (
+        "WCTLean.Models.D4Binding",
         "WCTLean.Registry",
         "WCTLean.Dimension",
         "WCTLean.Curvature",
