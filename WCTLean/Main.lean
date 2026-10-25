@@ -6,6 +6,7 @@
 -/
 
 import WCTLean.Models.D4Binding
+import WCTLean.Models.D4Analytical
 import WCTLean.Registry
 import WCTLean.Dimension
 import WCTLean.Curvature

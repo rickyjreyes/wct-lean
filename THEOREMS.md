@@ -260,3 +260,27 @@ Canonical source: geometry_of_resonance PR36 head `31f322c94d2ef32b20acea7418845
 | Open analytical obligation | Exclusion of vanishing/dichotomy, concentration compactness, Euler–Lagrange regularity, H² flow, full minimizing-set orbital stability | No finite-dimensional surrogate or numerical candidate is substituted |
 
 Build receipts and source hashes are recorded in `docs/evidence/d4_phase_vi/`. The source contains no placeholder proof or custom axiom. A green build checks the implications, not their uninstantiated continuum premises. Issues #20/#21 remain open. The periodic numerical root, whole-space minimizers, and S004 higher-derivative action remain distinct.
+
+## D4 Phase VII additions
+
+`WCTLean/Models/D4Analytical.lean` adds 11 theorems; the 28 Phase VI theorems
+remain unchanged. Kernel-check status is recorded in the Phase VII evidence
+receipt, not inferred from this list.
+
+| Theorem | Classification and remaining premises |
+|---|---|
+| gap_slack_pos, gaussian_d_floor_pos, gaussian_c_cap_pos | Fully instantiated exact rational arithmetic |
+| uniform_gap_constant_pos, uniform_gap_constant_gt | Fully instantiated rational κ>1/3000000 |
+| frozen_slack_floor | Fully instantiated h*=221/100000 ≤ 1−m/B |
+| gaussian_gap_lower | Scalar implication from displayed coefficient bounds; Gaussian integral identities external |
+| split_gap_from_per_mass | Scalar split assembly; displayed energy-per-mass inequalities required |
+| binding_inputs_from_cap | Constructs old binding inputs from negativity, adjusted sequences, the direct Sobolev cap and admissible amplitude trials; concrete H² instance OPEN |
+| nearby_mass_stability_from_trapping | Conservation and explicitly displayed near-mass trapping; concrete flow and trapping instances OPEN |
+| no_exit_of_observable_bound | The displayed all-time observable lower bound excludes the specified exit set |
+
+The conventional continuum proof is independently audited in
+`docs/D4_PHASE_VII_ANALYSIS.md`. It proves binding, attainment and full-set
+orbital stability for the actual two-dimensional functional, and an all-time
+moving-ball confinement consequence near its minimizers. Those prose proofs
+are not claimed to be instantiated Lean theorems. The numerical periodic
+branch is not identified with a whole-space minimizer. D4 is not dimension four.

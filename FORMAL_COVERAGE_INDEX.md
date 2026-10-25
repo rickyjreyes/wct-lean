@@ -357,3 +357,15 @@ Canonical source: geometry_of_resonance PR36 head `31f322c94d2ef32b20acea7418845
 | Open analytical obligation | Exclusion of vanishing/dichotomy, concentration compactness, Euler–Lagrange regularity, H² flow, full minimizing-set orbital stability | No finite-dimensional surrogate or numerical candidate is substituted |
 
 Build receipts and source hashes are recorded in `docs/evidence/d4_phase_vi/`. The source contains no placeholder proof or custom axiom. A green build checks the implications, not their uninstantiated continuum premises. Issues #20/#21 remain open. The periodic numerical root, whole-space minimizers, and S004 higher-derivative action remain distinct.
+
+## Phase VII dependency boundary
+
+The six fully instantiated Phase VII arithmetic/threshold lemmas and five
+conditional bridge lemmas are enumerated in THEOREMS.md. The new module does
+not change D4Binding.lean, add axioms, or provide an opaque continuum instance.
+The direct-cap constructor discharges the scalar amplitude-ratio premise.
+Concrete Sobolev/Fourier integration, change of variables, adjusted minimizing
+sequences, Brezis–Lieb/Rellich, and global H² evolution remain formalization
+obligations. Conventional mathematical proofs of these model-specific steps
+are in docs/D4_PHASE_VII_ANALYSIS.md. A checked implication and its conventional
+analytic instantiation have different verification status.
