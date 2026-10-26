@@ -44,6 +44,7 @@ def main() -> None:
     for required in (
         "WCTLean.Models.D4Binding",
         "WCTLean.Models.D4Analytical",
+        "WCTLean.Models.D4Closure",
         "WCTLean.Registry",
         "WCTLean.Dimension",
         "WCTLean.Curvature",

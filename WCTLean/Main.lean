@@ -7,6 +7,7 @@
 
 import WCTLean.Models.D4Binding
 import WCTLean.Models.D4Analytical
+import WCTLean.Models.D4Closure
 import WCTLean.Registry
 import WCTLean.Dimension
 import WCTLean.Curvature

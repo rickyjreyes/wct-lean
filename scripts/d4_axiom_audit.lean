@@ -1,5 +1,6 @@
 import WCTLean.Models.D4Binding
 import WCTLean.Models.D4Analytical
+import WCTLean.Models.D4Closure
 
 #print axioms WCTLean.D4.frozen_below_threshold
 #print axioms WCTLean.D4.frozen_I2_strict_binding
@@ -13,3 +14,6 @@ import WCTLean.Models.D4Analytical
 #print axioms WCTLean.D4.binding_inputs_from_cap
 #print axioms WCTLean.D4.nearby_mass_stability_from_trapping
 #print axioms WCTLean.D4.no_exit_of_observable_bound
+#print axioms WCTLean.D4.frozen_quantitative_all_splits
+#print axioms WCTLean.D4.frozen_I2_quantitative_all_splits
+#print axioms WCTLean.D4.frozen_no_energy_dichotomy
