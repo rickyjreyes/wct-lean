@@ -1,6 +1,6 @@
 # D4 Phase VII: independent analytical audit and confinement theorem
 
-Execution date: 2026-10-25. The model is **two dimensional**. D4 labels a
+Execution dates: 2026-10-25–26 (UTC completion). The model is **two dimensional**. D4 labels a
 square-symmetric numerical branch, not four spatial dimensions. The unrestricted
 variational class below does not impose that symmetry. This audit independently
 reconstructs the written theorem in geometry_of_resonance PR36, head
@@ -145,6 +145,8 @@ so −I(b)≥−U(b)≥bd*²/(4C*). Since e(s)≥e(b), including equality s=b,
       ≥m₀ s h* [−I(b)]/b²
       ≥ κ min(μ,m₀−μ)>0.                    (GAP)
 
+The exact scalar check also proves κ>1/3000000 (approximately
+3.343960045587655e−7). Thus Δ(μ)>min(μ,m₀−μ)/3000000 for every open split.
 This is a continuous, all-split rational lower bound, with no numerical
 partition or uncovered endpoint interval. It tends to zero at either
 endpoint, as it must: continuity gives Δ→0. There is no uniform positive
