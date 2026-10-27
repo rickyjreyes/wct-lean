@@ -2,7 +2,8 @@ import WCTLean.Models.D4Analytical
 
 /-! Phase VIII: assemble the quantitative ALL-split theorem from the visible
 adjusted-sequence and Gaussian-trial obligations. This is not a concrete H²
-instance. In particular no premise of this file assumes binding or attainment. -/
+instance. In particular no premise of this file assumes binding or attainment.
+The concrete remaining obligations are listed in docs/D4_PHASE_VIII_LEDGER.md. -/
 
 namespace WCTLean.D4
 noncomputable section
