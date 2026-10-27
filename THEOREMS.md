@@ -241,3 +241,46 @@ Not closed by the current theorem set:
 - complete Fourier integral orthogonality;
 - curve-integral locking on manifolds;
 - theorem-level derivation of particle masses, forces, gauge fields, gravity, cosmology, or experimental claims.
+
+## Frozen D4 Phase VI (`WCTLean/Models/D4Binding.lean`)
+
+Canonical source: geometry_of_resonance PR36 head `31f322c94d2ef32b20acea741884514806025c85`, merge `5a4c58a4206005ad9d46ee2951069186490b01f1`. D4 is square symmetry in two spatial dimensions.
+
+| Classification | Declarations / content | Undischarged boundary |
+|---|---|---|
+| Definition | `WholeSpaceData`, `State`, `mass`, `hamiltonian`, `I2`, `minimizers` | H² membership and weak Laplacian are explicit inputs; actual Sobolev space, integrability and bounded/nonempty infimum set remain uninstantiated |
+| Fully instantiated kernel-checked theorem | `frozen_beta_pos`, `frozen_mass_pos`, `frozen_rho_pos`, `frozen_rho_exact`, `frozen_margin_exact`, `frozen_margin_pos`, `frozen_threshold_pos`, `frozen_below_threshold` | Exact dyadic constants; no analytic assumptions |
+| Conditional kernel theorem | `nonlinear_square_completion`, `dilation_polynomial`, `dilation_gap`, `dilation_lower_bound`, `dilation_unique_positive`, `dilation_virial`, `improved_square_identity`, `improved_D_bound` | Exact scalar algebra with displayed sign/nonzero/virial premises; functional change-of-variables and integrated square identity are not yet proved |
+| Conditional kernel theorem | `sobolev_cap_from_D_bound`, `L6_L4_ratio_from_cap`, `amplitude_ratio_from_L6_bound`, `amplitude_bound` | Fourier/Sobolev estimate and integral comparison are explicit premises |
+| Typed analytic input | `BindingSequenceInputs` | Negative infimum, adjusted minimizing sequences, applied ratio estimate, and admissible amplitude trials; no strict binding assumption |
+| Conditional kernel theorem | `infimum_scaling_bound`, `quantitative_gap`, `binding_of_strict_energy_per_mass`, `frozen_strict_binding`, `frozen_I2_strict_binding` | Limit argument and strictly positive quantitative gap are proved; `BindingSequenceInputs` must still be established for actual H² data |
+| Typed analytic input | `VariationalCompactnessInputs` | Continuity, translation invariance, minimizing sequence, and subsequential compactness at the specified mass only |
+| Conditional kernel theorem | `attainment_of_compactness`, `frozen_minimizers_nonempty` | Attainment derived from convergence; no attained infimum assumed; compactness is not derived from binding here |
+| Conditional kernel theorem | `stability_from_energy_trapping` | Conservation, initial energy control and trapping; same-mass data, arbitrary perturbation symmetry; actual global H² flow and distance to the entire minimizing set remain uninstantiated |
+| Open analytical obligation | Exclusion of vanishing/dichotomy, concentration compactness, Euler–Lagrange regularity, H² flow, full minimizing-set orbital stability | No finite-dimensional surrogate or numerical candidate is substituted |
+
+Build receipts and source hashes are recorded in `docs/evidence/d4_phase_vi/`. The source contains no placeholder proof or custom axiom. A green build checks the implications, not their uninstantiated continuum premises. Issues #20/#21 remain open. The periodic numerical root, whole-space minimizers, and S004 higher-derivative action remain distinct.
+
+## D4 Phase VII additions
+
+`WCTLean/Models/D4Analytical.lean` adds 11 theorems; the 28 Phase VI theorems
+remain unchanged. Kernel-check status is recorded in the Phase VII evidence
+receipt, not inferred from this list.
+
+| Theorem | Classification and remaining premises |
+|---|---|
+| gap_slack_pos, gaussian_d_floor_pos, gaussian_c_cap_pos | Fully instantiated exact rational arithmetic |
+| uniform_gap_constant_pos, uniform_gap_constant_gt | Fully instantiated rational κ>1/3000000 |
+| frozen_slack_floor | Fully instantiated h*=221/100000 ≤ 1−m/B |
+| gaussian_gap_lower | Scalar implication from displayed coefficient bounds; Gaussian integral identities external |
+| split_gap_from_per_mass | Scalar split assembly; displayed energy-per-mass inequalities required |
+| binding_inputs_from_cap | Constructs old binding inputs from negativity, adjusted sequences, the direct Sobolev cap and admissible amplitude trials; concrete H² instance OPEN |
+| nearby_mass_stability_from_trapping | Conservation and explicitly displayed near-mass trapping; concrete flow and trapping instances OPEN |
+| no_exit_of_observable_bound | The displayed all-time observable lower bound excludes the specified exit set |
+
+The conventional continuum proof is independently audited in
+`docs/D4_PHASE_VII_ANALYSIS.md`. It proves binding, attainment and full-set
+orbital stability for the actual two-dimensional functional, and an all-time
+moving-ball confinement consequence near its minimizers. Those prose proofs
+are not claimed to be instantiated Lean theorems. The numerical periodic
+branch is not identified with a whole-space minimizer. D4 is not dimension four.

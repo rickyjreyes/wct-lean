@@ -1,0 +1,25 @@
+{
+  "status": "PASS",
+  "verified_source_head": "5b4d3943ba96a091d791840d7ba1cfa34781c10e",
+  "formal_run": 40174391224,
+  "container_run": 40174391199,
+  "formal_job": 121111829720,
+  "build_jobs": 7258,
+  "old_theorems": 28,
+  "new_theorems": 11,
+  "total_d4_theorems": 39,
+  "axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "source_sha256": {
+    "D4Binding.lean": "2d2bf8b3cd5ea56ca52ec1831f555c973218cd09d69b8338f8da780f5313fa94",
+    "D4Analytical.lean": "e609c083b3e86d570a9e6c78cd283a31e4ee40f8cad9506a8c7c1f29b90f5fda"
+  },
+  "scope": "Exact constants checked; continuum bridge hypotheses still require concrete Lean instances",
+  "warnings": [
+    "redundant ring tactic",
+    "deprecated spelling of Set.eq_empty_iff_forall_not_mem"
+  ]
+}

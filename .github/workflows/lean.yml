@@ -37,6 +37,11 @@ jobs:
         run: |
           set -o pipefail
           lake build 2>&1 | tee lean-build.log
+      - name: Audit D4 theorem dependencies
+        shell: bash
+        run: |
+          set -o pipefail
+          lake env lean scripts/d4_axiom_audit.lean 2>&1 | tee d4-axioms.log
       - name: Confirm the locked dependency graph is unchanged
         run: git diff --exit-code -- lake-manifest.json lean-toolchain lakefile.lean
       - name: Upload Lean build diagnostics
@@ -45,7 +50,9 @@ jobs:
         with:
           name: lean-build-log-${{ github.sha }}
           if-no-files-found: error
-          path: lean-build.log
+          path: |
+            lean-build.log
+            d4-axioms.log
       - name: Upload formal-source manifest
         if: always()
         uses: actions/upload-artifact@v4
