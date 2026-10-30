@@ -46,24 +46,24 @@ These are symbolic classifications, with Lean theorem coverage tracked separatel
 
 ## Typed Lean support
 
-The maintained library now has non-registry equation-specific support for **80 of 142 IDs**:
+The maintained library now has non-registry equation-specific support for **92 of 142 IDs on this PR branch, pending CI validation**:
 
 ```text
 M1 M2 M3 M4 M5 M6A M6B M7
 E1A E1B E2 E3 E4 E5 E6 E7 E8 E9 E10 E11
-E12 E13 E14 E16 E17 E18 E19 E20 E22
+E12 E13 E14 E15 E16 E17 E18 E19 E20 E22
 E24 E25 E26 E27 E28 E29 E32 E33 E36 E37 E38 E41
-E45 E47 E49 E50 E51 E53
-E57 E58 E59 E61 E62 E64
+E44 E45 E47 E49 E50 E51 E53
+E57 E58 E59 E60 E61 E62 E64
 E65 E66 E67 E68 E69 E70 E72
-E78 E81
-CLE4 CLE5 CLE8 CLE9 CLE10
+E78 E81 E82
+CLE4 CLE5 CLE6 CLE7 CLE8 CLE9 CLE10
 G1 EX EY EZ FA
-CM9 CM11 CM12 CM13 CM16
-TOP3 TOP7 CORR2
+CM3 CM4 CM9 CM10 CM11 CM12 CM13 CM15 CM16 CM20
+TOP3 TOP6 TOP7 CORR2
 ```
 
-The remaining **62 IDs** are registry-only, preserving complete inventory and classification coverage while equation-specific formalization continues.
+The remaining **50 IDs** are registry-only on this branch (pending new Lean build), preserving complete inventory and classification coverage while equation-specific formalization continues.
 
 The support strength varies by object:
 
@@ -79,6 +79,12 @@ The support strength varies by object:
 See [`FORMAL_COVERAGE_INDEX.md`](FORMAL_COVERAGE_INDEX.md) for the complete partition and [`THEOREMS.md`](THEOREMS.md) for the declaration-level inventory.
 
 The latest merged expansion adds 18 IDs beyond the original 62-ID baseline, including exact or conditional support for `E16`, `E19`, `E22`, `E32`, `E37`, `E38`, `E41`, `E50`, `E72`, `CLE4`, `CLE5`, `CLE8`, `CLE9`, `CLE10`, `CM11`, `TOP3`, `TOP7`, and `CORR2`. These entries span exact results, conditional results, constraints, and diagnostics with their strength recorded individually.
+
+## Registry-only closure formalization (2026-10-30 PR)
+
+[The new closure module](WCTLean/Models/RegistryOnlyClosures.lean) covers nine previously registry-only IDs: TOP6, CM3, CM4, CM10, CM15, CM20, E44, E60 and E82. The recently added [narrow canonical coverage module](WCTLean/Models/NarrowCanonicalCoverage.lean) contributes E15, CLE6 and CLE7. These 12 IDs raise the branch's equation-specific *source* coverage from 80 to 92 (50 registry-only), **subject to a successful Lean/Mathlib CI run**. This is not an increase of 12 complete physical model proofs.
+
+[The exact-scope evidence document](docs/REGISTRY_ONLY_CLOSURES_2026-10-30.md) records the TOP6 scale-based obstruction, the CM4 decay compatibility condition, the CM15/CM20 energy loss criterion, the E44 global-phase obstruction, the CM10 and E60 reduced dynamics, the E82 Gram positivity result and cross-references to the existing math compendium for E21, E30, CLE6 and CLE7. **No physical claim is promoted from OPEN by these narrow proofs.**
 
 ## Newly closed algebraic results
 
