@@ -347,3 +347,5 @@ live in `WCTLean/Continuum/CubicQuinticWholeSpace.lean`. The model is the
 curvature PDE and not the periodic torus D4 root. See
 `docs/WCT_CONTINUUM_19_21_AUDIT.md` for theorem mapping and remaining
 acceptance obligations. Issues #19, #20, and #21 are not closed.
+
+The independent cubic–quintic pointwise nonlinearity is also represented in `WCTLean/Continuum/CubicQuinticLinearization.lean`: its exact real-linear algebraic terms and higher-order remainders are proved for arbitrary complex perturbations. These polynomial identities do not by themselves establish a Fréchet derivative on the torus's unbounded operator domain or the D4 spectral gap.

@@ -32,6 +32,7 @@ import WCTLean.Models.ClosureFormalization
 import WCTLean.Models.FormalUpgrades
 import WCTLean.ResolvedAudit
 import WCTLean.Continuum.CubicQuinticWholeSpace
+import WCTLean.Continuum.CubicQuinticLinearization
 import WCTLean.DerivedAudit
 
 namespace WCTLean

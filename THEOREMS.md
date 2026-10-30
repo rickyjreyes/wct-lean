@@ -257,3 +257,5 @@ well-posedness for the corrected curvature quotient, identify the periodic D4
 numerical root, certify a torus linearized gap, or assert physical WCT stability.
 See `docs/WCT_CONTINUUM_19_21_AUDIT.md` for the issue-by-issue proof ledger.
 
+
+The independent cubic–quintic pointwise nonlinearity is also represented in `WCTLean/Continuum/CubicQuinticLinearization.lean`: its exact real-linear algebraic terms and higher-order remainders are proved for arbitrary complex perturbations. These polynomial identities do not by themselves establish a Fréchet derivative on the torus's unbounded operator domain or the D4 spectral gap.
