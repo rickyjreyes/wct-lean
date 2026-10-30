@@ -144,3 +144,19 @@ coefficients `-3βa²+5γa⁴` on the real sector and
 contributions to the periodic `Lplus` and `Lminus` operators, with
 no radial or D4 perturbation restriction. Domain/self-adjointness,
 stationary-root substitution and spectrum remain separate Lean obligations.
+
+### Free-space L² mass-tail localization (#20)
+
+`WCTLean/Continuum/FreeSpaceMassTails.lean` proves the continuum
+integral statement `∫_{|x|>n} |u(x)|² → 0` as n→∞ for every
+`H²(ℝ²;ℂ)` state, the resulting finite-radius epsilon criterion,
+and an energy-attaining whole-space CQ minimizer satisfying that
+criterion. The argument uses `H2.integrable_sq_val` and Mathlib's
+antitone set-integral convergence theorem. It assumes no symmetry
+or box boundary.
+
+**Interpretation:** This is L² mass-tail localization, which every
+finite-mass state satisfies. It is **not** an exponential/pointwise
+tail estimate and does **not alone** establish a physical trapping
+mechanism or canonical WCT confinement. All added declarations
+remain pending exact-head CI until verified.

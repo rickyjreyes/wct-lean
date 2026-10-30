@@ -38,6 +38,7 @@ jobs:
         run: |
           lake build WCTLean.Continuum.CubicQuinticLinearization
           lake build WCTLean.Continuum.CubicQuinticFlowBridge
+          lake build WCTLean.Continuum.FreeSpaceMassTails
           lake build WCTLean.Continuum.CurvaturePrincipalCoefficient
           lake build WCTLean.Continuum.CanonicalCurvatureNonattainment
       - name: Build all maintained Lean targets
