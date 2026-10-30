@@ -79,8 +79,8 @@ theorem free_space_translation_invariant
 
 /-- The exact rational numbers encoding the frozen binary64 D4 parameters.
 They certify the whole-plane *independent* minimization problem only. -/
-def frozenBeta : ℝ := 4608178181141995 / 1125899906842624
-def frozenMass : ℝ := 1432536998431173 / 562949953421312
+noncomputable def frozenBeta : ℝ := 4608178181141995 / 1125899906842624
+noncomputable def frozenMass : ℝ := 1432536998431173 / 562949953421312
 
 theorem frozen_beta_positive : 0 < frozenBeta := by
   norm_num [frozenBeta]
