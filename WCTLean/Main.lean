@@ -31,6 +31,7 @@ import WCTLean.Models.CompactDynamics
 import WCTLean.Models.ClosureFormalization
 import WCTLean.Models.FormalUpgrades
 import WCTLean.ResolvedAudit
+import WCTLean.Continuum.CubicQuinticWholeSpace
 import WCTLean.DerivedAudit
 
 namespace WCTLean

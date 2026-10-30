@@ -338,3 +338,12 @@ lake build
 ```
 
 The audit rejects `sorry` and `admit`, verifies the public import closure, hashes every Lean source file, and confirms the pinned dependency graph remains unchanged.
+
+## Continuum issues #19–#21 (independent CQ model bridge)
+
+The pinned `reyes_math` imports and concrete whole-space weak-Sobolev bridge
+live in `WCTLean/Continuum/CubicQuinticWholeSpace.lean`. The model is the
+**independent** cubic–quintic Hamiltonian on ℝ², not the canonical corrected
+curvature PDE and not the periodic torus D4 root. See
+`docs/WCT_CONTINUUM_19_21_AUDIT.md` for theorem mapping and remaining
+acceptance obligations. Issues #19, #20, and #21 are not closed.

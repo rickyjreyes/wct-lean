@@ -32,6 +32,8 @@ jobs:
           lake exe cache get
       - name: Audit source closure and emit SHA-256 manifest
         run: python scripts/audit_formal_sources.py
+      - name: Build the imported whole-space continuum bridge
+        run: lake build WCTLean.Continuum.CubicQuinticWholeSpace
       - name: Build all maintained Lean targets
         shell: bash
         run: |
