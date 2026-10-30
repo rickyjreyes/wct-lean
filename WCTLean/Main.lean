@@ -21,6 +21,7 @@ import WCTLean.Models.BandPass
 import WCTLean.Models.AlgebraicChecks
 import WCTLean.Models.CoverageExpansion
 import WCTLean.Models.NarrowCanonicalCoverage
+import WCTLean.Models.RegistryOnlyClosures
 import WCTLean.Models.DerivedConstraints
 import WCTLean.Models.LogFlow
 import WCTLean.Models.GhostModes

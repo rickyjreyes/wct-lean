@@ -60,23 +60,23 @@ The effective symbolic-audit partition inherited from the current `wct-sympy` ma
 
 These are inherited symbolic-audit classifications, not Lean theorem counts. The active SymPy expansion PR is intentionally tracked separately until it is merged to `wct-sympy` main.
 
-## Layer 2 — Non-registry typed Lean support: 80 IDs
+## Layer 2 — Non-registry typed Lean support: 92 IDs (this branch, subject to CI)
 
 The following IDs have a maintained equation-specific definition, proposition, theorem, counterexample, analytic contract, or kernel-checked constraint beyond registry metadata:
 
 ```text
 M1 M2 M3 M4 M5 M6A M6B M7
 E1A E1B E2 E3 E4 E5 E6 E7 E8 E9 E10 E11
-E12 E13 E14 E16 E17 E18 E19 E20 E22
+E12 E13 E14 E15 E16 E17 E18 E19 E20 E22
 E24 E25 E26 E27 E28 E29 E32 E33 E36 E37 E38 E41
-E45 E47 E49 E50 E51 E53
-E57 E58 E59 E61 E62 E64
+E44 E44 E45 E47 E49 E50 E51 E53
+E57 E58 E59 E60 E61 E62 E64
 E65 E66 E67 E68 E69 E70 E72
-E78 E81
-CLE4 CLE5 CLE8 CLE9 CLE10
+E78 E81 E82
+CLE4 CLE5 CLE6 CLE7 CLE8 CLE9 CLE10
 G1 EX EY EZ FA
-CM9 CM11 CM12 CM13 CM16
-TOP3 TOP7
+CM3 CM4 CM9 CM10 CM11 CM12 CM13 CM15 CM16 CM20
+TOP3 TOP6 TOP7
 CORR2
 ```
 
@@ -84,8 +84,8 @@ The branch's kernel-checked coverage expansion adds eighteen IDs relative to the
 
 ```text
 E16 E19 E22 E32 E37 E38 E41 E50 E72
-CLE4 CLE5 CLE8 CLE9 CLE10
-CM11 TOP3 TOP7 CORR2
+CLE4 CLE5 CLE6 CLE7 CLE8 CLE9 CLE10
+CM11 TOP3 TOP6 TOP7 CORR2
 ```
 
 Some of these are exact conditional constraints rather than proofs of the full physical claim. They count as equation-specific formal support because the theorem itself is kernel-checked; they do **not** change the scientific status of the associated canonical claim unless a separate symbolic or analytic audit justifies that change.
@@ -95,12 +95,12 @@ Some of these are exact conditional constraints rather than proofs of the full p
 ```text
 M1 M2 M3 M4 M5 M6B M7
 E2 E3 E4 E5 E8 E9 E10 E11
-E12 E13 E14 E16 E17 E18 E19 E20 E22 E28 E29 E32 E33 E36 E37 E38 E41
+E12 E13 E14 E15 E16 E17 E18 E19 E20 E22 E28 E29 E32 E33 E36 E37 E38 E41
 E45 E47 E49 E50 E51 E53
-E57 E58 E59 E61 E62 E64 E72 E81
+E57 E58 E59 E60 E61 E62 E64 E72 E81 E82
 CLE4 CLE5 CLE8 CLE9 CLE10
 G1 EX EY EZ FA
-CM9 CM11
+CM3 CM4 CM9 CM10 CM11 CM15 CM20
 TOP3 TOP7
 CORR2
 ```
@@ -134,6 +134,13 @@ E17 E78
 ```
 
 E17 includes both the historical scalar-denominator counterexample and the corrected complex denominator theorem. E78 remains a proposition/TODO rather than a completed Fisher-information theorem.
+
+
+### Current 12-ID source-level closure batch
+
+Beyond the preceding 80-ID baseline, existing `NarrowCanonicalCoverage.lean` supplies equation-specific E15, CLE6 and CLE7 support, and this PR adds exact narrowly scoped statements for TOP6, CM3, CM4, CM10, CM15, CM20, E44, E60 and E82. Together these yield **92/142 IDs with substantive typed support**, leaving 50 registry-only, **conditional on CI accepting the new module**. See [the mathematical scope and analytic cross-references](docs/REGISTRY_ONLY_CLOSURES_2026-10-30.md).
+
+TOP6's geometric/isotopy step, CM15's continuum derivative chain rule and E82's explicit indexed Gram quadratic identity are analytic statements not yet fully encoded in the new Lean file. This batch does not promote any OPEN physical claim. The 12 IDs are not all new discoveries and do not represent full equation-level physical closure.
 
 ## Latest coverage expansion
 
@@ -285,9 +292,9 @@ for nonnegative mode count `K`.
 
 These results do not supply the missing function-space chain rule or PDE regularity theorem.
 
-## Layer 3 — Registry-only coverage: 62 IDs
+## Layer 3 — Registry-only coverage: 50 IDs (this branch, subject to CI)
 
-The remaining 62 IDs compile with family and status metadata but do not yet have a maintained equation-specific typed declaration that captures substantive mathematical content.
+The remaining 50 IDs compile with family and status metadata but do not yet have a maintained equation-specific typed declaration that captures substantive mathematical content.
 
 Registry-only does **not** mean false. It means the object is inventoried and classified, but its formula or claim has not yet been represented beyond metadata in the maintained Lean library.
 
@@ -302,6 +309,8 @@ Registry-only does **not** mean false. It means the object is inventoried and cl
 | `WCTLean/Models/PhaseFlux.lean` | E9, E10, E11 phase flux and additive quantization closure |
 | `WCTLean/Models/AlgebraicChecks.lean` | E20, E28, E29, E33, E45, E47, E49, E51, E53, E59, E62, E81 |
 | `WCTLean/Models/CoverageExpansion.lean` | E16, E32, E37, E38, E50, CLE4, CLE5, CLE8, CLE9, CLE10, CM11, TOP3, CORR2 theorem-level support |
+| `WCTLean/Models/NarrowCanonicalCoverage.lean` | E15, CLE6, CLE7 reduced scalar-mode identities and periodic angular examples |
+| `WCTLean/Models/RegistryOnlyClosures.lean` | TOP6, CM3, CM4, CM10, CM15, CM20, E44, E60, E82 narrow mathematical results; see [proof scope](docs/REGISTRY_ONLY_CLOSURES_2026-10-30.md) |
 | `WCTLean/Models/DerivedConstraints.lean` | E19, E22, E41, E72, TOP7 cross-equation and counting constraints |
 | `WCTLean/Models/CompactDynamics.lean` | M5, E36 fixed points, norm nonincrease, bounded-set invariance |
 | `WCTLean/Models/LogFlow.lean` | EX, EY, EZ, FA logarithmic and diffusion residual bridge |
