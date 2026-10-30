@@ -23,7 +23,9 @@ theorem cubicTerm_eq_normSq (z : ℂ) :
     cubicTerm z = (z * star z) * z := by
       unfold cubicTerm
       ring
-    _ = (Complex.normSq z : ℂ) * z := by rw [Complex.mul_conj]
+    _ = (Complex.normSq z : ℂ) * z := by
+      change (z * Complex.conj z) * z = (Complex.normSq z : ℂ) * z
+      rw [Complex.mul_conj]
 
 theorem quinticTerm_eq_normSq (z : ℂ) :
     quinticTerm z = ((Complex.normSq z : ℝ) ^ 2 : ℂ) * z := by
@@ -32,6 +34,8 @@ theorem quinticTerm_eq_normSq (z : ℂ) :
       unfold quinticTerm
       ring
     _ = ((Complex.normSq z : ℝ) ^ 2 : ℂ) * z := by
+      change (z * Complex.conj z) ^ 2 * z =
+        ((Complex.normSq z : ℝ) ^ 2 : ℂ) * z
       rw [Complex.mul_conj]
       norm_cast
 
