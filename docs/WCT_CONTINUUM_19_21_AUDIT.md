@@ -32,6 +32,7 @@ symmetry, not spatial dimension four.
 | Issue | Model / scope | Exported declaration | Proof provenance | Status |
 |---|---|---|---|---|
 | #19 | Corrected M2/E17 quotient nodal vanishing and no globally positive coefficient floor | `WCTLean.Continuum.corrected_curvature_vanishes_at_field_node`, `WCTLean.Continuum.no_positive_uniform_quotient_coefficient_lower_bound` | direct corrected-model proof, no PDE well-posedness claim | Check CI |
+| #20 (positive corrected curvature candidate) | Exact whole-plane zero infimum, nonattainment and local constrained no-minimizer on complex H² | `WCTLean.Continuum.canonical_positive_energy_infimum_zero`, `WCTLean.Continuum.canonical_positive_energy_nonattainment`, `WCTLean.Continuum.canonical_positive_energy_no_local_minimizer` | `ReyesMath.Curvature.global_nonattainment` and `.no_local_minimizer` with c₁=c₂=1 and d=2 | Check CI |
 | #20 | Definitional weak H² model agreement | `WCTLean.Continuum.model_correspondence` | direct definitional proof | Check CI |
 | #20 | Whole-plane prescribed mass and minimizer | `WCTLean.Continuum.exists_free_space_minimizer` | `ReyesMath.WholeSpace.exists_minimizer` | Check CI |
 | #20 | Existence of a nonzero L² field | `WCTLean.Continuum.exists_nonzero_minimizer` | minimizer + positive mass | Check CI |
@@ -53,7 +54,7 @@ symmetry, not spatial dimension four.
   translated compactness, and exact frozen parameter instantiation are present
   for the *independent* CQ model, once CI passes. A separate explicit spatial
   tail theorem and stronger pointwise/exponential decay have not been exported;
-  canonical corrected-curvature minimizer existence remains open.
+  the positive corrected-curvature energy's constrained minimizers are absent under the stated positive-coefficient assumptions. Other canonical confinement mechanisms remain open.
 - **#21 PARTIAL**: Independent whole-plane CQ orbital stability under general
   complex perturbations is imported. Periodic D4 root validation, its actual
   real-linearized operator and neutral-mode quotient, inverse/tail certificates,
@@ -70,3 +71,21 @@ those runs finish. Do not merge or close any issues from this ledger alone.
 The independent cubic–quintic pointwise nonlinearity is also represented in `WCTLean/Continuum/CubicQuinticLinearization.lean`: its exact real-linear algebraic terms and higher-order remainders are proved for arbitrary complex perturbations. These polynomial identities do not by themselves establish a Fréchet derivative on the torus's unbounded operator domain or the D4 spectral gap.
 
 The corrected M2/E17 curvature quotient has an additional exact pointwise limitation: `WCTLean.Continuum.no_positive_uniform_quotient_coefficient_lower_bound` rules out any strictly positive global lower bound on the modulus of the quotient's Laplacian coefficient, because it vanishes at field nodes. This is **not** a theorem of failure of uniform ellipticity for the complete governing PDE, let alone ill-posedness or finite-time blow-up.
+
+### Positive canonical curvature-energy obstruction (#20)
+
+The positive corrected-curvature candidate `E(u) = K(u) + Wc(ε,α,u)`,
+on `H²(ℝ²; ℂ)`, has an exact constrained infimum zero **without any
+attaining minimizer** when ε>0, α≥0 and mass m>0. Indeed no mass-m field
+is even a local constrained minimum: arbitrarily small H² neighborhoods
+contain an equal-mass lower-energy dilation. These are instantiated
+whole-space theorems from the pinned `MathProofs.CurvatureNonattainment`,
+not a no-go theorem for all canonical WCT dynamics or nonvariational
+localized solutions. They directly rule out this specific **positive-energy
+constrained-minimization route** to intrinsic confinement.
+
+Exact exported declarations:
+`WCTLean.Continuum.canonical_positive_energy_infimum_zero`,
+`WCTLean.Continuum.canonical_positive_energy_nonattainment`,
+`WCTLean.Continuum.canonical_positive_energy_no_local_minimizer`.
+

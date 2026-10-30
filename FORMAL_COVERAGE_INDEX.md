@@ -351,3 +351,21 @@ acceptance obligations. Issues #19, #20, and #21 are not closed.
 The independent cubic–quintic pointwise nonlinearity is also represented in `WCTLean/Continuum/CubicQuinticLinearization.lean`: its exact real-linear algebraic terms and higher-order remainders are proved for arbitrary complex perturbations. These polynomial identities do not by themselves establish a Fréchet derivative on the torus's unbounded operator domain or the D4 spectral gap.
 
 The corrected M2/E17 curvature quotient has an additional exact pointwise limitation: `WCTLean.Continuum.no_positive_uniform_quotient_coefficient_lower_bound` rules out any strictly positive global lower bound on the modulus of the quotient's Laplacian coefficient, because it vanishes at field nodes. This is **not** a theorem of failure of uniform ellipticity for the complete governing PDE, let alone ill-posedness or finite-time blow-up.
+
+### Positive canonical curvature-energy obstruction (#20)
+
+The positive corrected-curvature candidate `E(u) = K(u) + Wc(ε,α,u)`,
+on `H²(ℝ²; ℂ)`, has an exact constrained infimum zero **without any
+attaining minimizer** when ε>0, α≥0 and mass m>0. Indeed no mass-m field
+is even a local constrained minimum: arbitrarily small H² neighborhoods
+contain an equal-mass lower-energy dilation. These are instantiated
+whole-space theorems from the pinned `MathProofs.CurvatureNonattainment`,
+not a no-go theorem for all canonical WCT dynamics or nonvariational
+localized solutions. They directly rule out this specific **positive-energy
+constrained-minimization route** to intrinsic confinement.
+
+Exact exported declarations:
+`WCTLean.Continuum.canonical_positive_energy_infimum_zero`,
+`WCTLean.Continuum.canonical_positive_energy_nonattainment`,
+`WCTLean.Continuum.canonical_positive_energy_no_local_minimizer`.
+
