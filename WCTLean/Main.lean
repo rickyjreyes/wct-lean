@@ -36,6 +36,7 @@ import WCTLean.Continuum.CubicQuinticLinearization
 import WCTLean.Continuum.CurvaturePrincipalCoefficient
 import WCTLean.Continuum.CanonicalCurvatureNonattainment
 import WCTLean.Continuum.CubicQuinticFlowBridge
+import WCTLean.Continuum.FreeSpaceMassTails
 import WCTLean.DerivedAudit
 
 namespace WCTLean
@@ -51,4 +52,3 @@ theorem wctlean_registry_smoke : canonicalRegistry.length = 142 :=
 
 end WCTLean
 
-import WCTLean.Continuum.FreeSpaceMassTails
