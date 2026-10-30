@@ -34,6 +34,12 @@ jobs:
         run: python scripts/audit_formal_sources.py
       - name: Build the imported whole-space continuum bridge
         run: lake build WCTLean.Continuum.CubicQuinticWholeSpace
+      - name: Build continuum flow and curvature-obstruction modules
+        run: |
+          lake build WCTLean.Continuum.CubicQuinticLinearization
+          lake build WCTLean.Continuum.CubicQuinticFlowBridge
+          lake build WCTLean.Continuum.CurvaturePrincipalCoefficient
+          lake build WCTLean.Continuum.CanonicalCurvatureNonattainment
       - name: Build all maintained Lean targets
         shell: bash
         run: |

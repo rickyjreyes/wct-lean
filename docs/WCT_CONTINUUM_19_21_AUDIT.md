@@ -31,6 +31,8 @@ symmetry, not spatial dimension four.
 
 | Issue | Model / scope | Exported declaration | Proof provenance | Status |
 |---|---|---|---|---|
+| #19 (independent benchmark) | Continuous dependence for general complex H² data and all-time conservation | `WCTLean.Continuum.independent_continuous_dependence`, `WCTLean.Continuum.independent_conservation` | imported `ReyesMath.OrbitalStability.global_flow` | Check CI |
+| #21 (independent benchmark) | Frozen-parameter whole-space global flow and conservation | `WCTLean.Continuum.frozen_independent_global_flow`, `WCTLean.Continuum.frozen_independent_conservation` | exact rational coefficient instantiation | Check CI |
 | #19 | Corrected M2/E17 quotient nodal vanishing and no globally positive coefficient floor | `WCTLean.Continuum.corrected_curvature_vanishes_at_field_node`, `WCTLean.Continuum.no_positive_uniform_quotient_coefficient_lower_bound` | direct corrected-model proof, no PDE well-posedness claim | Check CI |
 | #20 (positive corrected curvature candidate) | Exact whole-plane zero infimum, nonattainment and local constrained no-minimizer on complex H² | `WCTLean.Continuum.canonical_positive_energy_infimum_zero`, `WCTLean.Continuum.canonical_positive_energy_nonattainment`, `WCTLean.Continuum.canonical_positive_energy_no_local_minimizer` | `ReyesMath.Curvature.global_nonattainment` and `.no_local_minimizer` with c₁=c₂=1 and d=2 | Check CI |
 | #20 | Definitional weak H² model agreement | `WCTLean.Continuum.model_correspondence` | direct definitional proof | Check CI |
@@ -89,3 +91,14 @@ Exact exported declarations:
 `WCTLean.Continuum.canonical_positive_energy_nonattainment`,
 `WCTLean.Continuum.canonical_positive_energy_no_local_minimizer`.
 
+
+### Independent whole-plane CQ flow: continuous dependence and conservation
+
+`WCTLean/Continuum/CubicQuinticFlowBridge.lean` now directly exports the
+infinite-dimensional, mass-changing-perturbation continuous-dependence theorem
+and the all-real-times mass/energy conservation theorem from pinned
+`ReyesMath.OrbitalStability.global_flow`. It also instantiates global
+well-posedness and conservation at the exact rational frozen CQ coefficients.
+These theorems are **not** a well-posedness theorem for the corrected
+quasilinear M2/M6B/M7 curvature evolution or the periodic D4 stationary
+branch. CI is the authority for the new declarations' compilation status.

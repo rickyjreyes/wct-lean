@@ -35,6 +35,7 @@ import WCTLean.Continuum.CubicQuinticWholeSpace
 import WCTLean.Continuum.CubicQuinticLinearization
 import WCTLean.Continuum.CurvaturePrincipalCoefficient
 import WCTLean.Continuum.CanonicalCurvatureNonattainment
+import WCTLean.Continuum.CubicQuinticFlowBridge
 import WCTLean.DerivedAudit
 
 namespace WCTLean

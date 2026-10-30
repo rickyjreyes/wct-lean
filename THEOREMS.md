@@ -279,3 +279,14 @@ Exact exported declarations:
 `WCTLean.Continuum.canonical_positive_energy_nonattainment`,
 `WCTLean.Continuum.canonical_positive_energy_no_local_minimizer`.
 
+
+### Independent whole-plane CQ flow: continuous dependence and conservation
+
+`WCTLean/Continuum/CubicQuinticFlowBridge.lean` now directly exports the
+infinite-dimensional, mass-changing-perturbation continuous-dependence theorem
+and the all-real-times mass/energy conservation theorem from pinned
+`ReyesMath.OrbitalStability.global_flow`. It also instantiates global
+well-posedness and conservation at the exact rational frozen CQ coefficients.
+These theorems are **not** a well-posedness theorem for the corrected
+quasilinear M2/M6B/M7 curvature evolution or the periodic D4 stationary
+branch. CI is the authority for the new declarations' compilation status.
