@@ -33,6 +33,7 @@ import WCTLean.Models.FormalUpgrades
 import WCTLean.ResolvedAudit
 import WCTLean.Continuum.CubicQuinticWholeSpace
 import WCTLean.Continuum.CubicQuinticLinearization
+import WCTLean.Continuum.CurvaturePrincipalCoefficient
 import WCTLean.DerivedAudit
 
 namespace WCTLean
