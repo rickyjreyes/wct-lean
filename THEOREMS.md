@@ -290,3 +290,34 @@ well-posedness and conservation at the exact rational frozen CQ coefficients.
 These theorems are **not** a well-posedness theorem for the corrected
 quasilinear M2/M6B/M7 curvature evolution or the periodic D4 stationary
 branch. CI is the authority for the new declarations' compilation status.
+
+## External periodic D4 certificate status, distinct from Lean verification
+
+The frozen periodic D4 root and qualitative all-time orbital-stability
+certificates are not simply missing. In `wct-pde`, **#24 and #25 are closed
+under their explicitly scoped continuum acceptance criteria** at source commit
+`e9a2b589243cfc8fa1492b67a02949c9ba660e93`, with independent
+160-bit Arb existence and 160/192-bit coercivity verification and CI
+[38775402440](https://github.com/rickyjreyes/wct-pde/actions/runs/38775402440).
+
+- [Existence audit](https://github.com/rickyjreyes/wct-pde/blob/e9a2b589243cfc8fa1492b67a02949c9ba660e93/docs/D4_INDEPENDENT_EXISTENCE_AUDIT.md):
+  real D4-gauge stationary solution on `R²/(42Z)²`, full Fourier Wiener
+  existence radius `10^-8`, explicit residual, inverse, tail, and saved-array
+  linkage bounds. This is *not* whole-space existence on `R²`.
+- [Stability audit](https://github.com/rickyjreyes/wct-pde/blob/e9a2b589243cfc8fa1492b67a02949c9ba660e93/docs/D4_INDEPENDENT_STABILITY_AUDIT.md):
+  complete complex perturbation sectors, all infinite spectral tails,
+  constrained `H²` coercivity reported above
+  `0.0008267789943812908`, phase/translation kernels, mass-normal
+  directions, and qualitative local all-time orbital stability.
+  An explicit numerical orbital basin for arbitrary data remains open.
+
+**Trust boundary:** These are externally checked computer-assisted
+mathematical certificates using a Python/FLINT/Arb trusted computation
+chain. They are **not kernel-checked Lean declarations** and are not
+automatically imported by this PR. Issue #21 remains PARTIAL as a *Lean
+formalization* until the relevant infinite-dimensional Wiener/torus spaces,
+exact candidate and outward certificate data, operator inverse/tail
+estimates, spectral coercivity, modulation and flow are formally connected.
+
+No contradiction exists between scoped PDE #24/#25 completion and unfinished
+WCT-Lean #21. No claim of external independent expert review is implied.
