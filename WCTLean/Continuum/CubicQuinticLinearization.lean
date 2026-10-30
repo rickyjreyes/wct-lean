@@ -85,6 +85,24 @@ theorem cubicQuinticPotential_eq (β γ : ℝ) (z : ℂ) :
   simp [cubicQuinticPotential, cubicTerm_eq_normSq, quinticTerm_eq_normSq]
   ring
 
+
+/-- For a real stationary profile a, the pointwise real-linear derivative
+has exactly the Lplus and Lminus potential coefficients. The complex
+perturbation h is unrestricted: (h + star h)/2 is the real component
+and (h - star h)/2 is the imaginary component. This remains a pointwise
+identity, not a proof of the full unbounded torus Hessian's spectral gap. -/
+theorem cubicQuinticFirstOrder_real_blocks
+    (β γ a : ℝ) (h : ℂ) :
+    2 * cubicQuinticFirstOrder β γ (a : ℂ) h =
+      (((-3 * β * a ^ 2 + 5 * γ * a ^ 4 : ℝ) : ℂ)) * (h + star h) +
+      (((-β * a ^ 2 + γ * a ^ 4 : ℝ) : ℂ)) * (h - star h) := by
+  have ha : star (a : ℂ) = (a : ℂ) := by simp
+  simp only [cubicQuinticFirstOrder, cubicFirstOrder, quinticFirstOrder, ha]
+  push_cast
+  ring
+
+#print axioms WCTLean.Continuum.cubicQuinticFirstOrder_real_blocks
+
 #print axioms WCTLean.Continuum.cubic_exact_expansion
 #print axioms WCTLean.Continuum.quintic_exact_expansion
 #print axioms WCTLean.Continuum.cubicQuinticPotential_eq

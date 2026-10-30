@@ -133,3 +133,14 @@ estimates, spectral coercivity, modulation and flow are formally connected.
 
 No contradiction exists between scoped PDE #24/#25 completion and unfinished
 WCT-Lean #21. No claim of external independent expert review is implied.
+
+### Exact real/imaginary Hessian-potential split
+
+`WCTLean.Continuum.cubicQuinticFirstOrder_real_blocks` proves that at an
+arbitrary *real-valued profile amplitude* a, and for **every complex**
+perturbation h, the pointwise first-order cubic–quintic potential has
+coefficients `-3βa²+5γa⁴` on the real sector and
+`-βa²+γa⁴` on the imaginary sector. This recovers the exact polynomial
+contributions to the periodic `Lplus` and `Lminus` operators, with
+no radial or D4 perturbation restriction. Domain/self-adjointness,
+stationary-root substitution and spectrum remain separate Lean obligations.
