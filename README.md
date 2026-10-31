@@ -252,3 +252,19 @@ The highest-value open work is:
 ## Build meaning
 
 A green Lean build means the encoded declarations are syntactically valid, type-correct, and accepted by the Lean kernel under explicit hypotheses. Empirical support and physical interpretation are tracked in the corresponding WCT experimental and phenomenological layers.
+
+## Continuum integration branch for issues #19–#21
+
+The pinned `reyes_math` dependency imports actual `H²(ℝ²; ℂ)` theorems
+in `WCTLean/Continuum/CubicQuinticWholeSpace.lean`. The new exported
+declarations prove whole-plane independent cubic–quintic existence, nonzero
+positive-mass minimizers, spatial-translation invariance, strong H² compactness
+modulo translations, global independent flow, and full minimizing-set orbital
+stability. Exact D4 binary64 coefficients are recorded as rational constants.
+
+**Scope:** These theorems concern an independently defined fourth-order
+cubic–quintic Hamiltonian on ℝ². They do **not** establish local evolution
+well-posedness for the corrected curvature quotient, identify the periodic D4
+numerical root, certify a torus linearized gap, or assert physical WCT stability.
+See `docs/WCT_CONTINUUM_19_21_AUDIT.md` for the issue-by-issue proof ledger.
+

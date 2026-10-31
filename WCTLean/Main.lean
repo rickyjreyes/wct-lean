@@ -32,6 +32,18 @@ import WCTLean.Models.CompactDynamics
 import WCTLean.Models.ClosureFormalization
 import WCTLean.Models.FormalUpgrades
 import WCTLean.ResolvedAudit
+import WCTLean.Continuum.CubicQuinticWholeSpace
+import WCTLean.Continuum.CubicQuinticLinearization
+import WCTLean.Continuum.CurvaturePrincipalCoefficient
+import WCTLean.Continuum.CanonicalCurvatureNonattainment
+import WCTLean.Continuum.CubicQuinticFlowBridge
+import WCTLean.Continuum.FreeSpaceMassTails
+import WCTLean.Continuum.CurvatureEvolutionSymbol
+import WCTLean.Continuum.RadiiPolynomial
+import WCTLean.Continuum.FreeSpacePersistentLocalization
+import WCTLean.Continuum.CubicQuinticEulerLagrange
+import WCTLean.Continuum.M7CurvatureNonlinearity
+import WCTLean.Continuum.D4CertificateInterface
 import WCTLean.DerivedAudit
 
 namespace WCTLean
@@ -46,3 +58,4 @@ theorem wctlean_registry_smoke : canonicalRegistry.length = 142 :=
   canonicalRegistry_length
 
 end WCTLean
+
