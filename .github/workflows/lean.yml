@@ -43,6 +43,7 @@ jobs:
           lake build WCTLean.Continuum.CanonicalCurvatureNonattainment
           lake build WCTLean.Continuum.CurvatureEvolutionSymbol
           lake build WCTLean.Continuum.RadiiPolynomial
+          lake build WCTLean.Continuum.FreeSpacePersistentLocalization
       - name: Build all maintained Lean targets
         shell: bash
         run: |

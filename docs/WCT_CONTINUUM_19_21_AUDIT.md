@@ -48,19 +48,25 @@ symmetry, not spatial dimension four.
 
 ## Acceptance verdicts
 
-- **#19 PARTIAL**: Independent CQ evolution is imported as a comparison theorem.
-  The *corrected curvature PDE* remains without a proved evolution generator,
-  Banach-space local Lipschitz/quasilinear estimate, existence, or continuation
-  theorem. No equation-level WCT well-posedness is claimed.
-- **#20 PARTIAL**: Whole-plane existence, mass/finite energy, nonzero state,
-  translated compactness, and exact frozen parameter instantiation are present
-  for the *independent* CQ model, once CI passes. A separate explicit spatial
-  tail theorem and stronger pointwise/exponential decay have not been exported;
-  the positive corrected-curvature energy's constrained minimizers are absent under the stated positive-coefficient assumptions. Other canonical confinement mechanisms remain open.
-- **#21 PARTIAL**: Independent whole-plane CQ orbital stability under general
-  complex perturbations is imported. Lean replay of the externally validated periodic D4 root, its actual
-  real-linearized operator and neutral-mode quotient, inverse/tail certificates,
-  constrained spectral gap, and concrete periodic-root stability remain open.
+- **#19 PARTIAL.** Proved: uniform `R_ε` bound; uniform parabolicity of the
+  M7 frozen principal symbol; CM1 frozen-coefficient Hadamard obstruction
+  (degenerate at harmonic backgrounds, backward-parabolic on explicit
+  backgrounds in both time orientations). Independent CQ global flow is
+  imported as a benchmark only. Missing: nonlinear M7 local existence,
+  uniqueness, continuous dependence and continuation in a Sobolev space.
+- **#20 PARTIAL.** Proved for the independent CQ model: existence, finite
+  mass/energy, nonzero state, translated compactness, single-state L² tails,
+  uniform tightness of the minimizer set modulo translations, and all-time
+  localization of every solution starting near the minimizer set (arbitrary
+  complex H² perturbations). Proved obstruction for the positive corrected
+  curvature energy (zero infimum, not attained). Missing: pointwise/
+  exponential decay, Euler–Lagrange regularity, and any canonical-model
+  confinement mechanism.
+- **#21 PARTIAL.** Proved: abstract radii-polynomial contraction theorem and
+  Newton-map zero corollary on arbitrary real Banach spaces; exact pointwise
+  `L±` potential split; independent whole-plane CQ orbital stability
+  (imported). Missing: Lean torus/Wiener setting, concrete certificate
+  instantiation, constrained coercivity and periodic-root orbital stability.
 
 ## Integrity and required final verification
 
@@ -160,3 +166,72 @@ finite-mass state satisfies. It is **not** an exponential/pointwise
 tail estimate and does **not alone** establish a physical trapping
 mechanism or canonical WCT confinement. All added declarations
 remain pending exact-head CI until verified.
+
+## 2026-10-31 continuation: new kernel-checked mathematics
+
+Phase 0 repair: `cubicTerm_eq_normSq`/`quinticTerm_eq_normSq` now close via
+`Complex.mul_conj` (the earlier residual cast goal made
+`cubicQuinticPotential_eq` depend on `sorryAx`), and `FreeSpaceMassTails`
+uses `Metric.isClosed_closedBall`. Full `lake build` (7280+ jobs), every
+focused continuum module, `scripts/audit_formal_sources.py` and the locked
+dependency diff pass locally; all continuum declarations print only
+`[propext, Classical.choice, Quot.sound]`.
+
+### #19 — canonical evolutions: frozen principal-symbol dichotomy
+(`WCTLean/Continuum/CurvatureEvolutionSymbol.lean`)
+
+The registry (`geometry_of_resonance`, `WCT_FULL_EQUATION_LIST_CORRECTED.md`)
+contains two different curvature evolutions. They are kept distinct:
+
+| Declaration | Exact statement |
+|---|---|
+| `complexRegularizedReciprocal_uniform_bound` | `‖R_ε(ψ)‖ ≤ 1 + (ε² e^{-2α})^{-2}` for all `ψ ∈ ℂ`, `ε>0`, `α≥0` (via `‖R_ε(ψ)‖² = positiveCurvatureWeight ε α |ψ|²` and pinned `ReyesMath.positive_curvature_weight_uniform_bound`) |
+| `m7_principal_symbol_uniformly_parabolic` | M7 frozen principal symbol `p(q)=c₁(σ²−q)−c₂(k⋆²−q)²+q R_ε(ψ₀)` satisfies `Re p(q) ≤ C − (c₂/2)q²`, `C` explicit and independent of the background `ψ₀` |
+| `m7_principal_symbol_high_frequency_damping` | for every `Λ` there is `Q` with `Re p(q) ≤ −Λ` for all `q ≥ Q` and all backgrounds |
+| `cm1Rhs_quadratic_in_laplacian`, `cm1Rhs_laplacian_expansion` | CM1 `−Θ_ε[ψ]J[ψ] = ε_vac|ψ|²R_ε(ψ)(Δψ)²`; exact expansion in the second-order slot with principal coefficient `κ = 2ε_vac|a|²R_ε(a)b` |
+| `cm1_principal_coefficient_harmonic`, `cm1_principal_coefficient_node` | `κ = 0` at harmonic backgrounds (`Δψ₀ = 0`) and at nodes |
+| `cm1_principal_coefficient_im` | `Im κ = 2ε_vac|a|² Im(ā b)/D_ε(a)` |
+| `frozen_mode_unbounded_growth` | `Im κ < 0` ⇒ frozen-mode amplification `exp(−Im κ · q t)` is unbounded over `q` for every `t>0` |
+| `cm1_frozen_hadamard_obstruction` | for every `ε>0`, `α`, `ε_vac ≠ 0`: backgrounds exist with unbounded forward-time growth **and** others with unbounded backward-time growth |
+
+Interpretation. M7 (the equation with explicit `−c₂(Δ+k⋆²)²`, `c₂>0`) passes
+the frozen-coefficient necessary condition uniformly: the bounded curvature
+quotient is a lower-order perturbation of fourth-order parabolic damping.
+CM1 fails it: its linearization is degenerate at harmonic backgrounds and
+backward-parabolic on an explicit open set of backgrounds, for either sign
+of `ε_vac` and either time orientation. **Not proved:** the nonlinear M7
+Duhamel fixed point in `C([0,T];H^s)`, continuation criterion, or a
+nonlinear CM1 ill-posedness theorem. M7's `c₄R^{-(2+n/p)}ψ` and
+`ηψ∘ξ(t)` terms are not specified precisely enough to include.
+
+### #20 — uniform and dynamical free-space localization
+(`WCTLean/Continuum/FreeSpacePersistentLocalization.lean`)
+
+| Declaration | Exact statement |
+|---|---|
+| `massTail_perturb` | `tail_R(v) ≤ 2 tail_R(u) + 2‖v−u‖²_{L²}` |
+| `minimizer_set_uniformly_tight` | for every `η>0` one radius `R` works for **every** constrained CQ minimizer after translation: `∀ U ∈ Gset, ∃ y, tail_R(U(·+y)) < η` (proved by contradiction from translated compactness + single-state tails) |
+| `orbitally_stable_persistent_localization` | `∃ δ>0, ∃ R`: every whole-plane solution with `distX(u(0), Gset) < δ` has, at **every** real time `t`, a center `y(t)` with `tail_R(u(t)(·+y(t))) < η` |
+| `frozen_persistent_localization` | the same at the exact rational frozen parameters |
+
+No box, boundary, potential, radial or D4 restriction is used, and the initial
+perturbation may change the mass. This is genuine boundary-independent,
+energy-driven dynamical confinement **for the independent CQ model**.
+**Not proved:** pointwise/exponential decay, the Euler–Lagrange equation and
+regularity of minimizers, and any transfer to the corrected-curvature
+energy (whose positive-energy constrained infimum is not attained).
+
+### #21 — a posteriori contraction theorem
+(`WCTLean/Continuum/RadiiPolynomial.lean`)
+
+| Declaration | Exact statement |
+|---|---|
+| `radii_displacement_bound` | `‖DT(x)‖ ≤ Z0 + L‖x−x̄‖` on the ball ⇒ `‖T x − T x̄‖ ≤ Z0ρ + (L/2)ρ²`, `ρ = ‖x−x̄‖` |
+| `radii_polynomial_unique_fixed_point` | on any real Banach space: `‖T x̄ − x̄‖ ≤ Y0`, `Y0 + Z0 r + (L/2) r² ≤ r`, `Z0 + L r < 1` ⇒ exactly one fixed point in `closedBall x̄ r` |
+| `radii_polynomial_unique_zero` | Newton map `T x = x − A F(x)`, `A` injective ⇒ exactly one zero of `F` in the ball |
+
+This is the abstract analytical theorem only. **Not proved in Lean:** the
+42-torus Fourier/Wiener space and bordered map, kernel-checked
+`Y0, Z0, L, r` for the saved candidate, the `L±` constrained coercivity,
+and the mass-penalized Lyapunov argument for the periodic root. Those
+remain externally certified (`wct-pde` #24/#25, `e9a2b589`).
