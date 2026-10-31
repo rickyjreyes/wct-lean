@@ -48,25 +48,26 @@ symmetry, not spatial dimension four.
 
 ## Acceptance verdicts
 
-- **#19 PARTIAL.** Proved: uniform `R_ε` bound; uniform parabolicity of the
-  M7 frozen principal symbol; CM1 frozen-coefficient Hadamard obstruction
-  (degenerate at harmonic backgrounds, backward-parabolic on explicit
-  backgrounds in both time orientations). Independent CQ global flow is
-  imported as a benchmark only. Missing: nonlinear M7 local existence,
-  uniqueness, continuous dependence and continuation in a Sobolev space.
-- **#20 PARTIAL.** Proved for the independent CQ model: existence, finite
-  mass/energy, nonzero state, translated compactness, single-state L² tails,
-  uniform tightness of the minimizer set modulo translations, and all-time
-  localization of every solution starting near the minimizer set (arbitrary
-  complex H² perturbations). Proved obstruction for the positive corrected
-  curvature energy (zero infimum, not attained). Missing: pointwise/
-  exponential decay, Euler–Lagrange regularity, and any canonical-model
-  confinement mechanism.
-- **#21 PARTIAL.** Proved: abstract radii-polynomial contraction theorem and
-  Newton-map zero corollary on arbitrary real Banach spaces; exact pointwise
-  `L±` potential split; independent whole-plane CQ orbital stability
-  (imported). Missing: Lean torus/Wiener setting, concrete certificate
-  instantiation, constrained coercivity and periodic-root orbital stability.
+- **#19 PARTIAL.** Proved: uniform `R_ε` bound; global Lipschitz bound for
+  `R_ε`; `N_curv : H²(ℝ²) → L²` with mapping and local Lipschitz estimates;
+  multiplier-level `t^{−1/2}` smoothing of the linear M7 symbol; uniform
+  parabolicity of the M7 frozen principal symbol; CM1 frozen-coefficient
+  Hadamard obstruction in both time orientations. Missing: the operator-level
+  damped semigroup on `H²`, the Duhamel fixed point (M7 existence,
+  uniqueness, continuous dependence, continuation), and nonlinear CM1
+  ill-posedness.
+- **#20 PARTIAL.** Proved for the independent CQ model: existence, compactness,
+  single-state tails, uniform tightness, all-time dynamical localization, and
+  the constrained Euler–Lagrange equation with explicit multiplier. Proved
+  obstruction for the positive corrected-curvature energy (infimum zero, not
+  attained). Missing: elliptic regularity beyond `H²`, decay rates, symmetry/
+  positivity analysis, and any canonical-model confinement mechanism.
+- **#21 PARTIAL.** Proved: abstract radii-polynomial theorem; exact parameter
+  identity with the certificate; kernel-checked infinite high-mode diagonal
+  bound `d_k ≥ 79`; certificate scalar inequalities. Externally replayed:
+  the full Arb certificate. Missing in Lean: `Y0`, `Z0`, `L` (computational
+  obstruction above), the torus Wiener space and bordered map as Lean
+  objects, `L±` constrained coercivity and periodic orbital stability.
 
 ## Integrity and required final verification
 
@@ -235,3 +236,65 @@ This is the abstract analytical theorem only. **Not proved in Lean:** the
 `Y0, Z0, L, r` for the saved candidate, the `L±` constrained coercivity,
 and the mass-penalized Lyapunov argument for the periodic root. Those
 remain externally certified (`wct-pde` #24/#25, `e9a2b589`).
+
+## 2026-10-31 second continuation: Euler–Lagrange, M7 nonlinear estimates, D4 certificate components
+
+All declarations below print only `[propext, Classical.choice, Quot.sound]`.
+
+### #20 — constrained Euler–Lagrange equation (`CubicQuinticEulerLagrange.lean`)
+
+| Declaration | Exact statement |
+|---|---|
+| `Esp_taylor` | `E(w) − E(u) ≤ 2·elForm(u, w−u) + C_R‖w−u‖²_{H²}` on `H²` balls (kinetic part exact, potential via pinned `Nsp_taylor`) |
+| `elForm_eq_zero_of_tangent` | a mass-constrained minimizer over `H²` has zero first variation in every `L²`-tangent direction |
+| `euler_lagrange_of_constrained_min` | `elForm(u,h) = (elForm(u,u)/m)·Re⟨u,h⟩` for all `h ∈ H²` |
+| `minimizer_euler_lagrange` | every `U ∈ 𝒢_m` (`γ>0`, `m>0`) satisfies `Re⟨(Δ+k²)U,(Δ+k²)h⟩ + Re⟨F(U),h⟩ = ω Re⟨U,h⟩` for all complex `h ∈ H²`, with `ω m = ‖(Δ+k²)U‖² + Re⟨F(U),U⟩` |
+| `frozen_minimizer_euler_lagrange` | the same at the exact frozen parameters |
+
+This is the weak form of `(Δ+k²)²U − β|U|²U + γ|U|⁴U = ωU`: minimizers are
+standing waves of the whole-plane CQ flow. **Not proved:** regularity beyond
+`H²` (elliptic bootstrap), pointwise/polynomial/exponential decay, symmetry or
+positivity of minimizers, and any corrected-curvature confinement.
+
+### #19 — M7 nonlinear estimates (`M7CurvatureNonlinearity.lean`)
+
+| Declaration | Exact statement |
+|---|---|
+| `denom_ge_floor`, `abs_exp_sub_exp_le_of_nonpos`, `denom_sub_le` | `D_ε ≥ min(1, ε²e^{−2α})`; exponential and denominator increments |
+| `reciprocal_lipschitz` | `R_ε` globally Lipschitz on ℂ with `L_ε = 1/δ + (1+2αε²)(B² + 1/δ)` |
+| `memLp_curvField`, `curvOp`, `norm_curvOp_le` | `N_curv[ψ] = −(Δψ)R_ε(ψ) ∈ L²` for every `ψ ∈ H²(ℝ²)`, `‖N_curv[ψ]‖ ≤ B‖Δψ‖` |
+| `curvOp_lipschitz` | `‖N_curv[ψ]−N_curv[φ]‖² ≤ 2B²‖Δψ−Δφ‖² + 2L_ε²‖ψ−φ‖²_{H²}‖Δφ‖²` |
+| `m7_multiplier_smoothing` | `(1+q)e^{tℓ(q)} ≤ e^{tC}(1 + (c₂t)^{−1/2})` for the linear M7 symbol `ℓ`, all `q ≥ 0`, `t > 0` |
+
+These are the nonlinear mapping/Lipschitz estimates and the multiplier-level
+smoothing rate of a Duhamel formulation of M7. **Not proved:** the damped
+semigroup as an operator on `H²` (only its symbol bound), the Duhamel fixed
+point, hence no M7 local existence/uniqueness/continuous dependence or
+continuation theorem. The pinned unitary-group machinery of
+`ReyesMath.Sobolev.CubicQuinticFlow` cannot be reused: it relies on a
+loss-free `H² → H²` nonlinearity and an invertible group, whereas
+`N_curv` loses two derivatives and `e^{−c₂t(Δ+k²)²}` is a non-invertible
+smoothing semigroup. CM1 remains at the frozen-coefficient obstruction level.
+
+### #21 — certificate components (`D4CertificateInterface.lean`)
+
+| Declaration | Status |
+|---|---|
+| `cert_beta_eq_frozen`, `cert_mass_eq_frozen` | kernel-checked: certificate binary64 `β=γ` and mass are exactly `frozenBeta`, `frozenMass` |
+| `d4_high_mode_diagonal_ge`, `d4_high_mode_inverse_le` | kernel-checked: `d_k ≥ 79` and `0 < 1/d_k ≤ 1/79` for **every** mode with `max(|k₁|,|k₂|) ≥ 21` (rigorous `π > 3.141592`) |
+| `d4_cert_scalar_conditions` | kernel-checked arithmetic for the reported outward upper bounds |
+| `d4_conditional_existence` | **conditional** on the external Arb bounds `Y0`, `Z0`, `L`; not a verified certificate |
+
+Independent replay (this session): `tools/closure_d4_wiener_certificate.py --cutoff 20`
+at `wct-pde` `e9a2b589` with python-flint 0.9.0 reproduces the receipt
+exactly (PASS; identical `Y0`, `Z0`, `high_diagonal_lower`, all three radii;
+candidate SHA-256 `9fcf8e32…`), and `tests/test_d4_wiener_certificate.py`
+passes (4/4). This is external interval-arithmetic validation, not Lean.
+
+**Computational obstruction to a kernel-only certificate:** `Y0` requires an
+exact quintic convolution of a half-width-70 dyadic candidate (≈10⁹
+128-bit multiplications); `Z0` requires `‖I − B J_LL‖₁` for a dense 232×232
+Arb-midpoint matrix (≈10⁷ operations) and convolution column sums. These
+exceed Lean kernel reduction; `native_decide` would add `Lean.ofReduceBool`,
+which this project excludes. Constrained coercivity of `L±` on the complex
+torus space and periodic orbital stability are not formalized.

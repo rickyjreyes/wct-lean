@@ -44,6 +44,9 @@ jobs:
           lake build WCTLean.Continuum.CurvatureEvolutionSymbol
           lake build WCTLean.Continuum.RadiiPolynomial
           lake build WCTLean.Continuum.FreeSpacePersistentLocalization
+          lake build WCTLean.Continuum.CubicQuinticEulerLagrange
+          lake build WCTLean.Continuum.M7CurvatureNonlinearity
+          lake build WCTLean.Continuum.D4CertificateInterface
       - name: Build all maintained Lean targets
         shell: bash
         run: |

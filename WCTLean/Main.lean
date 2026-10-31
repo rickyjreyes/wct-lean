@@ -40,6 +40,9 @@ import WCTLean.Continuum.FreeSpaceMassTails
 import WCTLean.Continuum.CurvatureEvolutionSymbol
 import WCTLean.Continuum.RadiiPolynomial
 import WCTLean.Continuum.FreeSpacePersistentLocalization
+import WCTLean.Continuum.CubicQuinticEulerLagrange
+import WCTLean.Continuum.M7CurvatureNonlinearity
+import WCTLean.Continuum.D4CertificateInterface
 import WCTLean.DerivedAudit
 
 namespace WCTLean
