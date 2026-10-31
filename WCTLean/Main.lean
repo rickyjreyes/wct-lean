@@ -37,6 +37,8 @@ import WCTLean.Continuum.CurvaturePrincipalCoefficient
 import WCTLean.Continuum.CanonicalCurvatureNonattainment
 import WCTLean.Continuum.CubicQuinticFlowBridge
 import WCTLean.Continuum.FreeSpaceMassTails
+import WCTLean.Continuum.CurvatureEvolutionSymbol
+import WCTLean.Continuum.RadiiPolynomial
 import WCTLean.DerivedAudit
 
 namespace WCTLean
