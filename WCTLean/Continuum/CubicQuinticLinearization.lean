@@ -25,7 +25,7 @@ theorem cubicTerm_eq_normSq (z : ℂ) :
       ring
     _ = (Complex.normSq z : ℂ) * z := by
       change (z * (starRingEnd ℂ) z) * z = (Complex.normSq z : ℂ) * z
-      rw [Complex.mul_conj', Complex.normSq_eq_norm_sq]
+      rw [Complex.mul_conj]
 
 theorem quinticTerm_eq_normSq (z : ℂ) :
     quinticTerm z = ((Complex.normSq z : ℝ) ^ 2 : ℂ) * z := by
@@ -36,7 +36,7 @@ theorem quinticTerm_eq_normSq (z : ℂ) :
     _ = ((Complex.normSq z : ℝ) ^ 2 : ℂ) * z := by
       change (z * (starRingEnd ℂ) z) ^ 2 * z =
         ((Complex.normSq z : ℝ) ^ 2 : ℂ) * z
-      rw [Complex.mul_conj', Complex.normSq_eq_norm_sq] <;> push_cast <;> ring
+      rw [Complex.mul_conj]
 
 /-- The algebraic first-order term for `|z|² z` in an arbitrary complex
 perturbation h. Its dependence on conjugate h makes it real-linear,

@@ -30,7 +30,7 @@ theorem free_space_mass_tail_tendsto_zero (u : PlaneState) :
     (Metric.closedBall (0 : Space2) (n : ℝ))ᶜ
   have hsm : ∀ n : ℕ, MeasurableSet (S n) := by
     intro n
-    exact isClosed_closedBall.measurableSet.compl
+    exact Metric.isClosed_closedBall.measurableSet.compl
   have hanti : Antitone S := by
     intro i j hij x hx
     change x ∉ Metric.closedBall (0 : Space2) (j : ℝ) at hx
