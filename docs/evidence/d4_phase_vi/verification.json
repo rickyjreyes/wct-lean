@@ -1,0 +1,22 @@
+{
+  "status": "PASS",
+  "verified_source_commit": "0747d83f180fd9a67ff68506c5c25970b9cb09b4",
+  "ci_merge_commit": "db33bdcd7d8b3d83b3a10fb83da174bf6fb9f933",
+  "lean_toolchain": "leanprover/lean4:v4.23.0",
+  "mathlib_commit": "37df177aaa770670452312393d4e84aaad56e7b6",
+  "module_sha256": "2d2bf8b3cd5ea56ca52ec1831f555c973218cd09d69b8338f8da780f5313fa94",
+  "module_theorems": 28,
+  "full_build_jobs": 7257,
+  "formal_run": 40142270340,
+  "container_run": 40142270259,
+  "both_workflows": "success",
+  "source_audit": "PASS",
+  "axioms_observed": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "custom_axioms_or_placeholders": false,
+  "continuum_instantiation": "OPEN",
+  "scope": "Exact threshold fully instantiated; analytic binding, attainment, and same-mass trapping implications conditional."
+}
