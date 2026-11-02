@@ -30,6 +30,36 @@ Nothing in this inventory proves WCT as a complete physical theory.
 
 These theorems prove registry integrity, not the mathematical content of all 142 equations.
 
+## Registry-only closure batch (PR #36)
+
+[Scoped evidence and analytical proofs](docs/REGISTRY_ONLY_CLOSURES_2026-10-30.md). These declarations are Lean theorems over stated scalar or finite-dimensional hypotheses, not physical laws.
+
+| Declaration | Equation | Exact encoded result |
+|---|---|---|
+| `top6_statistic_scales_inverse_square` | TOP6 | unnormalized curvature statistic scales as inverse dilation squared when length and integrated curvature transform as stated |
+| `top6_dilation_changes_statistic` | TOP6 | positive statistic strictly changes under a factor-two dilation |
+| `cm3_potential_poisson_relation` | CM3 | Fourier-potential algebra for nonzero wavenumber |
+| `cm4_decay_iff_nonpositive_logarithmic_rate` | CM4 | constant-coefficient real decay law iff logarithmic growth rate is nonpositive |
+| `cm10_drag_contracts_difference` | CM10 | convex drag reduces or preserves mismatch |
+| `cm15_cm20_compatible_iff_energy_loss` | CM15/CM20 | proposed expansion equation iff exact scalar energy-loss identity |
+| `e44_local_curvature_global_phase_invariance` | E44 | unit phase cancels in the corrected local curvature expression with shared invariant denominator |
+| `e44_phase_rotated_eigenvalue_obstruction` | E44 | a nontrivial phase rotation and the same nonlinear eigenvalue force vanishing eigenvalue-times-field |
+| `e60_real_squared_amplitude_derivative` | E60 | exact squared-amplitude derivative under a scalar cubic ODE |
+| `e60_real_stationary_iff` | E60 | scalar stationary states obey `A=0` or `mu=g A²` |
+| `e82_information_gram_symmetric` | E82 | finite real Gram tensor symmetry |
+| `e82_information_gram_diagonal_nonnegative` | E82 | diagonal nonnegativity |
+| `e82_information_gram_quadratic_nonnegative` | E82 | sum-of-squares quadratic representation is nonnegative |
+
+Existing adjacent module `WCTLean/Models/NarrowCanonicalCoverage.lean`:
+
+| Declaration | Equation | Scope |
+|---|---|---|
+| `e15_scalar_modal_power_derivative`, `e15_scalar_modal_growth_bound` | E15 | real scalar cubic-saturation reduction, not arbitrary nonlinear PDE Fourier modes |
+| `cle6_separated_mode_quotient` | CLE6 | algebraic separation identity at nonzero modal values |
+| `cle7_angular_mode_periodic` | CLE7 | period of displayed angular modes; full ODE solution completeness is an independent obligation |
+
+The independent [math compendium](https://github.com/rickyjreyes/math/blob/main/compendium/wct-elementary-mathematics/main.tex) already contains analytic proofs for E21, E30, CLE6, and CLE7. This inventory does not count those as Lean proofs in this repository.
+
 ## Corrected complex curvature (`WCTLean/Models/ComplexCurvature.lean`)
 
 | Declaration | Equation | Content |
