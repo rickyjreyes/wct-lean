@@ -17,6 +17,7 @@ import WCTLean.Fourier
 import WCTLean.Contracts.Analytic
 import WCTLean.Models.CurvatureOperator
 import WCTLean.Models.ComplexCurvature
+import WCTLean.Models.OscillatoryNoncoercivity
 import WCTLean.Models.PhaseFlux
 import WCTLean.Models.RestDensity
 import WCTLean.Models.Locking
