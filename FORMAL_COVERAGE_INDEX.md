@@ -447,3 +447,41 @@ elimination from the original covariant Hamiltonian.
 amplitude annulus on nonzero finite-mass whole-space H² data.
 See existing kernel-verified `ReyesMath.E26.not_ae_norm_ge_of_memLp`;
 annulus coercivity is a bounded/periodic/local-sector observation.
+
+
+## Phase XVIII, issue #17/#18/#19: actual high-order variational bridge
+
+The branch now includes:
+- `S004EulerCoefficients.lean`: exact field, time, gradient,
+  acceleration and Laplacian first-variation coefficients for the
+  original corrected **two-real-component** S004 local density.
+  Zero-order force contains the true nonlinear curvature radial slope.
+- `S004IntervalGreen.lean`: four **genuine** real interval-integral
+  Green identities (zero temporal test traces and matching periodic
+  spatial traces), including second-order integration by parts.
+- `S004CompatibleFields.lean`: field-to-jet compatibility for a
+  *single* varied underlying field, with accelerations and Laplacians
+  built from iterated declared first-order linear operators. The
+  integrated action derivative is derived under genuine analytic
+  domination hypotheses, not postulated. Realization as specific
+  periodic Sobolev derivatives is OPEN.
+- `S004TemporalEuler.lean`: temporal strong-Euler contributions for
+  both real components using actual nonlinear S004 momenta and
+  verified Green identities.
+- `S004SpatialEuler.lean`: one-dimensional periodic spatial
+  strong-Euler contributions for both real components, retaining
+  the corrected nonlinear Laplacian momentum.
+- Strict 26-root S004 `#print axioms` audit and fail-closed checker.
+
+**Unresolved:** actual d-dimensional spacetime Fubini and integration
+of those directional identities into one weak Euler–Lagrange theorem,
+concrete Sobolev mapping and domination estimates, strong PDE
+correspondence, full nonlinear constraint analysis, flow
+existence/uniqueness and continuation. No nonzero finite-mass
+whole-space L² field can satisfy a strictly positive global amplitude
+floor, so fixed-annulus coercivity requires a bounded/periodic/local
+domain interpretation.
+
+Prior historical S004 local-jet and integral proofs retain their
+earlier exact scopes; a compiled partial result must not be reported
+as complete PDE formalization.
