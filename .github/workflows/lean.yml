@@ -50,7 +50,7 @@ jobs:
           if grep -oE 'depends on axioms: \[[^]]*\]' s004-axioms.log | \
              sed 's/depends on axioms: \[//; s/\]//' | \
              tr ',' '\n' | sed 's/^[[:space:]]*//; s/[[:space:]]*$//' | \
-             grep -vE '^(propext|Classical.choice|Quot.sound)
+             grep -vE '^(propext|Classical.choice|Quot.sound)$'; then
             echo 'Unexpected axiom in corrected S004 proof chain'
             exit 1
           fi
