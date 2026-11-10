@@ -314,3 +314,34 @@ orbital stability for the actual two-dimensional functional, and an all-time
 moving-ball confinement consequence near its minimizers. Those prose proofs
 are not claimed to be instantiated Lean theorems. The numerical periodic
 branch is not identified with a whole-space minimizer. D4 is not dimension four.
+
+
+## Corrected S004 two-component variational and coefficient results (PR #38)
+
+The modules below apply to the **corrected S004 covariant curvature weight**
+\(F(s)=s/(s+\varepsilon^2 e^{-2\alpha s})^2\), with \(s=|\psi|^2\),
+\(\varepsilon>0\), and \(\alpha\ge0\). They are not proofs for the independent
+F01 cubic-quintic evolution.
+
+| Exact maintained declaration | Scope | Open boundary |
+|---|---|---|
+| `WCTLean.correctedRadialDenominator_floor` | Field-independent denominator lower bound, including nodes | Does not imply positive principal coefficient |
+| `WCTLean.correctedRadialWeight_hasDerivAt` | Exact quotient-rule radial derivative | Pointwise; no integrated action |
+| `WCTLean.realTwoComponentWeight_hasDerivAt` | Exact real directional derivative of F(x²+y²), including the 2(x dx+y dy) factor | Pointwise |
+| `WCTLean.S004JetVariation.curvatureQuadratic_hasDerivAt` | Actual derivative of the independent acceleration/Laplacian quadratic jet | Pointwise |
+| `WCTLean.S004TwoComponent.localDensity_hasDerivAt` | Actual first variation of the corrected two-real-component flat S004 local density with variable V and F | One declared spatial gradient component per real field |
+| `WCTLean.curvatureWeight_ge_on_amplitude_annulus` | Positive coefficient bound \(F(s)\ge\delta/(M+\varepsilon^2)^2>0\) if \(0<\delta\le s\le M\) | Annulus is not proved invariant under nonlinear flow |
+| `WCTLean.arbitrarily_small_weight_high_density` | Explicit high-amplitude failure of global uniform coefficient lower bound | Does not establish PDE ill-posedness |
+| `WCTLean.complexWeight_ae_lower_bound` and `WCTLean.curvatureEnergyDensity_ae_lower_bound` | Exact almost-everywhere complex-field and weighted-curvature-density inequalities on the annulus | No integration theorem or invariant Sobolev class is assumed |
+| `WCTLean.S004IntegratedVariation.integratedDensity_hasDerivAt_of_dominated` | **Genuine differentiation of the integrated corrected local S004 action density** by combining the verified pointwise derivative with Mathlib dominated parameter differentiation | Requires explicitly stated a.e. potential differentiability, integrability, measurability, common-ball Lipschitz domination; **not proved for arbitrary Sobolev data** |
+
+The exact source definitions are in
+`WCTLean/Models/{CorrectedWeightCalculus,CorrectedWeightDirection,S004JetVariation,S004TwoComponentVariation,S004AmplitudeAnnulus,S004PrincipalDegeneracy,S004IntegratedVariation}.lean`.
+All are imported from `WCTLean/Main.lean`.
+
+**Not closed:** the complete spatial tensor/gradient assembly, Sobolev trace and
+mapping estimates, higher-derivative integration by parts, boundary terms,
+identification of the Euler-Lagrange PDE, nonlinear A2/S004 constraint
+preservation, and local/global WCT PDE well-posedness. Issues #17-#19 stay OPEN.
+The current PR's CI status must be checked at its exact final head; an earlier
+green run does not certify later commits.
