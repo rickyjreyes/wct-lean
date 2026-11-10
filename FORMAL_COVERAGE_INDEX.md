@@ -417,3 +417,33 @@ first variation under explicit domination is a **conditional continuum
 theorem**, not automatically a full variational/PDE closure. Original
 issue completion requires discharge of these function-space
 hypotheses and higher-order boundary terms.
+
+
+## Phase XVII full-spatial S004 continuum status
+
+**Proved in Lean at the action-density level:** arbitrary finite
+spatial dimension `d` with all gradient squares, real two-component
+corrected-quotient chain rule, independent acceleration and
+Laplacian jets, arbitrary differentiable potential, and the actual
+integrated action's Gâteaux derivative under explicitly stated
+dominated-differentiation hypotheses.
+
+- `S004FullSpatialJet.fullLocalDensity_hasDerivAt`:
+  all `Fin d` spatial gradient components, no one-direction surrogate.
+- `S004FullSpatialIntegral.action_hasDerivAt_of_dominated`:
+  real integral of the same density, not a finite sum or an assumed
+  action derivative. Domination/integrability/measurability and the
+  potential's derivative are explicit hypotheses.
+- `scripts/s004_axiom_audit.lean`: direct standard-axiom verification
+  for ten S004 roots; workflow collects `s004-axioms.log`.
+
+**Not proved:** generic Sobolev sufficient conditions for the
+dominated-differentiation hypotheses, nontrivial boundary/IBP
+identities, complete Euler-Lagrange PDE equivalence, nonlinear
+Cauchy flow existence/uniqueness or continuation, or ghost
+elimination from the original covariant Hamiltonian.
+
+**Infinite-volume obstruction:** no positive global pointwise
+amplitude annulus on nonzero finite-mass whole-space H² data.
+See existing kernel-verified `ReyesMath.E26.not_ae_norm_ge_of_memLp`;
+annulus coercivity is a bounded/periodic/local-sector observation.
