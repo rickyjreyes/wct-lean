@@ -142,10 +142,11 @@ theorem fullLocalDensity_hasDerivAt {d : ℕ}
     simp only [fullLocalDensity, Pi.add_apply]
     rw [core_shift]
     congr 1
-    apply Finset.sum_congr rfl
-    intro i hi
-    simp only [shift]
-    ring
+    all_goals
+      apply Finset.sum_congr rfl
+      intro i hi
+      simp only [shift]
+      ring
   · rfl
 
 end WCTLean.S004FullSpatialJet
