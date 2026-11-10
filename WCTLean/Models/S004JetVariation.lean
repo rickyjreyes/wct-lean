@@ -116,8 +116,9 @@ theorem curvatureQuadratic_hasDerivAt
   have h := ((hdiff.pow 2).const_mul kappa).add
     ((hb.pow 2).const_mul theta) |>.add ((hdiff.mul hb).const_mul gamma)
   convert h using 1 <;>
+    (try funext t) <;>
     simp [curvatureQuadratic, curvatureQuadraticDirection,
-      Pi.add_apply, Pi.sub_apply, Pi.mul_apply, Pi.pow_apply] <;>
-    ring_nf
+      Pi.sub_apply, Pi.mul_apply, Pi.pow_apply] <;>
+    ring
 
 end WCTLean.S004JetVariation
