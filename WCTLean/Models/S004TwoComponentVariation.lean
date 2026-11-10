@@ -36,7 +36,7 @@ structure Jet where
   ax : ℝ
   ay : ℝ
   bx : ℝ
-  by : ℝ
+  bY : ℝ
 
 /-- Simultaneous variation of both real-field components and all jets. -/
 def Jet.shift (u h : Jet) (t : ℝ) : Jet where
@@ -49,12 +49,12 @@ def Jet.shift (u h : Jet) (t : ℝ) : Jet where
   ax := u.ax + t * h.ax
   ay := u.ay + t * h.ay
   bx := u.bx + t * h.bx
-  by := u.by + t * h.by
+  bY := u.bY + t * h.bY
 
 /-- S004's corrected two-component curvature quadratic form. -/
 def curvatureForm (kappa theta gamma : ℝ) (u : Jet) : ℝ :=
   curvatureQuadratic kappa theta gamma u.ax u.bx +
-    curvatureQuadratic kappa theta gamma u.ay u.by
+    curvatureQuadratic kappa theta gamma u.ay u.bY
 
 /-- The genuine corrected flat higher-derivative S004 local density.
 A single gx/gy entry represents the corresponding gradient quadratic
@@ -83,13 +83,14 @@ noncomputable def localDirection
       (curvatureQuadraticDirection kappa theta gamma
         u.ax u.bx h.ax h.bx +
        curvatureQuadraticDirection kappa theta gamma
-        u.ay u.by h.ay h.by)
+        u.ay u.bY h.ay h.bY)
 
 /-- The affine path in any one scalar jet coordinate is differentiable. -/
 private theorem affine_hasDerivAt (a da : ℝ) :
     HasDerivAt (fun t : ℝ => a + t * da) da 0 := by
   convert ((hasDerivAt_id (0 : ℝ)).const_mul da).const_add a using 1
   · funext t
+    simp only [id_eq]
     ring
   · ring
 
@@ -113,7 +114,7 @@ theorem localDensity_hasDerivAt
   have hcurvx := curvatureQuadratic_hasDerivAt
     kappa theta gamma u.ax u.bx h.ax h.bx
   have hcurvy := curvatureQuadratic_hasDerivAt
-    kappa theta gamma u.ay u.by h.ay h.by
+    kappa theta gamma u.ay u.bY h.ay h.bY
   have hcurv := hcurvx.add hcurvy
   have hw := realTwoComponentWeight_hasDerivAt
     epsilon alpha u.x u.y h.x h.y hepsilon halpha
