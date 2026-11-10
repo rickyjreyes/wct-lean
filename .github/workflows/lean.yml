@@ -42,6 +42,16 @@ jobs:
         run: |
           set -o pipefail
           lake env lean scripts/d4_axiom_audit.lean 2>&1 | tee d4-axioms.log
+      - name: Audit S004 corrected action and continuum proof axioms
+        shell: bash
+        run: |
+          set -o pipefail
+          lake env lean scripts/s004_axiom_audit.lean 2>&1 | tee s004-axioms.log
+          if grep -E 'depends on axioms:' s004-axioms.log | \
+             grep -Ev 'propext|Classical.choice|Quot.sound'; then
+            echo 'Unexpected axiom in corrected S004 proof chain'
+            exit 1
+          fi
       - name: Confirm the locked dependency graph is unchanged
         run: git diff --exit-code -- lake-manifest.json lean-toolchain lakefile.lean
       - name: Upload Lean build diagnostics
