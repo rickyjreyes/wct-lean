@@ -15,6 +15,7 @@ import WCTLean.Energy
 import WCTLean.Koide
 import WCTLean.Fourier
 import WCTLean.Contracts.Analytic
+import WCTLean.Contracts.UniformCurvatureDenominator
 import WCTLean.Models.CurvatureOperator
 import WCTLean.Models.ComplexCurvature
 import WCTLean.Models.PhaseFlux
