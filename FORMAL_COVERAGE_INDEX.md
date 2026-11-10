@@ -378,3 +378,42 @@ sequences, Brezis–Lieb/Rellich, and global H² evolution remain formalization
 obligations. Conventional mathematical proofs of these model-specific steps
 are in docs/D4_PHASE_VII_ANALYSIS.md. A checked implication and its conventional
 analytic instantiation have different verification status.
+
+
+## 2026-11-10 corrected S004 coverage boundary: #17, #18, #19
+
+**Maintained-source path:** `WCTLean/Main.lean` imports
+`UniformCurvatureDenominator`, `CorrectedWeightCalculus`,
+`CorrectedWeightDirection`, `S004JetVariation`,
+`S004TwoComponentVariation`, `S004AmplitudeAnnulus`,
+`S004PrincipalDegeneracy`, and `S004IntegratedVariation`.
+
+**Verified theorem types, with exact logical scope:**
+
+- **Pointwise exact:** nonlinear denominator floor; exact radial and
+  two-real-component derivative of \(F(|\psi|^2)\); full declared local
+  higher-order jet-density directional derivative. These theorems have
+  mathematical statements derived from the corrected equations, not
+  assumed symbolic slopes.
+- **Amplitude-sector exact:** coefficient lower bound on
+  \(0<\delta\le |\psi|^2\le M\), counterexamples to a global positive
+  lower bound near zero and at large amplitude, almost-everywhere lifting
+  to complex fields and curvature energy densities.
+- **Integrated first variation, explicit analytic hypotheses:**
+  `S004IntegratedVariation.integratedDensity_hasDerivAt_of_dominated`
+  derives the Gâteaux derivative of the *actual integral* of the
+  specified corrected S004 local jet density from Mathlib differentiation
+  under the integral. Its analytic assumptions include an integrable
+  a.e. local Lipschitz majorant and measurability; it does **not**
+  separately construct an admissible Sobolev class satisfying them.
+- **Missing:** actual full spacetime complex tensor action with all spatial
+  gradients; variable-coefficient high-order integration by parts and
+  boundary traces; final Euler-Lagrange operator/evolution equivalence;
+  nonlinear flow construction, uniqueness, continuation, global bounds,
+  and any invariant nonvanishing-amplitude annulus.
+
+The last two categories must not be collapsed: proving an integral
+first variation under explicit domination is a **conditional continuum
+theorem**, not automatically a full variational/PDE closure. Original
+issue completion requires discharge of these function-space
+hypotheses and higher-order boundary terms.
