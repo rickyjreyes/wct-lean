@@ -147,6 +147,5 @@ theorem fullLocalDensity_hasDerivAt {d : ℕ}
       intro i hi
       simp only [shift]
       ring
-  · rfl
 
 end WCTLean.S004FullSpatialJet
