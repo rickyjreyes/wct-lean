@@ -112,4 +112,50 @@ theorem arbitrarily_small_weight_high_density
   rw [hinv] at hsmall
   linarith
 
+/-! ## Explicit almost-everywhere continuum-field coercivity interface -/
+
+/-- For any measure space and any complex field whose amplitude stays
+within the prescribed annulus almost everywhere, the genuine S004
+curvature coefficient has the same positive floor almost everywhere.
+This is an ACTUAL function-space assertion, not just a canonical jet.
+It does not supply an invariant annulus for an evolution. -/
+theorem complexWeight_ae_lower_bound
+    {Ω : Type*} [MeasurableSpace Ω] (mu : MeasureTheory.Measure Ω)
+    (psi : Ω → ℂ)
+    (epsilon alpha delta M : ℝ)
+    (heps : 0 < epsilon) (ha : 0 ≤ alpha)
+    (hdelta : 0 < delta)
+    (hpsi : ∀ᵐ x ∂mu,
+      delta ≤ Complex.normSq (psi x) ∧ Complex.normSq (psi x) ≤ M) :
+    ∀ᵐ x ∂mu,
+      delta / (M + epsilon ^ 2) ^ 2 ≤
+        Complex.normSq (psi x) /
+          (complexRegularizerDenominator (psi x) epsilon alpha) ^ 2 := by
+  filter_upwards [hpsi] with x hx
+  simpa only [correctedRadialDenominator_eq_complex, correctedRadialWeight] using
+    curvatureWeight_ge_on_amplitude_annulus epsilon alpha delta M
+      (Complex.normSq (psi x)) heps ha hdelta hx.1 hx.2
+
+/-- Under the same a.e. amplitude hypothesis, the weighted S004
+curvature quadratic energy density controls the unweighted density.
+No unproved integration, measurability or boundary identity is
+assumed; the exact a.e. inequality is available to such theorems. -/
+theorem curvatureEnergyDensity_ae_lower_bound
+    {Ω : Type*} [MeasurableSpace Ω] (mu : MeasureTheory.Measure Ω)
+    (psi Q : Ω → ℂ)
+    (epsilon alpha delta M : ℝ)
+    (heps : 0 < epsilon) (ha : 0 ≤ alpha)
+    (hdelta : 0 < delta)
+    (hpsi : ∀ᵐ x ∂mu,
+      delta ≤ Complex.normSq (psi x) ∧ Complex.normSq (psi x) ≤ M) :
+    ∀ᵐ x ∂mu,
+      (delta / (M + epsilon ^ 2) ^ 2) * ‖Q x‖ ^ 2 ≤
+        (Complex.normSq (psi x) /
+          (complexRegularizerDenominator (psi x) epsilon alpha) ^ 2) *
+          ‖Q x‖ ^ 2 := by
+  have hfloor := complexWeight_ae_lower_bound mu psi
+    epsilon alpha delta M heps ha hdelta hpsi
+  filter_upwards [hfloor] with x hx
+  exact mul_le_mul_of_nonneg_right hx (sq_nonneg _)
+
 end WCTLean
