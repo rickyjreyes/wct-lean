@@ -21,6 +21,7 @@ import WCTLean.Models.ComplexCurvature
 import WCTLean.Models.S004JetVariation
 import WCTLean.Models.S004TwoComponentVariation
 import WCTLean.Models.S004FullSpatialJet
+import WCTLean.Models.S004FullSpatialIntegratedVariation
 import WCTLean.Models.S004IntegratedVariation
 import WCTLean.Models.S004PrincipalDegeneracy
 import WCTLean.Models.S004AmplitudeAnnulus
