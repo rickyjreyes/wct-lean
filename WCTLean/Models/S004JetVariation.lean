@@ -89,4 +89,32 @@ theorem jetDensity_direction_chain
         f * curvatureQuadraticDirection kappa theta gamma a b da db := by
   rfl
 
+/-! ## True real derivative of the quadratic acceleration/Laplacian form -/
+
+/-- The exact quadratic-jet coefficient above is the genuine directional
+derivative, not merely the linear term of a symbolic polynomial. -/
+theorem curvatureQuadratic_hasDerivAt
+    (kappa theta gamma a b da db : ℝ) :
+    HasDerivAt
+      (fun t : ℝ =>
+        curvatureQuadratic kappa theta gamma
+          (a + t * da) (b + t * db))
+      (curvatureQuadraticDirection kappa theta gamma a b da db) 0 := by
+  have ha : HasDerivAt (fun t : ℝ => a + t * da) da 0 := by
+    convert ((hasDerivAt_id (0 : ℝ)).const_mul da).const_add a using 1
+    · funext t
+      ring
+    · ring
+  have hb : HasDerivAt (fun t : ℝ => b + t * db) db 0 := by
+    convert ((hasDerivAt_id (0 : ℝ)).const_mul db).const_add b using 1
+    · funext t
+      ring
+    · ring
+  have hdiff := hb.sub ha
+  have h := ((hdiff.pow 2).const_mul kappa).add
+    ((hb.pow 2).const_mul theta) |>.add ((hdiff.mul hb).const_mul gamma)
+  convert h using 1 <;>
+    simp [curvatureQuadratic, curvatureQuadraticDirection] <;>
+    ring
+
 end WCTLean.S004JetVariation
