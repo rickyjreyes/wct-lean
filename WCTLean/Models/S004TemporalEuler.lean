@@ -46,7 +46,7 @@ momentum. All needed boundary trace and regularity hypotheses are
 explicit and independent of the claimed Euler–Lagrange result. -/
 theorem x_component_temporal_euler
     {d : ℕ} (a b : ℝ) (u h : ℝ → Jet d)
-    (epsilon alpha kappa theta gamma Vprime : ℝ)
+    (epsilon alpha kappa theta gamma : ℝ) (Vprime : ℝ → ℝ)
     (momentum1 accel1 accel2 : ℝ → ℝ)
     (hmomentum : ∀ t ∈ [[a,b]],
       HasDerivAt (fun s : ℝ => timeMomentumX (u s)) (momentum1 t) t)
@@ -67,12 +67,12 @@ theorem x_component_temporal_euler
     (hxa : (h a).x = 0) (hxb : (h b).x = 0)
     (hvxa : (h a).vx = 0) (hvxb : (h b).vx = 0) :
     (∫ t in a..b,
-       forceX epsilon alpha kappa theta gamma Vprime (u t) * (h t).x) +
+       forceX epsilon alpha kappa theta gamma (Vprime t) (u t) * (h t).x) +
     (∫ t in a..b, timeMomentumX (u t) * (h t).vx) +
     (∫ t in a..b,
        accelX epsilon alpha kappa gamma (u t) * (h t).ax) =
     (∫ t in a..b,
-       forceX epsilon alpha kappa theta gamma Vprime (u t) * (h t).x) -
+       forceX epsilon alpha kappa theta gamma (Vprime t) (u t) * (h t).x) -
     (∫ t in a..b, momentum1 t * (h t).x) +
     (∫ t in a..b, accel2 t * (h t).x) := by
   have hfirst := WCTLean.S004IntervalGreen.integral_mul_first_deriv_eq_neg
@@ -93,7 +93,7 @@ same exact nonlinear coupled curvature coefficient, derived by
 ordinary temporal integration by parts on the admissible test jet. -/
 theorem y_component_temporal_euler
     {d : ℕ} (a b : ℝ) (u h : ℝ → Jet d)
-    (epsilon alpha kappa theta gamma Vprime : ℝ)
+    (epsilon alpha kappa theta gamma : ℝ) (Vprime : ℝ → ℝ)
     (momentum1 accel1 accel2 : ℝ → ℝ)
     (hmomentum : ∀ t ∈ [[a,b]],
       HasDerivAt (fun s : ℝ => timeMomentumY (u s)) (momentum1 t) t)
@@ -114,12 +114,12 @@ theorem y_component_temporal_euler
     (hya : (h a).y = 0) (hyb : (h b).y = 0)
     (hvya : (h a).vy = 0) (hvyb : (h b).vy = 0) :
     (∫ t in a..b,
-       forceY epsilon alpha kappa theta gamma Vprime (u t) * (h t).y) +
+       forceY epsilon alpha kappa theta gamma (Vprime t) (u t) * (h t).y) +
     (∫ t in a..b, timeMomentumY (u t) * (h t).vy) +
     (∫ t in a..b,
        accelY epsilon alpha kappa gamma (u t) * (h t).ay) =
     (∫ t in a..b,
-       forceY epsilon alpha kappa theta gamma Vprime (u t) * (h t).y) -
+       forceY epsilon alpha kappa theta gamma (Vprime t) (u t) * (h t).y) -
     (∫ t in a..b, momentum1 t * (h t).y) +
     (∫ t in a..b, accel2 t * (h t).y) := by
   have hfirst := WCTLean.S004IntervalGreen.integral_mul_first_deriv_eq_neg
