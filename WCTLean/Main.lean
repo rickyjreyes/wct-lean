@@ -20,6 +20,7 @@ import WCTLean.Models.CurvatureOperator
 import WCTLean.Models.ComplexCurvature
 import WCTLean.Models.S004JetVariation
 import WCTLean.Models.S004TwoComponentVariation
+import WCTLean.Models.S004FullSpatialJet
 import WCTLean.Models.S004IntegratedVariation
 import WCTLean.Models.S004PrincipalDegeneracy
 import WCTLean.Models.S004AmplitudeAnnulus
@@ -58,4 +59,3 @@ theorem wctlean_registry_smoke : canonicalRegistry.length = 142 :=
   canonicalRegistry_length
 
 end WCTLean
-import WCTLean.Models.S004FullSpatialJet
