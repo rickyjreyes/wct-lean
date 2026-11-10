@@ -79,14 +79,14 @@ theorem integratedDensity_hasDerivAt_of_dominated
     (hlip : ∀ᵐ x ∂mu,
       LipschitzOnWith (Real.nnabs (bound x))
         (fun t : ℝ => localDensity epsilon alpha kappa theta gamma V
-          ((u x).shift (h x) t)) (Set.Ioo (-1 : ℝ) 1)) :
+          ((u x).shift (h x) t)) (Metric.ball (0 : ℝ) 1)) :
     Integrable (fun x => localDirection epsilon alpha kappa theta gamma
       (Vprime x) (u x) (h x)) mu ∧
     HasDerivAt
       (integratedDensity mu epsilon alpha kappa theta gamma V u h)
       (integratedDirection mu epsilon alpha kappa theta gamma Vprime u h) 0 := by
-  have hnbhd : Set.Ioo (-1 : ℝ) 1 ∈ 𝓝 (0 : ℝ) :=
-    isOpen_Ioo.mem_nhds (by norm_num)
+  have hnbhd : Metric.ball (0 : ℝ) 1 ∈ 𝓝 (0 : ℝ) :=
+    Metric.ball_mem_nhds (0 : ℝ) (by norm_num)
   have hdiff : ∀ᵐ x ∂mu,
       HasDerivAt
         (fun t : ℝ => localDensity epsilon alpha kappa theta gamma V
