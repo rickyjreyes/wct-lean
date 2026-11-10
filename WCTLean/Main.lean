@@ -19,6 +19,7 @@ import WCTLean.Contracts.UniformCurvatureDenominator
 import WCTLean.Models.CurvatureOperator
 import WCTLean.Models.ComplexCurvature
 import WCTLean.Models.S004JetVariation
+import WCTLean.Models.CorrectedWeightCalculus
 import WCTLean.Models.PhaseFlux
 import WCTLean.Models.RestDensity
 import WCTLean.Models.Locking
