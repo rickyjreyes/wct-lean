@@ -85,8 +85,7 @@ theorem integratedDensity_hasDerivAt_of_dominated
     HasDerivAt
       (integratedDensity mu epsilon alpha kappa theta gamma V u h)
       (integratedDirection mu epsilon alpha kappa theta gamma Vprime u h) 0 := by
-  have hnbhd : Metric.ball (0 : ℝ) 1 ∈ 𝓝 (0 : ℝ) :=
-    Metric.ball_mem_nhds (0 : ℝ) (by norm_num)
+  have hradius : (0 : ℝ) < 1 := by norm_num
   have hdiff : ∀ᵐ x ∂mu,
       HasDerivAt
         (fun t : ℝ => localDensity epsilon alpha kappa theta gamma V
@@ -97,7 +96,7 @@ theorem integratedDensity_hasDerivAt_of_dominated
     exact localDensity_hasDerivAt epsilon alpha kappa theta gamma
       V (u x) (h x) (Vprime x) heps ha hVx
   have h := hasDerivAt_integral_of_dominated_loc_of_lip
-    hnbhd hmeas hint hdmeas hlip hbound_int hdiff
+    hradius hmeas hint hdmeas hlip hbound_int hdiff
   simpa only [integratedDensity, integratedDirection] using h
 
 end WCTLean.S004IntegratedVariation
