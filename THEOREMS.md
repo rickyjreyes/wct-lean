@@ -382,3 +382,37 @@ healthy nonlinear S004/A2 sector.
 
 The exact-head reproducibility workflow runs
 `scripts/s004_axiom_audit.lean` for ten concrete theorem roots.
+
+
+## S004 Phase XVIII: actual Euler momenta, Green identities and compatible field action
+
+The following results are maintained under `WCTLean/Main.lean`, from
+the **original corrected two-real-component S004 action**, including the
+nonlinear \(F(|\psi|^2)\) multiplier, the potential derivative, every
+`Fin d` spatial gradient and the original acceleration/Laplacian
+mixed curvature quadratic.
+
+| Kernel theorem | Exact mathematical statement | Still missing |
+|---|---|---|
+| `S004EulerCoefficients.curvature_direction_coefficients` | Computes both independently varying coefficients of \(K(a,b)\), including mixed \(\gamma\) term | Integrated action assembly |
+| `S004EulerCoefficients.fullLocalDirection_coefficients` | Decomposes actual full corrected density variation into field force, time momentum, all spatial gradient terms, acceleration momentum and Laplacian momentum | Continuum adjoints |
+| `S004EulerCoefficients.fullLocalDensity_hasDerivAt_coefficients` | Those exact Euler momenta are **actually** the directional derivative of the maintained nonlinear S004 local action density | Full weak PDE |
+| `S004IntervalGreen.integral_mul_first_deriv_eq_neg` and `integral_mul_second_deriv_eq` | Real interval-integral first and second temporal integration by parts with genuine boundary trace cancellation, proved via Mathlib FTC | Multidimensional spacetime Fubini |
+| `S004IntervalGreen.integral_mul_first_deriv_periodic` and `integral_mul_second_deriv_periodic` | Real periodic-cell first/second derivative Green identities with matching 0th/1st traces | Actual periodic Sobolev realization |
+| `S004CompatibleFields.jetOf_fieldShift` | All field, velocity, acceleration, spatial gradient and Laplacian variations derive from a **single** field path when first-order derivative operators are linear and higher derivatives are iterated | Concrete operators on Sobolev functions |
+| `S004CompatibleFields.fieldAction_hasDerivAt_of_dominated` | Genuine integrated corrected field-action first variation, compatible derivatives, explicit measurable/integrable Lipschitz domination | Discharge domination from chosen regularity |
+| `S004TemporalEuler.x_component_temporal_euler` / `y_component_temporal_euler` | Exact nonlinear S004 temporal \(-\partial_t P_t+\partial_t^2P_{tt}\) contributions after genuine second-order time IBP, with admissible test traces | Combine into full spacetime PDE |
+| `S004SpatialEuler.x_component_periodic_euler` / `y_component_periodic_euler` | Exact one-dimensional periodic spatial \(-\partial_xP_g+\partial_x^2P_\Delta\) contributions for corrected S004 gradient and Laplacian momenta | Extend to d dimensions and Fubini |
+
+The updated `scripts/s004_axiom_audit.lean` checks **26 named theorem
+roots**. `scripts/check_s004_axioms.py` fails closed if any root is
+missing or any axiom other than the ordinary logical axioms appears.
+Check exact-head GitHub Actions before treating any fresh audit as final.
+
+**Critical scope boundary:** This is not yet a kernel-verified
+**combined spacetime Euler–Lagrange equation** for S004. The
+time-direction and 1D periodic spatial integrations have been proved
+separately. They must be assembled using actual spacetime measure,
+Fubini, concrete Sobolev derivative operators, valid product/quotient
+estimates, boundary traces and a weak-to-strong PDE correspondence.
+No nonlinear A2/S004 well-posedness or ghost elimination follows.
