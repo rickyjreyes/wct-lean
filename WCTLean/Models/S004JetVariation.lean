@@ -103,18 +103,21 @@ theorem curvatureQuadratic_hasDerivAt
   have ha : HasDerivAt (fun t : ℝ => a + t * da) da 0 := by
     convert ((hasDerivAt_id (0 : ℝ)).const_mul da).const_add a using 1
     · funext t
+      simp only [id_eq]
       ring
     · ring
   have hb : HasDerivAt (fun t : ℝ => b + t * db) db 0 := by
     convert ((hasDerivAt_id (0 : ℝ)).const_mul db).const_add b using 1
     · funext t
+      simp only [id_eq]
       ring
     · ring
   have hdiff := hb.sub ha
   have h := ((hdiff.pow 2).const_mul kappa).add
     ((hb.pow 2).const_mul theta) |>.add ((hdiff.mul hb).const_mul gamma)
   convert h using 1 <;>
-    simp [curvatureQuadratic, curvatureQuadraticDirection] <;>
-    ring
+    simp [curvatureQuadratic, curvatureQuadraticDirection,
+      Pi.add_apply, Pi.sub_apply, Pi.mul_apply, Pi.pow_apply] <;>
+    ring_nf
 
 end WCTLean.S004JetVariation
