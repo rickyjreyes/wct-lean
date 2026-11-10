@@ -118,7 +118,10 @@ theorem localDensity_hasDerivAt
   have hcurv := hcurvx.add hcurvy
   have hw := realTwoComponentWeight_hasDerivAt
     epsilon alpha u.x u.y h.x h.y hepsilon halpha
-  have hpotential := hV.comp 0
+  have hV0 : HasDerivAt V Vprime
+      (realTwoComponentDensity (u.x + 0 * h.x) (u.y + 0 * h.y)) := by
+    simpa only [zero_mul, add_zero] using hV
+  have hpotential := hV0.comp 0
     (realTwoComponentDensity_hasDerivAt u.x u.y h.x h.y)
   have hquad := ((hvx.pow 2).add (hvy.pow 2)).neg.add
     ((hgx.pow 2).add (hgy.pow 2))
