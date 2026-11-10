@@ -36,14 +36,16 @@ theorem realTwoComponentDensity_hasDerivAt
       (2 * (x * dx + y * dy)) 0 := by
   have hx : HasDerivAt (fun t : ℝ => x + t * dx) dx 0 := by
     convert ((hasDerivAt_id (0 : ℝ)).const_mul dx).const_add x using 1
-    funext t
-    simp only [id_eq]
-    ring
+    · funext t
+      simp only [id_eq]
+      ring
+    · ring
   have hy : HasDerivAt (fun t : ℝ => y + t * dy) dy 0 := by
     convert ((hasDerivAt_id (0 : ℝ)).const_mul dy).const_add y using 1
-    funext t
-    simp only [id_eq]
-    ring
+    · funext t
+      simp only [id_eq]
+      ring
+    · ring
   have h := (hx.pow 2).add (hy.pow 2)
   convert h using 1 <;>
     simp [realTwoComponentDensity] <;>
