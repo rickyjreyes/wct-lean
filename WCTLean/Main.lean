@@ -20,6 +20,7 @@ import WCTLean.Models.CurvatureOperator
 import WCTLean.Models.ComplexCurvature
 import WCTLean.Models.S004JetVariation
 import WCTLean.Models.S004TwoComponentVariation
+import WCTLean.Models.S004IntegratedVariation
 import WCTLean.Models.S004PrincipalDegeneracy
 import WCTLean.Models.S004AmplitudeAnnulus
 import WCTLean.Models.CorrectedWeightCalculus
