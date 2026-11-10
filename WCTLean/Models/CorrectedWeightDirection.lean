@@ -35,9 +35,15 @@ theorem realTwoComponentDensity_hasDerivAt
         realTwoComponentDensity (x + t * dx) (y + t * dy))
       (2 * (x * dx + y * dy)) 0 := by
   have hx : HasDerivAt (fun t : ℝ => x + t * dx) dx 0 := by
-    convert ((hasDerivAt_id (0 : ℝ)).const_mul dx).const_add x using 1 <;> ring
+    convert ((hasDerivAt_id (0 : ℝ)).const_mul dx).const_add x using 1
+    funext t
+    simp only [id_eq]
+    ring
   have hy : HasDerivAt (fun t : ℝ => y + t * dy) dy 0 := by
-    convert ((hasDerivAt_id (0 : ℝ)).const_mul dy).const_add y using 1 <;> ring
+    convert ((hasDerivAt_id (0 : ℝ)).const_mul dy).const_add y using 1
+    funext t
+    simp only [id_eq]
+    ring
   have h := (hx.pow 2).add (hy.pow 2)
   convert h using 1 <;>
     simp [realTwoComponentDensity] <;>
@@ -79,11 +85,14 @@ theorem realTwoComponentWeight_hasDerivAt
       (realTwoComponentDensity x y) ≠ 0 :=
     ne_of_gt (lt_of_lt_of_le
       (complexRegulatorFloor_pos epsilon alpha heps) hfloor)
-  have hweight := (correctedWeightRadialSlope_hasDerivAt
-      epsilon alpha (realTwoComponentDensity x y) hD).comp 0
-        (realTwoComponentDensity_hasDerivAt x y dx dy)
-  convert hweight using 1 <;>
-    simp [realTwoComponentWeight, realTwoComponentDensity] <;>
-    ring
+  have hF : HasDerivAt (correctedRadialWeight epsilon alpha)
+      (correctedWeightRadialSlope epsilon alpha (realTwoComponentDensity x y))
+      (realTwoComponentDensity (x + 0 * dx) (y + 0 * dy)) := by
+    simpa only [zero_mul, add_zero] using
+      correctedWeightRadialSlope_hasDerivAt epsilon alpha
+        (realTwoComponentDensity x y) hD
+  have hweight := hF.comp 0
+    (realTwoComponentDensity_hasDerivAt x y dx dy)
+  simpa only [realTwoComponentWeight] using hweight
 
 end WCTLean
