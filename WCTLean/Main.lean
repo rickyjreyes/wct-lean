@@ -24,6 +24,7 @@ import WCTLean.Models.S004FullSpatialJet
 import WCTLean.Models.S004EulerCoefficients
 import WCTLean.Models.S004IntervalGreen
 import WCTLean.Models.S004TemporalEuler
+import WCTLean.Models.S004SpatialEuler
 import WCTLean.Models.S004CompatibleFields
 import WCTLean.Models.S004FullSpatialIntegratedVariation
 import WCTLean.Models.S004IntegratedVariation
