@@ -345,3 +345,40 @@ identification of the Euler-Lagrange PDE, nonlinear A2/S004 constraint
 preservation, and local/global WCT PDE well-posedness. Issues #17-#19 stay OPEN.
 The current PR's CI status must be checked at its exact final head; an earlier
 green run does not certify later commits.
+
+
+## S004 Phase XVII: full finite-spatial-gradient corrected action and integral variation
+
+**Exact maintained source:**
+`WCTLean/Models/S004FullSpatialJet.lean` and
+`WCTLean/Models/S004FullSpatialIntegratedVariation.lean`, imported from
+`WCTLean/Main.lean`. In the flat complex scalar model with `d` spatial
+directions, all `Fin d` gradient squares appear, together with the
+independent acceleration, Laplacian, potential and corrected
+`F(|psi|²) = |psi|²/(|psi|²+epsilon² exp(-2 alpha |psi|²))²` terms.
+
+| Theorem | Kernel-checked mathematical scope | Unresolved obligation |
+|---|---|---|
+| `S004FullSpatialJet.gradient_sum_hasDerivAt` | First variation of the complete finite spatial-gradient energy sum, every `d : Nat` | Pointwise finite jet, not a PDE |
+| `S004FullSpatialJet.fullLocalDensity_hasDerivAt` | Entire flat two-real-component S004 local density derivative, **all d spatial gradients**, corrected regulator and arbitrary differentiable potential | No IBP or Sobolev space map |
+| `S004FullSpatialIntegral.action_hasDerivAt_of_dominated` | **Integrated** first variation of that exact flat local density on an arbitrary measured domain; mathematically derived from pointwise variation and Mathlib differentiation under the integral | Requires separately justified measurable/integrable action, a.e. potential derivative and common-neighborhood integrable Lipschitz bound |
+| `S004AmplitudeAnnulus.curvatureWeight_ge_on_amplitude_annulus` | Explicit strict positive curvature coefficient on `0<delta<=|psi|²<=M` | Annulus neither invariant nor globally admissible for arbitrary L² whole-space fields |
+
+An important negative analytical constraint: the kernel-checked
+`ReyesMath.E26.not_ae_norm_ge_of_memLp` in
+`rickyjreyes/math/lean/MathProofs/RegularizedCurvatureL2.lean`
+proves that a finite-mass L² field on Euclidean whole space cannot
+possess a positive uniform amplitude floor a.e. The annulus-based
+positive coefficient estimate must therefore not be advertised as a
+global uniformly elliptic PDE regime for all finite-mass whole-space
+initial data. It may be relevant on bounded or periodic domains, or
+for local patch estimates.
+
+**Open:** derive domination from explicit Sobolev hypotheses;
+higher-order integration by parts with appropriate boundary traces;
+the exact weak and strong Euler-Lagrange PDE; local/global nonlinear
+WCT well-posedness; canonical constraints and a dynamically invariant
+healthy nonlinear S004/A2 sector.
+
+The exact-head reproducibility workflow runs
+`scripts/s004_axiom_audit.lean` for ten concrete theorem roots.
