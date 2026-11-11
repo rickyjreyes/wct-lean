@@ -43,7 +43,7 @@ open WCTLean.S004SpacetimeFubini
 with the test variation vanishing at temporal endpoints.
 Proof uses real interval FTC and Fubini from product integrability. -/
 theorem temporal_first_spacetime
-    (a b c d : ℝ) (u u1 v v1 : ℝ → ℝ → ℝ)
+    (a b c d : ℝ) (hcd : c ≤ d) (u u1 v v1 : ℝ → ℝ → ℝ)
     (hu : ∀ x t, t ∈ [[a,b]] →
       HasDerivAt (fun s => u s x) (u1 t x) t)
     (hv : ∀ x t, t ∈ [[a,b]] →
@@ -60,9 +60,9 @@ theorem temporal_first_spacetime
     (∫ t in a..b, ∫ x in c..d, u t x * v1 t x) =
       -(∫ t in a..b, ∫ x in c..d, u1 t x * v t x) := by
   have hl := rectangle_integral_swap a b c d
-    (fun t x => u t x * v1 t x) hf
+    (fun t x => u t x * v1 t x) hcd hf
   have hr := rectangle_integral_swap a b c d
-    (fun t x => u1 t x * v t x) hg
+    (fun t x => u1 t x * v t x) hcd hg
   calc
     (∫ t in a..b, ∫ x in c..d, u t x * v1 t x) =
       (∫ x in c..d, ∫ t in a..b, u t x * v1 t x) := hl
@@ -81,7 +81,7 @@ theorem temporal_first_spacetime
 ∫∫ u * ∂tt v = ∫∫ (∂tt u) * v. Both 0th and 1st
 temporal traces of the test variation must vanish. -/
 theorem temporal_second_spacetime
-    (a b c d : ℝ)
+    (a b c d : ℝ) (hcd : c ≤ d)
     (u u1 u2 v v1 v2 : ℝ → ℝ → ℝ)
     (hu : ∀ x t, t ∈ [[a,b]] →
       HasDerivAt (fun s => u s x) (u1 t x) t)
@@ -106,9 +106,9 @@ theorem temporal_second_spacetime
     (∫ t in a..b, ∫ x in c..d, u t x * v2 t x) =
       (∫ t in a..b, ∫ x in c..d, u2 t x * v t x) := by
   have hl := rectangle_integral_swap a b c d
-    (fun t x => u t x * v2 t x) hf
+    (fun t x => u t x * v2 t x) hcd hf
   have hr := rectangle_integral_swap a b c d
-    (fun t x => u2 t x * v t x) hg
+    (fun t x => u2 t x * v t x) hcd hg
   calc
     (∫ t in a..b, ∫ x in c..d, u t x * v2 t x) =
       (∫ x in c..d, ∫ t in a..b, u t x * v2 t x) := hl
