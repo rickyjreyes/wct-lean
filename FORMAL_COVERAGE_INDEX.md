@@ -521,3 +521,42 @@ regularity; extension to multidimensional spatial tori; and
 the actual PDE weak-to-strong equivalence. Do not treat these
 as completed simply because the component identity compiles.
 The original three target issues remain open.
+
+
+## Phase XX, Euler criticality gap: verified test separation versus original action
+
+Three newly maintained proof modules, `S004EulerSeparation.lean`,
+`S004ContinuousEuler.lean`, and
+`S004BoundaryWeightedEuler.lean`, close important parts of the
+**analytic uniqueness** side of the S004 weak Euler equation:
+
+1. Prove from actual nonnegative Lebesgue integration that a real
+   square-integrable residual is determined almost everywhere by all
+   integrable test pairings, with separate real/imaginary field tests.
+2. Apply the result to the exact original nonlinear corrected S004
+   Euler residual, not an independent model.
+3. Derive the required (L^2) property from continuous residuals on
+   a real compact time × periodic-space rectangle, without a
+   separately postulated energy estimate.
+4. Replace the unrestricted-test separation step with a concrete
+   time-boundary-weighted residual (h=(t-a)^2(b-t)^2 E). The weight
+   is positive in the open interval and has zero VALUE and FIRST
+   time derivative at both boundaries, formally derived from
+   ordinary differential calculus.
+5. Prove the explicit residual test inherits periodic spatial
+   value traces and that vanishing of pairings for the actual
+   specified boundary-periodic class forces (E=0) a.e. on the
+   spacetime interior.
+
+**Not equivalent to full original S004 critical-point closure:**
+the specified boundary-periodic test class lacks mandatory spatial
+first-derivative trace conditions and is not yet proved to coincide
+with the actual admissible Sobolev/C² test space of the action.
+The action's integral first variation, the 1+1 strong Euler pairing
+and the weighted fundamental lemma must still be joined with
+concrete derivative and nonlinear quotient mapping hypotheses.
+No nonlinear ghost-freedom or well-posedness result follows.
+
+The maintained `scripts/s004_axiom_audit.lean` and strict checker
+now require **54 exact theorem roots**; report this result verified
+only when final pinned Lean CI has passed.
