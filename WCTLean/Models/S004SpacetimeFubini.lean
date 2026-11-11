@@ -69,4 +69,42 @@ theorem corrected_density_direction_swap
         (Vprime t x) (u t x) (h t x)) := by
   exact rectangle_integral_swap a b c d _ hcd hint
 
+/-! ## Discharging product integrability from actual continuity -/
+
+/-- Continuous nonlinear action densities on a compact spacetime
+rectangle are genuinely product-measure integrable. This removes the
+independent Fubini-integrability hypothesis when S004 field jets
+and the corrected nonlinear quotient are known to be continuous.
+The proof uses local finiteness of the actual Lebesgue volume on ℝ²,
+not an artificial integrability axiom. -/
+theorem continuous_rectangle_integrable
+    (a b c d : ℝ) (hab : a ≤ b) (hcd : c ≤ d)
+    (f : ℝ → ℝ → ℝ)
+    (hf : Continuous (Function.uncurry f)) :
+    IntegrableOn (Function.uncurry f)
+      (uIoc a b ×ˢ uIoc c d) := by
+  have hcompact : IsCompact ((Icc a b) ×ˢ (Icc c d)) :=
+    isCompact_Icc.prod isCompact_Icc
+  have hfull : IntegrableOn (Function.uncurry f)
+      ((Icc a b) ×ˢ (Icc c d)) :=
+    hf.continuousOn.integrableOn_compact hcompact
+  apply hfull.mono_set
+  rintro ⟨t,x⟩ ⟨ht,hx⟩
+  change t ∈ Icc a b ∧ x ∈ Icc c d
+  rw [uIoc_of_le hab] at ht
+  rw [uIoc_of_le hcd] at hx
+  exact ⟨Ioc_subset_Icc_self ht, Ioc_subset_Icc_self hx⟩
+
+/-- Concrete continuous-field Fubini theorem with NO abstract
+integrability premise. Continuous original S004 action integrands
+on bounded rectangles fit here once their jet regularity is proved. -/
+theorem continuous_rectangle_integral_swap
+    (a b c d : ℝ) (hab : a ≤ b) (hcd : c ≤ d)
+    (f : ℝ → ℝ → ℝ)
+    (hf : Continuous (Function.uncurry f)) :
+    (∫ t in a..b, ∫ x in c..d, f t x) =
+      (∫ x in c..d, ∫ t in a..b, f t x) := by
+  exact rectangle_integral_swap a b c d f hcd
+    (continuous_rectangle_integrable a b c d hab hcd f hf)
+
 end WCTLean.S004SpacetimeFubini
