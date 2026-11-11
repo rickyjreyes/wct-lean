@@ -30,11 +30,19 @@ namespace WCTLean.S004SpacetimeFubini
 under actual product-measure Lebesgue integrability. -/
 theorem rectangle_integral_swap
     (a b c d : ℝ) (f : ℝ → ℝ → ℝ)
+    (hcd : c ≤ d)
     (hf : IntegrableOn (Function.uncurry f)
       (Set.uIoc a b ×ˢ Set.uIoc c d)) :
     (∫ t in a..b, ∫ x in c..d, f t x) =
       (∫ x in c..d, ∫ t in a..b, f t x) := by
-  exact MeasureTheory.intervalIntegral_intervalIntegral_swap hf
+  have hproduct :
+      Integrable (Function.uncurry f)
+        ((volume.restrict (uIoc a b)).prod
+          (volume.restrict (Ioc c d))) := by
+    rw [Measure.prod_restrict, ← Measure.volume_eq_prod ℝ ℝ]
+    simpa only [IntegrableOn, uIoc_of_le hcd] using hf
+  simp_rw [intervalIntegral.integral_of_le hcd]
+  exact MeasureTheory.intervalIntegral_integral_swap hproduct
 
 /-- Each corrected S004 local derivative term has the same spacetime
 integral in time-major or space-major order, once its real
@@ -44,6 +52,7 @@ theorem corrected_density_direction_swap
     (epsilon alpha kappa theta gamma : ℝ)
     (Vprime : ℝ → ℝ → ℝ)
     (u h : ℝ → ℝ → WCTLean.S004FullSpatialJet.Jet 1)
+    (hcd : c ≤ d)
     (hint : IntegrableOn
       (Function.uncurry (fun t x =>
         WCTLean.S004FullSpatialJet.fullLocalDirection
@@ -58,6 +67,6 @@ theorem corrected_density_direction_swap
       WCTLean.S004FullSpatialJet.fullLocalDirection
         epsilon alpha kappa theta gamma
         (Vprime t x) (u t x) (h t x)) := by
-  exact rectangle_integral_swap a b c d _ hint
+  exact rectangle_integral_swap a b c d _ hcd hint
 
 end WCTLean.S004SpacetimeFubini
