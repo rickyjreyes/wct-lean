@@ -249,4 +249,62 @@ theorem weakComponent_eq_strongComponent
   rw [ht, hta2, hs, hs2]
   ring
 
+/-! ## Exact bridge back to the ORIGINAL two-real-component action -/
+
+/-- The actual weak integrand for ONE component, with all five
+nonlinear corrected S004 momentum families explicitly present. -/
+noncomputable def weakPointwiseComponent (side : Bool)
+    (epsilon alpha kappa theta gamma Vprime : ℝ)
+    (u h : Jet 1) : ℝ :=
+  force side epsilon alpha kappa theta gamma Vprime u * component side h +
+  timeMomentum side u * velocity side h +
+  accelerationMomentum side epsilon alpha kappa gamma u *
+    acceleration side h +
+  gradientMomentum side u * gradient side h +
+  laplacianMomentum side epsilon alpha kappa theta gamma u *
+    laplacian side h
+
+/-- Exact algebraic REASSEMBLY of the original corrected complex
+two-real-component action density derivative. The two real
+components of the proposed weak Euler functional are not a separate
+surrogate energy: their sum IS the original S004 local Gâteaux
+derivative including F' and all mixed curvature terms. -/
+theorem fullLocalDirection_eq_component_sum
+    (epsilon alpha kappa theta gamma Vprime : ℝ) (u h : Jet 1) :
+    fullLocalDirection epsilon alpha kappa theta gamma Vprime u h =
+      weakPointwiseComponent true epsilon alpha kappa theta gamma Vprime u h +
+      weakPointwiseComponent false epsilon alpha kappa theta gamma Vprime u h := by
+  rw [fullLocalDirection_coefficients]
+  simp only [weakPointwiseComponent, force, component, velocity,
+    acceleration, gradient, laplacian, timeMomentum, accelerationMomentum,
+    gradientMomentum, laplacianMomentum, if_true, if_false]
+  simp [Fin.sum_univ_succ, Fin.sum_univ_zero]
+  ring
+
+/-- **True integrated action variation decomposes exactly** into
+the two real component weak Euler densities, on an arbitrary measured
+domain, when those components are integrable. This is a genuine
+Lebesgue integral identity obtained by linearity, not the assumption
+that the action equals the desired Euler pairing. The further
+1+1 spacetime Green theorem above gives the actual weak-to-strong
+higher-derivative transfer under its differentiated field hypotheses. -/
+theorem integrated_fullLocalDirection_component_split
+    {Ω : Type*} [MeasurableSpace Ω] (mu : Measure Ω)
+    (epsilon alpha kappa theta gamma : ℝ)
+    (Vprime : Ω → ℝ) (u h : Ω → Jet 1)
+    (hintX : Integrable
+      (fun z => weakPointwiseComponent true epsilon alpha kappa theta gamma
+        (Vprime z) (u z) (h z)) mu)
+    (hintY : Integrable
+      (fun z => weakPointwiseComponent false epsilon alpha kappa theta gamma
+        (Vprime z) (u z) (h z)) mu) :
+    (∫ z, fullLocalDirection epsilon alpha kappa theta gamma
+      (Vprime z) (u z) (h z) ∂mu) =
+    (∫ z, weakPointwiseComponent true epsilon alpha kappa theta gamma
+      (Vprime z) (u z) (h z) ∂mu) +
+    (∫ z, weakPointwiseComponent false epsilon alpha kappa theta gamma
+      (Vprime z) (u z) (h z) ∂mu) := by
+  simp_rw [fullLocalDirection_eq_component_sum]
+  exact integral_add hintX hintY
+
 end WCTLean.S004SpacetimeEuler
