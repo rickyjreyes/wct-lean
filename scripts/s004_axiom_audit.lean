@@ -1,3 +1,6 @@
+import WCTLean.Models.S004EulerSeparation
+import WCTLean.Models.S004ContinuousEuler
+import WCTLean.Models.S004BoundaryWeightedEuler
 import WCTLean.Models.S004SpacetimeFubini
 import WCTLean.Models.S004SpacetimeGreen
 import WCTLean.Models.S004SpacetimeEuler
@@ -78,3 +81,21 @@ Only standard Lean logical axioms may occur.
 #print axioms WCTLean.S004SpacetimeEuler.integrated_fullLocalDirection_component_split
 
 #print axioms WCTLean.S004SpacetimeEuler.originalAction_hasDerivAt_two_weak_components
+
+-- Phase XX: genuine L2 and boundary-weighted Euler separation.
+#print axioms WCTLean.S004EulerSeparation.all_integrable_probes_zero_iff_ae_zero
+#print axioms WCTLean.S004EulerSeparation.two_component_integrable_probes_iff_ae_zero
+#print axioms WCTLean.S004EulerSeparation.corrected_euler_all_probes_iff_ae_equations
+#print axioms WCTLean.S004ContinuousEuler.continuous_square_integrable
+#print axioms WCTLean.S004ContinuousEuler.continuous_two_component_probes_iff_ae_zero
+#print axioms WCTLean.S004ContinuousEuler.corrected_euler_continuous_probes_iff_ae_equations
+#print axioms WCTLean.S004BoundaryWeightedEuler.timeWeight_nonneg
+#print axioms WCTLean.S004BoundaryWeightedEuler.timeWeight_pos_of_mem
+#print axioms WCTLean.S004BoundaryWeightedEuler.weighted_zero_integral_iff_ae_zero
+#print axioms WCTLean.S004BoundaryWeightedEuler.zero_variation_on_boundary_test_forces_ae_euler
+#print axioms WCTLean.S004BoundaryWeightedEuler.timeWeight_hasDerivAt
+#print axioms WCTLean.S004BoundaryWeightedEuler.timeWeight_zero_endpoints
+#print axioms WCTLean.S004BoundaryWeightedEuler.weighted_test_zero_temporal_traces
+#print axioms WCTLean.S004BoundaryWeightedEuler.weighted_test_periodic_values
+#print axioms WCTLean.S004BoundaryWeightedEuler.weighted_residual_is_boundary_periodic_test
+#print axioms WCTLean.S004BoundaryWeightedEuler.boundary_periodic_test_critical_forces_ae_euler
