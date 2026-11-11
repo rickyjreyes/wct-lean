@@ -29,6 +29,7 @@ import WCTLean.Models.S004SpacetimeFubini
 import WCTLean.Models.S004SpacetimeGreen
 import WCTLean.Models.S004SpacetimeEuler
 import WCTLean.Models.S004SpacetimeActionBridge
+import WCTLean.Models.S004SpacetimeStrongBridge
 import WCTLean.Models.S004EulerSeparation
 import WCTLean.Models.S004ContinuousEuler
 import WCTLean.Models.S004BoundaryWeightedEuler

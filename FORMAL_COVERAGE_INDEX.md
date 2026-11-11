@@ -568,3 +568,7 @@ The `WCTLean/Models/S004FirstSpatialTraceEuler.lean` module proves that the expl
 ### Original-action spacetime integration bridge, 2026-11-11
 
 The four kernel-audited roots in `WCTLean/Models/S004SpacetimeActionBridge.lean` establish the product-volume/iterated-integral Fubini link, five-term integrability implication, real-component weak integral identity, and original corrected S004 action derivative as the two genuine time-major weak Euler functionals. This discharges the previously absent product-to-iterated integration bridge. Still open: deriving domination and nonlinear regularity from an admissible smooth/Sobolev field space, identifying jets with those derivatives and applying existing complete spacetime Green theorems to give a strong Euler criticality equivalence for that class. Issues #17 and #18 remain open.
+
+### Original corrected S004 action-to-strong 1+1 conditional theorem
+
+`S004SpacetimeStrongBridge.originalAction_hasDerivAt_strong` connects actual nonlinear density differentiation, the product-measure to five-term iterated integral theorem, and the verified complete Green theorem, yielding both real-component strong Euler integral expressions from the actual integrated S004 action. Exact derivative/integrability/trace premises are bundled into `ActionRegularity` and `GreenRegularity`, not hidden Euler equations. This remains a conditional 1+1 theorem. Concrete field jet realization, smooth/Sobolev regularity implication and critical-point equivalence are not yet verified. The 64-root audit includes both new declarations.

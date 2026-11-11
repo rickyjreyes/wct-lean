@@ -6,6 +6,7 @@ import WCTLean.Models.S004SpacetimeFubini
 import WCTLean.Models.S004SpacetimeGreen
 import WCTLean.Models.S004SpacetimeEuler
 import WCTLean.Models.S004SpacetimeActionBridge
+import WCTLean.Models.S004SpacetimeStrongBridge
 import WCTLean.Models.S004EulerCoefficients
 import WCTLean.Models.S004IntervalGreen
 import WCTLean.Models.S004CompatibleFields
@@ -113,3 +114,7 @@ Only standard Lean logical axioms may occur.
 #print axioms WCTLean.S004SpacetimeActionBridge.five_terms_integrable
 #print axioms WCTLean.S004SpacetimeActionBridge.weakPointwise_integral_eq_weakComponent
 #print axioms WCTLean.S004SpacetimeActionBridge.originalAction_hasDerivAt_iterated_weak
+
+-- Conditional complete original S004 action-to-strong 1+1 Euler derivative.
+#print axioms WCTLean.S004SpacetimeStrongBridge.green_data_proves_weak_strong
+#print axioms WCTLean.S004SpacetimeStrongBridge.originalAction_hasDerivAt_strong
