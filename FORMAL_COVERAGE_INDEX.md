@@ -485,3 +485,39 @@ domain interpretation.
 Prior historical S004 local-jet and integral proofs retain their
 earlier exact scopes; a compiled partial result must not be reported
 as complete PDE formalization.
+
+
+## 2026-11-10 Phase XIX, continuum gap narrowed
+
+The full real-two-component corrected S004 local and integrated
+variations are connected, through genuine Mathlib interval-Fubini
+and FTC Green identities, to an **actual 1+1 dimensional**
+time-periodic-space weak-to-strong Euler integral for each component.
+
+Concrete theorem roots:
+- `S004SpacetimeFubini.continuous_rectangle_integrable`:
+  continuity on a finite compact time/space rectangle suffices for
+  actual product Lebesgue integrability; it is not an abstract
+  integrability contract.
+- `S004SpacetimeGreen.temporal_second_spacetime` and
+  `spatial_second_spacetime`: real 2D continuum
+  second-derivative IBP with correct temporal-zero and
+  spatial-periodic trace hypotheses, and Fubini where required.
+- `S004SpacetimeEuler.weakComponent_eq_strongComponent`:
+  all five actual momentum families assembled in one
+  1+1 weak-to-strong identity.
+- `S004SpacetimeEuler.fullLocalDirection_eq_component_sum` and
+  `integrated_fullLocalDirection_component_split`: two
+  weak component densities recombine exactly into the original
+  corrected S004 Gâteaux action derivative, also after true
+  Lebesgue integration.
+
+**Mathematical boundary:** the current weak component is a sum of
+five genuine iterated integrals. A full *single-integral*
+weak Euler identity for the action additionally needs rigorously
+integrable termwise linearity on the spacetime measure; a
+distributional fundamental lemma and Sobolev trace/mapping
+regularity; extension to multidimensional spatial tori; and
+the actual PDE weak-to-strong equivalence. Do not treat these
+as completed simply because the component identity compiles.
+The original three target issues remain open.
