@@ -139,7 +139,7 @@ theorem timeWeight_hasDerivAt
   have hh := (ha.pow 2).mul (hb.pow 2)
   convert hh using 1 <;>
     (try funext s) <;>
-    (try simp only [timeWeight]) <;>
+    (try simp only [timeWeight, Pi.pow_apply, Pi.mul_apply]) <;>
     ring
 
 /-- Both the weight AND its first temporal derivative vanish
