@@ -474,3 +474,35 @@ addresses the smooth finite-period-cell case under explicit
 classical derivative/integrability conditions, not all
 `H^s(I × 𝕋^d)` data. Neither result proves #19 PDE
 well-posedness.
+
+
+## Phase XX: Euler residual separation and boundary-compatible test functions
+
+The following maintained Lean modules are imported by `WCTLean/Main.lean`
+and remain **specific to the corrected nonlinear two-real-component
+S004 action**. They do not concern the separate F01 Hamiltonian.
+
+| Proof declaration | Exact statement and scope | Not established |
+|---|---|---|
+| `S004EulerSeparation.all_integrable_probes_zero_iff_ae_zero` | For a genuinely square-integrable real residual on any measure space, zero pairing against **every test with integrable product** is equivalent to vanishing almost everywhere, proved using the nonnegative integral of the residual squared | The test class is broader than smooth compactly time-supported S004 variations |
+| `S004EulerSeparation.two_component_integrable_probes_iff_ae_zero` | Separate the real and imaginary Euler residuals by independently choosing the two actual field-component test directions | No action-to-admissible-variation density result |
+| `S004EulerSeparation.corrected_euler_all_probes_iff_ae_equations` | Applies the preceding lemma to the **actual S004 nonlinear corrected strong Euler residual** obtained from the previously verified full force, time/acceleration and spatial/Laplacian momenta | Does not assert those abstract tests are all admissible original-action variations |
+| `S004ContinuousEuler.continuous_square_integrable` | Derives the real (L^2) input from continuity on an actual compact time × periodic fundamental rectangle using Lebesgue integrability | Smooth/Sobolev mapping regularity for the S004 field still needs construction |
+| `S004ContinuousEuler.corrected_euler_continuous_probes_iff_ae_equations` | Applies actual corrected S004 duality with no separately assumed (L^2) estimate when its two strong residuals are continuous | All-continuous test directions do not automatically meet S004 second-order trace conditions |
+| `S004BoundaryWeightedEuler.weighted_zero_integral_iff_ae_zero` | On the actual OPEN spacetime rectangle, the nonnegative weighted square integral with (w(t)=(t-a)^2(b-t)^2>0) in the interior vanishes iff the Euler residual vanishes a.e. | Requires actual integrability of that weighted square |
+| `S004BoundaryWeightedEuler.weighted_test_zero_temporal_traces` | Proves that (h(t,x)=w(t)E(t,x)) has (h=\partial_t h=0) at both temporal endpoints when E has endpoint derivatives | Does not alone establish interior (C^2) or spatial derivative regularity |
+| `S004BoundaryWeightedEuler.weighted_test_periodic_values` | Proves that the same explicit test inherits spatial periodic VALUE traces when E has them | Periodicity of spatial first derivatives remains a separate analytical condition |
+| `S004BoundaryWeightedEuler.boundary_periodic_test_critical_forces_ae_euler` | A genuine restricted fundamental lemma: vanishing residual pairing for every test with the specified temporal and periodic value traces forces the residual to be zero a.e.; the proof explicitly constructs and validates its weighted residual test | **Not yet** the original action-critical-point iff full S004 distributional PDE result |
+
+The exact-head axiom audit is expanded to **54 roots**, including all
+16 new theorem roots from these three modules. A passing CI result is
+necessary before reporting that 54-root audit as verified.
+
+**Original-claim boundary:** #17 remains open until the original
+field action and admissible (C^2/H^s) test space are identified
+with the complete spacetime Euler pairing, including justified
+spatial first-derivative periodic traces and a weak-to-strong
+equivalence. #18 remains open until actual Sobolev derivative and
+quotient composition estimates discharge the remaining analytical
+hypotheses. Neither result establishes nonlinear S004 flow
+well-posedness (#19).
