@@ -183,10 +183,46 @@ theorem weakPointwise_integral_eq_weakComponent
       ∂rectangleVolume a b c d) =
     weakComponent side a b c d epsilon alpha kappa theta gamma
       Vprime u h
-  rw [integral_add (((hf.add ht).add ha).add hg) hl,
-      integral_add ((hf.add ht).add ha) hg,
-      integral_add (hf.add ht) ha,
-      integral_add hf ht]
+  have h12 : (∫ z, (f1 + f2) z ∂rectangleVolume a b c d) =
+      (∫ z, f1 z ∂rectangleVolume a b c d) +
+      (∫ z, f2 z ∂rectangleVolume a b c d) :=
+    integral_add hf ht
+  have h123 : (∫ z, (f1 + f2 + f3) z ∂rectangleVolume a b c d) =
+      (∫ z, (f1 + f2) z ∂rectangleVolume a b c d) +
+      (∫ z, f3 z ∂rectangleVolume a b c d) :=
+    integral_add (hf.add ht) ha
+  have h1234 : (∫ z, (f1 + f2 + f3 + f4) z ∂rectangleVolume a b c d) =
+      (∫ z, (f1 + f2 + f3) z ∂rectangleVolume a b c d) +
+      (∫ z, f4 z ∂rectangleVolume a b c d) :=
+    integral_add ((hf.add ht).add ha) hg
+  have h12345 : (∫ z, (f1 + f2 + f3 + f4 + f5) z
+      ∂rectangleVolume a b c d) =
+      (∫ z, (f1 + f2 + f3 + f4) z ∂rectangleVolume a b c d) +
+      (∫ z, f5 z ∂rectangleVolume a b c d) :=
+    integral_add (((hf.add ht).add ha).add hg) hl
+  have hsum :
+      (∫ z, (f1 + f2 + f3 + f4 + f5) z ∂rectangleVolume a b c d) =
+      ((((∫ z, f1 z ∂rectangleVolume a b c d) +
+         (∫ z, f2 z ∂rectangleVolume a b c d)) +
+        (∫ z, f3 z ∂rectangleVolume a b c d)) +
+       (∫ z, f4 z ∂rectangleVolume a b c d)) +
+      (∫ z, f5 z ∂rectangleVolume a b c d) := by
+    calc
+      _ = (∫ z, (f1 + f2 + f3 + f4) z ∂rectangleVolume a b c d) +
+          (∫ z, f5 z ∂rectangleVolume a b c d) := h12345
+      _ = ((∫ z, (f1 + f2 + f3) z ∂rectangleVolume a b c d) +
+          (∫ z, f4 z ∂rectangleVolume a b c d)) +
+          (∫ z, f5 z ∂rectangleVolume a b c d) := by rw [h1234]
+      _ = (((∫ z, (f1 + f2) z ∂rectangleVolume a b c d) +
+          (∫ z, f3 z ∂rectangleVolume a b c d)) +
+          (∫ z, f4 z ∂rectangleVolume a b c d)) +
+          (∫ z, f5 z ∂rectangleVolume a b c d) := by rw [h123]
+      _ = ((((∫ z, f1 z ∂rectangleVolume a b c d) +
+          (∫ z, f2 z ∂rectangleVolume a b c d)) +
+          (∫ z, f3 z ∂rectangleVolume a b c d)) +
+          (∫ z, f4 z ∂rectangleVolume a b c d)) +
+          (∫ z, f5 z ∂rectangleVolume a b c d) := by rw [h12]
+  rw [hsum]
   dsimp only [f1, f2, f3, f4, f5, weakComponent]
   rw [rectangleVolume_integral_eq_iterated a b c d hab hcd
        (fun t x => force side epsilon alpha kappa theta gamma
