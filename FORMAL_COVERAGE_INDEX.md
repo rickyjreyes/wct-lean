@@ -572,3 +572,7 @@ The four kernel-audited roots in `WCTLean/Models/S004SpacetimeActionBridge.lean`
 ### Original corrected S004 action-to-strong 1+1 conditional theorem
 
 `S004SpacetimeStrongBridge.originalAction_hasDerivAt_strong` connects actual nonlinear density differentiation, the product-measure to five-term iterated integral theorem, and the verified complete Green theorem, yielding both real-component strong Euler integral expressions from the actual integrated S004 action. Exact derivative/integrability/trace premises are bundled into `ActionRegularity` and `GreenRegularity`, not hidden Euler equations. This remains a conditional 1+1 theorem. Concrete field jet realization, smooth/Sobolev regularity implication and critical-point equivalence are not yet verified. The 64-root audit includes both new declarations.
+
+### Single corrected S004 Euler residual pairing, 2026-11-11
+
+The three audited declarations in `S004SpacetimeEulerPairing.lean` derive a rigorous full two-component 1+1 action first-variation formula as two actual integrals of the original S004 corrected strong Euler residuals times test components, conditional on exact action domination, Green derivatives/traces and five strong-product integrability hypotheses. This is an integral-assembly advance, **not** the smooth/Sobolev admissibility and test-density closure. Strict original-model S004 audit expanded to 67 theorem roots; #17/#18 remain OPEN.

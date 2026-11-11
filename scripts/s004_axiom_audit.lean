@@ -7,6 +7,7 @@ import WCTLean.Models.S004SpacetimeGreen
 import WCTLean.Models.S004SpacetimeEuler
 import WCTLean.Models.S004SpacetimeActionBridge
 import WCTLean.Models.S004SpacetimeStrongBridge
+import WCTLean.Models.S004SpacetimeEulerPairing
 import WCTLean.Models.S004EulerCoefficients
 import WCTLean.Models.S004IntervalGreen
 import WCTLean.Models.S004CompatibleFields
@@ -118,3 +119,8 @@ Only standard Lean logical axioms may occur.
 -- Conditional complete original S004 action-to-strong 1+1 Euler derivative.
 #print axioms WCTLean.S004SpacetimeStrongBridge.green_data_proves_weak_strong
 #print axioms WCTLean.S004SpacetimeStrongBridge.originalAction_hasDerivAt_strong
+
+-- Single integrated nonlinear corrected S004 Euler residual pairing.
+#print axioms WCTLean.S004SpacetimeEulerPairing.integral_five_signed
+#print axioms WCTLean.S004SpacetimeEulerPairing.strongComponent_eq_residual_pairing
+#print axioms WCTLean.S004SpacetimeEulerPairing.originalAction_hasDerivAt_euler_pairing
