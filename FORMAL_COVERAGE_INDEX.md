@@ -560,3 +560,7 @@ No nonlinear ghost-freedom or well-posedness result follows.
 The maintained `scripts/s004_axiom_audit.lean` and strict checker
 now require **54 exact theorem roots**; report this result verified
 only when final pinned Lean CI has passed.
+
+### Phase XX follow-up: first spatial-derivative trace for S004 Euler tests (issue #17/#18)
+
+The `WCTLean/Models/S004FirstSpatialTraceEuler.lean` module proves that the explicit weighted Euler test `h(t,x)=w(t)E(t,x)` satisfies both the zero temporal value/first derivative traces and **the first spatial-derivative periodic trace**, provided the corrected residual has a classical spatial derivative with matching endpoint traces. Its `corrected_euler_first_spatial_trace_critical_forces_ae` theorem instantiates the separation argument with the genuine nonlinear corrected S004 Euler residual, without assuming the Euler equation. This establishes a missing first-order trace condition, **not** higher-order Sobolev admissibility, action-criticality equivalence, or PDE well-posedness. See the four new exact theorem roots in `scripts/s004_axiom_audit.lean`.

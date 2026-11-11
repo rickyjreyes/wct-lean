@@ -1,6 +1,7 @@
 import WCTLean.Models.S004EulerSeparation
 import WCTLean.Models.S004ContinuousEuler
 import WCTLean.Models.S004BoundaryWeightedEuler
+import WCTLean.Models.S004FirstSpatialTraceEuler
 import WCTLean.Models.S004SpacetimeFubini
 import WCTLean.Models.S004SpacetimeGreen
 import WCTLean.Models.S004SpacetimeEuler
@@ -99,3 +100,9 @@ Only standard Lean logical axioms may occur.
 #print axioms WCTLean.S004BoundaryWeightedEuler.weighted_test_periodic_values
 #print axioms WCTLean.S004BoundaryWeightedEuler.weighted_residual_is_boundary_periodic_test
 #print axioms WCTLean.S004BoundaryWeightedEuler.boundary_periodic_test_critical_forces_ae_euler
+
+-- First-spatial-derivative periodic traces, actual corrected S004 Euler residual.
+#print axioms WCTLean.S004FirstSpatialTraceEuler.weighted_residual_has_spatial_deriv
+#print axioms WCTLean.S004FirstSpatialTraceEuler.weighted_residual_is_first_spatial_trace_test
+#print axioms WCTLean.S004FirstSpatialTraceEuler.first_spatial_trace_critical_forces_ae_euler
+#print axioms WCTLean.S004FirstSpatialTraceEuler.corrected_euler_first_spatial_trace_critical_forces_ae
