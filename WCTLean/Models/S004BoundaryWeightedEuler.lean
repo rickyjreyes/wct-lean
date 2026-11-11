@@ -124,4 +124,67 @@ theorem zero_variation_on_boundary_test_forces_ae_euler
   exact (weighted_zero_integral_iff_ae_zero a b c d E hInt).mp
     hweighted
 
+/-! ## Admissible temporal traces of the explicit residual test -/
+
+/-- The chosen polynomial weight has the exact time derivative
+2(t-a)(b-t)²-2(b-t)(t-a)², proved by real differentiation. -/
+theorem timeWeight_hasDerivAt
+    (a b x t : ℝ) :
+    HasDerivAt (fun s : ℝ => timeWeight a b (s,x))
+      (2 * (t-a) * (b-t)^2 - 2*(b-t)*(t-a)^2) t := by
+  have ha : HasDerivAt (fun s : ℝ => s-a) 1 t := by
+    convert (hasDerivAt_id t).sub_const a using 1 <;> ring
+  have hb : HasDerivAt (fun s : ℝ => b-s) (-1) t := by
+    convert (hasDerivAt_id t).neg.const_add b using 1 <;> ring
+  have hh := (ha.pow 2).mul (hb.pow 2)
+  convert hh using 1 <;>
+    (try funext s) <;>
+    simp only [timeWeight] <;>
+    ring
+
+/-- Both the weight AND its first temporal derivative vanish
+at BOTH time boundaries, precisely what is needed for the
+second-order temporal Green identity in the corrected S004
+Euler derivation. -/
+theorem timeWeight_zero_endpoints
+    (a b x : ℝ) :
+    timeWeight a b (a,x) = 0 ∧
+      timeWeight a b (b,x) = 0 ∧
+      HasDerivAt (fun s : ℝ => timeWeight a b (s,x)) 0 a ∧
+      HasDerivAt (fun s : ℝ => timeWeight a b (s,x)) 0 b := by
+  refine ⟨by simp [timeWeight], by simp [timeWeight], ?_, ?_⟩
+  · simpa using timeWeight_hasDerivAt a b x a
+  · simpa using timeWeight_hasDerivAt a b x b
+
+/-- If an Euler residual has ordinary first time derivatives at the
+endpoints, the EXPLICIT test h=w(t) E(t,x) has both zero value and
+zero first time derivative at both endpoints. This DISCHARGES
+the temporal boundary assumptions for this one useful test, rather
+than postulating its admissibility. -/
+theorem weighted_test_zero_temporal_traces
+    (a b x : ℝ) (E : ℝ → ℝ → ℝ)
+    (hEa : DifferentiableAt ℝ (fun s => E s x) a)
+    (hEb : DifferentiableAt ℝ (fun s => E s x) b) :
+    E a x * timeWeight a b (a,x) = 0 ∧
+    E b x * timeWeight a b (b,x) = 0 ∧
+    HasDerivAt (fun s => E s x * timeWeight a b (s,x)) 0 a ∧
+    HasDerivAt (fun s => E s x * timeWeight a b (s,x)) 0 b := by
+  obtain ⟨hva, hvb, hda, hdb⟩ := timeWeight_zero_endpoints a b x
+  refine ⟨by rw [hva]; ring, by rw [hvb]; ring, ?_, ?_⟩
+  · have hh := hEa.hasDerivAt.mul hda
+    simpa [hva] using hh
+  · have hh := hEb.hasDerivAt.mul hdb
+    simpa [hvb] using hh
+
+/-- The same residual-weight test preserves the spatial PERIODIC
+value trace whenever E itself is periodic. The weight depends
+only on time, so no unproved spatial projection is needed. -/
+theorem weighted_test_periodic_values
+    (a b c d : ℝ) (E : ℝ → ℝ → ℝ)
+    (hperiodic : ∀ t, E t c = E t d) :
+    ∀ t, E t c * timeWeight a b (t,c) =
+      E t d * timeWeight a b (t,d) := by
+  intro t
+  simp [timeWeight, hperiodic t]
+
 end WCTLean.S004BoundaryWeightedEuler
