@@ -1,3 +1,6 @@
+import WCTLean.Models.S004SpacetimeFubini
+import WCTLean.Models.S004SpacetimeGreen
+import WCTLean.Models.S004SpacetimeEuler
 import WCTLean.Models.S004EulerCoefficients
 import WCTLean.Models.S004IntervalGreen
 import WCTLean.Models.S004CompatibleFields
@@ -60,3 +63,16 @@ Only standard Lean logical axioms may occur.
 -- Corrected coefficient periodic spatial gradient/Laplacian Euler terms.
 #print axioms WCTLean.S004SpatialEuler.x_component_periodic_euler
 #print axioms WCTLean.S004SpatialEuler.y_component_periodic_euler
+
+-- Phase XIX: genuine continuum spacetime Fubini, Green and reassembly.
+#print axioms WCTLean.S004SpacetimeFubini.rectangle_integral_swap
+#print axioms WCTLean.S004SpacetimeFubini.corrected_density_direction_swap
+#print axioms WCTLean.S004SpacetimeFubini.continuous_rectangle_integrable
+#print axioms WCTLean.S004SpacetimeFubini.continuous_rectangle_integral_swap
+#print axioms WCTLean.S004SpacetimeGreen.temporal_first_spacetime
+#print axioms WCTLean.S004SpacetimeGreen.temporal_second_spacetime
+#print axioms WCTLean.S004SpacetimeGreen.spatial_first_spacetime
+#print axioms WCTLean.S004SpacetimeGreen.spatial_second_spacetime
+#print axioms WCTLean.S004SpacetimeEuler.weakComponent_eq_strongComponent
+#print axioms WCTLean.S004SpacetimeEuler.fullLocalDirection_eq_component_sum
+#print axioms WCTLean.S004SpacetimeEuler.integrated_fullLocalDirection_component_split
