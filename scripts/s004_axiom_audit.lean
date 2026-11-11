@@ -76,3 +76,5 @@ Only standard Lean logical axioms may occur.
 #print axioms WCTLean.S004SpacetimeEuler.weakComponent_eq_strongComponent
 #print axioms WCTLean.S004SpacetimeEuler.fullLocalDirection_eq_component_sum
 #print axioms WCTLean.S004SpacetimeEuler.integrated_fullLocalDirection_component_split
+
+#print axioms WCTLean.S004SpacetimeEuler.originalAction_hasDerivAt_two_weak_components
