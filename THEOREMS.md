@@ -416,3 +416,61 @@ separately. They must be assembled using actual spacetime measure,
 Fubini, concrete Sobolev derivative operators, valid product/quotient
 estimates, boundary traces and a weak-to-strong PDE correspondence.
 No nonlinear A2/S004 well-posedness or ghost elimination follows.
+
+
+## Phase XIX: actual 1+1 spacetime S004 Euler–Lagrange assembly
+
+**New kernel-verified modules**, imported in `WCTLean/Main.lean`:
+
+- `S004SpacetimeFubini.lean`:
+  `rectangle_integral_swap` and
+  `corrected_density_direction_swap` prove real Lebesgue
+  time/space interval integration interchange from
+  **product-measure integrability**, using the Mathlib theorem pinned
+  at Lean 4.23.0 (rather than an unavailable newer wrapper).
+  `continuous_rectangle_integrable` proves the required
+  integrability for continuous integrands on compact rectangles;
+  `continuous_rectangle_integral_swap` discharges the original
+  Fubini hypothesis in that regular case.
+- `S004SpacetimeGreen.lean`:
+  `temporal_first_spacetime`,
+  `temporal_second_spacetime`,
+  `spatial_first_spacetime` and
+  `spatial_second_spacetime` are four **actual 1+1-dimensional
+  continuum Green identities**, built from the verified one-variable
+  FTC integration-by-parts and real Fubini. They require ordinary
+  coefficient/test derivative regularity, integrability, zero
+  temporal traces, and periodic spatial traces; the desired adjoint
+  identities are not assumed.
+- `S004SpacetimeEuler.lean`:
+  `weakComponent_eq_strongComponent` is ONE combined 1+1
+  spacetime theorem, for either real field component, converting
+  the five true nonlinear S004 coefficient contributions (field,
+  time gradient, time acceleration, space gradient and Laplacian)
+  from weak to strong integral pairings. The curvature coefficient
+  retains the full density-dependent regulator and its exact
+  derivative.
+  `fullLocalDirection_eq_component_sum` certifies that the
+  two individual real-component weak densities REASSEMBLE the
+  ORIGINAL corrected S004 local action derivative.
+  `integrated_fullLocalDirection_component_split` certifies
+  the corresponding true Lebesgue integral splitting under
+  ordinary integrability hypotheses.
+
+**Formal verification:** the corrected-action modules and the
+pointwise/integrated component reassembly compiled in the maintained
+pinned Lean repository. The exact-head strict audit was expanded from
+26 to **37 named theorem roots**; inspect its final CI result before
+claiming that updated audit is green.
+
+**Still OPEN:** #17 requires a single original *action* critical-point
+iff distributional Euler–Lagrange theorem, including correct
+single-integral to iterated-integral termwise linearity, complete
+actual weak-derivative realization, trace and density arguments,
+and weak-to-strong equivalence. #18 requires an actual admissible
+Sobolev phase space and quotient/product mapping estimates
+discharging the remaining hypotheses. The current 1+1 theorem
+addresses the smooth finite-period-cell case under explicit
+classical derivative/integrability conditions, not all
+`H^s(I × 𝕋^d)` data. Neither result proves #19 PDE
+well-posedness.
