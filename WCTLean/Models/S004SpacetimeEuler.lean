@@ -27,7 +27,7 @@ integral requires termwise integrability/linearity and explicit
 realization of the jet as Sobolev derivatives.
 -/
 
-open MeasureTheory Set
+open MeasureTheory Filter Topology Set
 open scoped Interval
 
 namespace WCTLean.S004SpacetimeEuler
