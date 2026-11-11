@@ -5,6 +5,7 @@ import WCTLean.Models.S004FirstSpatialTraceEuler
 import WCTLean.Models.S004SpacetimeFubini
 import WCTLean.Models.S004SpacetimeGreen
 import WCTLean.Models.S004SpacetimeEuler
+import WCTLean.Models.S004SpacetimeActionBridge
 import WCTLean.Models.S004EulerCoefficients
 import WCTLean.Models.S004IntervalGreen
 import WCTLean.Models.S004CompatibleFields
@@ -106,3 +107,9 @@ Only standard Lean logical axioms may occur.
 #print axioms WCTLean.S004FirstSpatialTraceEuler.weighted_residual_is_first_spatial_trace_test
 #print axioms WCTLean.S004FirstSpatialTraceEuler.first_spatial_trace_critical_forces_ae_euler
 #print axioms WCTLean.S004FirstSpatialTraceEuler.corrected_euler_first_spatial_trace_critical_forces_ae
+
+-- Actual product-volume to five-term time-major original-action variation.
+#print axioms WCTLean.S004SpacetimeActionBridge.rectangleVolume_integral_eq_iterated
+#print axioms WCTLean.S004SpacetimeActionBridge.five_terms_integrable
+#print axioms WCTLean.S004SpacetimeActionBridge.weakPointwise_integral_eq_weakComponent
+#print axioms WCTLean.S004SpacetimeActionBridge.originalAction_hasDerivAt_iterated_weak
