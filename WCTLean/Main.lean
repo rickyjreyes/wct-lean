@@ -28,6 +28,7 @@ import WCTLean.Models.S004SpatialEuler
 import WCTLean.Models.S004SpacetimeFubini
 import WCTLean.Models.S004SpacetimeGreen
 import WCTLean.Models.S004SpacetimeEuler
+import WCTLean.Models.S004EulerSeparation
 import WCTLean.Models.S004CompatibleFields
 import WCTLean.Models.S004FullSpatialIntegratedVariation
 import WCTLean.Models.S004IntegratedVariation
