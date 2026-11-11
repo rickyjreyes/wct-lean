@@ -378,3 +378,201 @@ sequences, Brezis–Lieb/Rellich, and global H² evolution remain formalization
 obligations. Conventional mathematical proofs of these model-specific steps
 are in docs/D4_PHASE_VII_ANALYSIS.md. A checked implication and its conventional
 analytic instantiation have different verification status.
+
+
+## 2026-11-10 corrected S004 coverage boundary: #17, #18, #19
+
+**Maintained-source path:** `WCTLean/Main.lean` imports
+`UniformCurvatureDenominator`, `CorrectedWeightCalculus`,
+`CorrectedWeightDirection`, `S004JetVariation`,
+`S004TwoComponentVariation`, `S004AmplitudeAnnulus`,
+`S004PrincipalDegeneracy`, and `S004IntegratedVariation`.
+
+**Verified theorem types, with exact logical scope:**
+
+- **Pointwise exact:** nonlinear denominator floor; exact radial and
+  two-real-component derivative of \(F(|\psi|^2)\); full declared local
+  higher-order jet-density directional derivative. These theorems have
+  mathematical statements derived from the corrected equations, not
+  assumed symbolic slopes.
+- **Amplitude-sector exact:** coefficient lower bound on
+  \(0<\delta\le |\psi|^2\le M\), counterexamples to a global positive
+  lower bound near zero and at large amplitude, almost-everywhere lifting
+  to complex fields and curvature energy densities.
+- **Integrated first variation, explicit analytic hypotheses:**
+  `S004IntegratedVariation.integratedDensity_hasDerivAt_of_dominated`
+  derives the Gâteaux derivative of the *actual integral* of the
+  specified corrected S004 local jet density from Mathlib differentiation
+  under the integral. Its analytic assumptions include an integrable
+  a.e. local Lipschitz majorant and measurability; it does **not**
+  separately construct an admissible Sobolev class satisfying them.
+- **Missing:** actual full spacetime complex tensor action with all spatial
+  gradients; variable-coefficient high-order integration by parts and
+  boundary traces; final Euler-Lagrange operator/evolution equivalence;
+  nonlinear flow construction, uniqueness, continuation, global bounds,
+  and any invariant nonvanishing-amplitude annulus.
+
+The last two categories must not be collapsed: proving an integral
+first variation under explicit domination is a **conditional continuum
+theorem**, not automatically a full variational/PDE closure. Original
+issue completion requires discharge of these function-space
+hypotheses and higher-order boundary terms.
+
+
+## Phase XVII full-spatial S004 continuum status
+
+**Proved in Lean at the action-density level:** arbitrary finite
+spatial dimension `d` with all gradient squares, real two-component
+corrected-quotient chain rule, independent acceleration and
+Laplacian jets, arbitrary differentiable potential, and the actual
+integrated action's Gâteaux derivative under explicitly stated
+dominated-differentiation hypotheses.
+
+- `S004FullSpatialJet.fullLocalDensity_hasDerivAt`:
+  all `Fin d` spatial gradient components, no one-direction surrogate.
+- `S004FullSpatialIntegral.action_hasDerivAt_of_dominated`:
+  real integral of the same density, not a finite sum or an assumed
+  action derivative. Domination/integrability/measurability and the
+  potential's derivative are explicit hypotheses.
+- `scripts/s004_axiom_audit.lean`: direct standard-axiom verification
+  for ten S004 roots; workflow collects `s004-axioms.log`.
+
+**Not proved:** generic Sobolev sufficient conditions for the
+dominated-differentiation hypotheses, nontrivial boundary/IBP
+identities, complete Euler-Lagrange PDE equivalence, nonlinear
+Cauchy flow existence/uniqueness or continuation, or ghost
+elimination from the original covariant Hamiltonian.
+
+**Infinite-volume obstruction:** no positive global pointwise
+amplitude annulus on nonzero finite-mass whole-space H² data.
+See existing kernel-verified `ReyesMath.E26.not_ae_norm_ge_of_memLp`;
+annulus coercivity is a bounded/periodic/local-sector observation.
+
+
+## Phase XVIII, issue #17/#18/#19: actual high-order variational bridge
+
+The branch now includes:
+- `S004EulerCoefficients.lean`: exact field, time, gradient,
+  acceleration and Laplacian first-variation coefficients for the
+  original corrected **two-real-component** S004 local density.
+  Zero-order force contains the true nonlinear curvature radial slope.
+- `S004IntervalGreen.lean`: four **genuine** real interval-integral
+  Green identities (zero temporal test traces and matching periodic
+  spatial traces), including second-order integration by parts.
+- `S004CompatibleFields.lean`: field-to-jet compatibility for a
+  *single* varied underlying field, with accelerations and Laplacians
+  built from iterated declared first-order linear operators. The
+  integrated action derivative is derived under genuine analytic
+  domination hypotheses, not postulated. Realization as specific
+  periodic Sobolev derivatives is OPEN.
+- `S004TemporalEuler.lean`: temporal strong-Euler contributions for
+  both real components using actual nonlinear S004 momenta and
+  verified Green identities.
+- `S004SpatialEuler.lean`: one-dimensional periodic spatial
+  strong-Euler contributions for both real components, retaining
+  the corrected nonlinear Laplacian momentum.
+- Strict 26-root S004 `#print axioms` audit and fail-closed checker.
+
+**Unresolved:** actual d-dimensional spacetime Fubini and integration
+of those directional identities into one weak Euler–Lagrange theorem,
+concrete Sobolev mapping and domination estimates, strong PDE
+correspondence, full nonlinear constraint analysis, flow
+existence/uniqueness and continuation. No nonzero finite-mass
+whole-space L² field can satisfy a strictly positive global amplitude
+floor, so fixed-annulus coercivity requires a bounded/periodic/local
+domain interpretation.
+
+Prior historical S004 local-jet and integral proofs retain their
+earlier exact scopes; a compiled partial result must not be reported
+as complete PDE formalization.
+
+
+## 2026-11-10 Phase XIX, continuum gap narrowed
+
+The full real-two-component corrected S004 local and integrated
+variations are connected, through genuine Mathlib interval-Fubini
+and FTC Green identities, to an **actual 1+1 dimensional**
+time-periodic-space weak-to-strong Euler integral for each component.
+
+Concrete theorem roots:
+- `S004SpacetimeFubini.continuous_rectangle_integrable`:
+  continuity on a finite compact time/space rectangle suffices for
+  actual product Lebesgue integrability; it is not an abstract
+  integrability contract.
+- `S004SpacetimeGreen.temporal_second_spacetime` and
+  `spatial_second_spacetime`: real 2D continuum
+  second-derivative IBP with correct temporal-zero and
+  spatial-periodic trace hypotheses, and Fubini where required.
+- `S004SpacetimeEuler.weakComponent_eq_strongComponent`:
+  all five actual momentum families assembled in one
+  1+1 weak-to-strong identity.
+- `S004SpacetimeEuler.fullLocalDirection_eq_component_sum` and
+  `integrated_fullLocalDirection_component_split`: two
+  weak component densities recombine exactly into the original
+  corrected S004 Gâteaux action derivative, also after true
+  Lebesgue integration.
+
+**Mathematical boundary:** the current weak component is a sum of
+five genuine iterated integrals. A full *single-integral*
+weak Euler identity for the action additionally needs rigorously
+integrable termwise linearity on the spacetime measure; a
+distributional fundamental lemma and Sobolev trace/mapping
+regularity; extension to multidimensional spatial tori; and
+the actual PDE weak-to-strong equivalence. Do not treat these
+as completed simply because the component identity compiles.
+The original three target issues remain open.
+
+
+## Phase XX, Euler criticality gap: verified test separation versus original action
+
+Three newly maintained proof modules, `S004EulerSeparation.lean`,
+`S004ContinuousEuler.lean`, and
+`S004BoundaryWeightedEuler.lean`, close important parts of the
+**analytic uniqueness** side of the S004 weak Euler equation:
+
+1. Prove from actual nonnegative Lebesgue integration that a real
+   square-integrable residual is determined almost everywhere by all
+   integrable test pairings, with separate real/imaginary field tests.
+2. Apply the result to the exact original nonlinear corrected S004
+   Euler residual, not an independent model.
+3. Derive the required (L^2) property from continuous residuals on
+   a real compact time × periodic-space rectangle, without a
+   separately postulated energy estimate.
+4. Replace the unrestricted-test separation step with a concrete
+   time-boundary-weighted residual (h=(t-a)^2(b-t)^2 E). The weight
+   is positive in the open interval and has zero VALUE and FIRST
+   time derivative at both boundaries, formally derived from
+   ordinary differential calculus.
+5. Prove the explicit residual test inherits periodic spatial
+   value traces and that vanishing of pairings for the actual
+   specified boundary-periodic class forces (E=0) a.e. on the
+   spacetime interior.
+
+**Not equivalent to full original S004 critical-point closure:**
+the specified boundary-periodic test class lacks mandatory spatial
+first-derivative trace conditions and is not yet proved to coincide
+with the actual admissible Sobolev/C² test space of the action.
+The action's integral first variation, the 1+1 strong Euler pairing
+and the weighted fundamental lemma must still be joined with
+concrete derivative and nonlinear quotient mapping hypotheses.
+No nonlinear ghost-freedom or well-posedness result follows.
+
+The maintained `scripts/s004_axiom_audit.lean` and strict checker
+now require **54 exact theorem roots**; report this result verified
+only when final pinned Lean CI has passed.
+
+### Phase XX follow-up: first spatial-derivative trace for S004 Euler tests (issue #17/#18)
+
+The `WCTLean/Models/S004FirstSpatialTraceEuler.lean` module proves that the explicit weighted Euler test `h(t,x)=w(t)E(t,x)` satisfies both the zero temporal value/first derivative traces and **the first spatial-derivative periodic trace**, provided the corrected residual has a classical spatial derivative with matching endpoint traces. Its `corrected_euler_first_spatial_trace_critical_forces_ae` theorem instantiates the separation argument with the genuine nonlinear corrected S004 Euler residual, without assuming the Euler equation. This establishes a missing first-order trace condition, **not** higher-order Sobolev admissibility, action-criticality equivalence, or PDE well-posedness. See the four new exact theorem roots in `scripts/s004_axiom_audit.lean`.
+
+### Original-action spacetime integration bridge, 2026-11-11
+
+The four kernel-audited roots in `WCTLean/Models/S004SpacetimeActionBridge.lean` establish the product-volume/iterated-integral Fubini link, five-term integrability implication, real-component weak integral identity, and original corrected S004 action derivative as the two genuine time-major weak Euler functionals. This discharges the previously absent product-to-iterated integration bridge. Still open: deriving domination and nonlinear regularity from an admissible smooth/Sobolev field space, identifying jets with those derivatives and applying existing complete spacetime Green theorems to give a strong Euler criticality equivalence for that class. Issues #17 and #18 remain open.
+
+### Original corrected S004 action-to-strong 1+1 conditional theorem
+
+`S004SpacetimeStrongBridge.originalAction_hasDerivAt_strong` connects actual nonlinear density differentiation, the product-measure to five-term iterated integral theorem, and the verified complete Green theorem, yielding both real-component strong Euler integral expressions from the actual integrated S004 action. Exact derivative/integrability/trace premises are bundled into `ActionRegularity` and `GreenRegularity`, not hidden Euler equations. This remains a conditional 1+1 theorem. Concrete field jet realization, smooth/Sobolev regularity implication and critical-point equivalence are not yet verified. The 64-root audit includes both new declarations.
+
+### Single corrected S004 Euler residual pairing, 2026-11-11
+
+The three audited declarations in `S004SpacetimeEulerPairing.lean` derive a rigorous full two-component 1+1 action first-variation formula as two actual integrals of the original S004 corrected strong Euler residuals times test components, conditional on exact action domination, Green derivatives/traces and five strong-product integrability hypotheses. This is an integral-assembly advance, **not** the smooth/Sobolev admissibility and test-density closure. Strict original-model S004 audit expanded to 67 theorem roots; #17/#18 remain OPEN.

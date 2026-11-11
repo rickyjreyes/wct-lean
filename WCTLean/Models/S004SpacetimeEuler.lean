@@ -1,0 +1,369 @@
+import Mathlib
+import WCTLean.Models.S004SpacetimeGreen
+import WCTLean.Models.S004EulerCoefficients
+import WCTLean.Models.S004FullSpatialIntegratedVariation
+
+/-!
+# One-dimensional periodic S004: combined spacetime weak Euler identity
+
+Unlike earlier separate 1D temporal and spatial formulas, this is
+ONE theorem about the original S004 corrected action's true
+two-dimensional (time × periodic-space) Euler momenta.
+
+The two field components are indexed by Bool. All five S004
+coefficient families are the literal nonlinear corrected coefficients:
+field force with the full F' term, velocity momentum, acceleration
+momentum, spatial-gradient momentum and Laplacian momentum.
+
+Under actual classical derivative, boundary-trace, integrability and
+product-measure Fubini premises, the proof applies four GENUINE
+2D continuum Green identities to transform the weak directional
+functional into an explicit strong Euler expression. No
+integration-by-parts equality is assumed.
+
+The weak functional here is a SUM OF FIVE ITERATED INTEGRALS;
+the remaining bridge to the already proved single action-derivative
+integral requires termwise integrability/linearity and explicit
+realization of the jet as Sobolev derivatives.
+-/
+
+open MeasureTheory Filter Topology Set
+open scoped Interval
+
+namespace WCTLean.S004SpacetimeEuler
+
+open WCTLean.S004FullSpatialJet
+open WCTLean.S004EulerCoefficients
+open WCTLean.S004SpacetimeGreen
+
+/-- Selector for one of the two REAL components of the original
+complex scalar field (not a scalar replacement theory). -/
+def component (side : Bool) (u : Jet 1) : ℝ :=
+  if side then u.x else u.y
+
+def velocity (side : Bool) (u : Jet 1) : ℝ :=
+  if side then u.vx else u.vy
+
+def acceleration (side : Bool) (u : Jet 1) : ℝ :=
+  if side then u.ax else u.ay
+
+def gradient (side : Bool) (u : Jet 1) : ℝ :=
+  if side then u.gx 0 else u.gy 0
+
+def laplacian (side : Bool) (u : Jet 1) : ℝ :=
+  if side then u.bx else u.bY
+
+/-- Actual corrected local potential/curvature force. -/
+noncomputable def force (side : Bool)
+    (epsilon alpha kappa theta gamma Vprime : ℝ)
+    (u : Jet 1) : ℝ :=
+  if side then forceX epsilon alpha kappa theta gamma Vprime u
+  else forceY epsilon alpha kappa theta gamma Vprime u
+
+/-- Actual negative velocity-square momentum. -/
+def timeMomentum (side : Bool) (u : Jet 1) : ℝ :=
+  -2 * velocity side u
+
+/-- Actual corrected nonlinear acceleration momentum. -/
+noncomputable def accelerationMomentum (side : Bool)
+    (epsilon alpha kappa gamma : ℝ) (u : Jet 1) : ℝ :=
+  if side then accelX epsilon alpha kappa gamma u
+  else accelY epsilon alpha kappa gamma u
+
+/-- Original positive spatial-gradient quadratic momentum. -/
+def gradientMomentum (side : Bool) (u : Jet 1) : ℝ :=
+  2 * gradient side u
+
+/-- Original nonlinear mixed curvature Laplacian momentum. -/
+noncomputable def laplacianMomentum (side : Bool)
+    (epsilon alpha kappa theta gamma : ℝ) (u : Jet 1) : ℝ :=
+  if side then lapX epsilon alpha kappa theta gamma u
+  else lapY epsilon alpha kappa theta gamma u
+
+/-- The one-component weak S004 variation as FIVE genuine
+time-major interval iterated integrals, not a formal dot product. -/
+noncomputable def weakComponent (side : Bool)
+    (a b c d epsilon alpha kappa theta gamma : ℝ)
+    (Vprime : ℝ → ℝ → ℝ)
+    (u h : ℝ → ℝ → Jet 1) : ℝ :=
+  (∫ t in a..b, ∫ x in c..d,
+    force side epsilon alpha kappa theta gamma (Vprime t x)
+      (u t x) * component side (h t x)) +
+  (∫ t in a..b, ∫ x in c..d,
+    timeMomentum side (u t x) * velocity side (h t x)) +
+  (∫ t in a..b, ∫ x in c..d,
+    accelerationMomentum side epsilon alpha kappa gamma (u t x) *
+      acceleration side (h t x)) +
+  (∫ t in a..b, ∫ x in c..d,
+    gradientMomentum side (u t x) * gradient side (h t x)) +
+  (∫ t in a..b, ∫ x in c..d,
+    laplacianMomentum side epsilon alpha kappa theta gamma (u t x) *
+      laplacian side (h t x))
+
+/-- Full 1+1-dimensional strong Euler pairing, with the original
+nonlinear force, actual first/second time momentum derivatives, and
+actual first/second periodic spatial momentum derivatives. -/
+noncomputable def strongComponent (side : Bool)
+    (a b c d epsilon alpha kappa theta gamma : ℝ)
+    (Vprime : ℝ → ℝ → ℝ)
+    (u h : ℝ → ℝ → Jet 1)
+    (time1 accel2 grad1 lap2 : ℝ → ℝ → ℝ) : ℝ :=
+  (∫ t in a..b, ∫ x in c..d,
+    force side epsilon alpha kappa theta gamma (Vprime t x)
+      (u t x) * component side (h t x)) -
+  (∫ t in a..b, ∫ x in c..d,
+    time1 t x * component side (h t x)) +
+  (∫ t in a..b, ∫ x in c..d,
+    accel2 t x * component side (h t x)) -
+  (∫ t in a..b, ∫ x in c..d,
+    grad1 t x * component side (h t x)) +
+  (∫ t in a..b, ∫ x in c..d,
+    lap2 t x * component side (h t x))
+
+/-- **Combined original S004 weak-to-strong spacetime Euler theorem.**
+
+The hypotheses are actual componentwise classical derivative equations,
+interval integrability, PRODUCT-MEASURE integrability for Fubini,
+and true boundary trace constraints. They neither assert the desired
+weak-to-strong identity nor assume a full Euler PDE.
+
+The result combines temporal and periodic spatial differentiation
+inside one 2D continuum functional with all original S004 coefficients.
+-/
+theorem weakComponent_eq_strongComponent
+    (side : Bool)
+    (a b c d epsilon alpha kappa theta gamma : ℝ)
+    (hcd : c ≤ d)
+    (Vprime : ℝ → ℝ → ℝ)
+    (u h : ℝ → ℝ → Jet 1)
+    (time1 accel1 accel2 grad1 lap1 lap2 : ℝ → ℝ → ℝ)
+    (htm : ∀ x t, t ∈ [[a,b]] →
+      HasDerivAt
+        (fun s => timeMomentum side (u s x)) (time1 t x) t)
+    (hta : ∀ x t, t ∈ [[a,b]] →
+      HasDerivAt
+        (fun s => accelerationMomentum side epsilon alpha kappa gamma
+          (u s x)) (accel1 t x) t)
+    (hta1 : ∀ x t, t ∈ [[a,b]] →
+      HasDerivAt (fun s => accel1 s x) (accel2 t x) t)
+    (hvt : ∀ x t, t ∈ [[a,b]] →
+      HasDerivAt (fun s => component side (h s x))
+        (velocity side (h t x)) t)
+    (hvt1 : ∀ x t, t ∈ [[a,b]] →
+      HasDerivAt (fun s => velocity side (h s x))
+        (acceleration side (h t x)) t)
+    (htmInt : ∀ x,
+      IntervalIntegrable (fun t => time1 t x) volume a b)
+    (htaInt : ∀ x,
+      IntervalIntegrable (fun t => accel1 t x) volume a b)
+    (hta2Int : ∀ x,
+      IntervalIntegrable (fun t => accel2 t x) volume a b)
+    (hvtInt : ∀ x,
+      IntervalIntegrable (fun t => velocity side (h t x)) volume a b)
+    (hvaInt : ∀ x,
+      IntervalIntegrable (fun t => acceleration side (h t x)) volume a b)
+    (hv0a : ∀ x, component side (h a x) = 0)
+    (hv0b : ∀ x, component side (h b x) = 0)
+    (hv1a : ∀ x, velocity side (h a x) = 0)
+    (hv1b : ∀ x, velocity side (h b x) = 0)
+    (hgm : ∀ t x, x ∈ [[c,d]] →
+      HasDerivAt
+        (fun s => gradientMomentum side (u t s)) (grad1 t x) x)
+    (hlm : ∀ t x, x ∈ [[c,d]] →
+      HasDerivAt
+        (fun s => laplacianMomentum side epsilon alpha kappa theta gamma
+          (u t s)) (lap1 t x) x)
+    (hlm1 : ∀ t x, x ∈ [[c,d]] →
+      HasDerivAt (fun s => lap1 t s) (lap2 t x) x)
+    (hvs : ∀ t x, x ∈ [[c,d]] →
+      HasDerivAt (fun s => component side (h t s))
+        (gradient side (h t x)) x)
+    (hvs1 : ∀ t x, x ∈ [[c,d]] →
+      HasDerivAt (fun s => gradient side (h t s))
+        (laplacian side (h t x)) x)
+    (hgmInt : ∀ t,
+      IntervalIntegrable (fun x => grad1 t x) volume c d)
+    (hlmInt : ∀ t,
+      IntervalIntegrable (fun x => lap1 t x) volume c d)
+    (hlm2Int : ∀ t,
+      IntervalIntegrable (fun x => lap2 t x) volume c d)
+    (hvsInt : ∀ t,
+      IntervalIntegrable (fun x => gradient side (h t x)) volume c d)
+    (hvlInt : ∀ t,
+      IntervalIntegrable (fun x => laplacian side (h t x)) volume c d)
+    (hgmPer : ∀ t, gradientMomentum side (u t d) =
+      gradientMomentum side (u t c))
+    (hlmPer : ∀ t,
+      laplacianMomentum side epsilon alpha kappa theta gamma (u t d) =
+      laplacianMomentum side epsilon alpha kappa theta gamma (u t c))
+    (hl1Per : ∀ t, lap1 t d = lap1 t c)
+    (hvPer : ∀ t, component side (h t d) = component side (h t c))
+    (hvgPer : ∀ t, gradient side (h t d) = gradient side (h t c))
+    (hfTm : IntegrableOn
+      (Function.uncurry (fun t x =>
+        timeMomentum side (u t x) * velocity side (h t x)))
+      (uIoc a b ×ˢ uIoc c d))
+    (hgTm : IntegrableOn
+      (Function.uncurry (fun t x =>
+        time1 t x * component side (h t x)))
+      (uIoc a b ×ˢ uIoc c d))
+    (hfAcc : IntegrableOn
+      (Function.uncurry (fun t x =>
+        accelerationMomentum side epsilon alpha kappa gamma (u t x) *
+        acceleration side (h t x)))
+      (uIoc a b ×ˢ uIoc c d))
+    (hgAcc : IntegrableOn
+      (Function.uncurry (fun t x =>
+        accel2 t x * component side (h t x)))
+      (uIoc a b ×ˢ uIoc c d)) :
+    weakComponent side a b c d epsilon alpha kappa theta gamma
+      Vprime u h =
+    strongComponent side a b c d epsilon alpha kappa theta gamma
+      Vprime u h time1 accel2 grad1 lap2 := by
+  have ht := temporal_first_spacetime a b c d hcd
+    (fun t x => timeMomentum side (u t x)) time1
+    (fun t x => component side (h t x))
+    (fun t x => velocity side (h t x))
+    htm hvt htmInt hvtInt hv0a hv0b hfTm hgTm
+  have hta2 := temporal_second_spacetime a b c d hcd
+    (fun t x => accelerationMomentum side epsilon alpha kappa gamma (u t x))
+    accel1 accel2
+    (fun t x => component side (h t x))
+    (fun t x => velocity side (h t x))
+    (fun t x => acceleration side (h t x))
+    hta hta1 hvt hvt1 htaInt hta2Int hvtInt hvaInt
+    hv0a hv0b hv1a hv1b hfAcc hgAcc
+  have hs := spatial_first_spacetime a b c d
+    (fun t x => gradientMomentum side (u t x)) grad1
+    (fun t x => component side (h t x))
+    (fun t x => gradient side (h t x))
+    hgm hvs hgmInt hvsInt hgmPer hvPer
+  have hs2 := spatial_second_spacetime a b c d
+    (fun t x => laplacianMomentum side epsilon alpha kappa theta gamma (u t x))
+    lap1 lap2
+    (fun t x => component side (h t x))
+    (fun t x => gradient side (h t x))
+    (fun t x => laplacian side (h t x))
+    hlm hlm1 hvs hvs1 hlmInt hlm2Int hvsInt hvlInt
+    hlmPer hl1Per hvPer hvgPer
+  unfold weakComponent strongComponent
+  rw [ht, hta2, hs, hs2]
+  ring
+
+/-! ## Exact bridge back to the ORIGINAL two-real-component action -/
+
+/-- The actual weak integrand for ONE component, with all five
+nonlinear corrected S004 momentum families explicitly present. -/
+noncomputable def weakPointwiseComponent (side : Bool)
+    (epsilon alpha kappa theta gamma Vprime : ℝ)
+    (u h : Jet 1) : ℝ :=
+  force side epsilon alpha kappa theta gamma Vprime u * component side h +
+  timeMomentum side u * velocity side h +
+  accelerationMomentum side epsilon alpha kappa gamma u *
+    acceleration side h +
+  gradientMomentum side u * gradient side h +
+  laplacianMomentum side epsilon alpha kappa theta gamma u *
+    laplacian side h
+
+/-- Exact algebraic REASSEMBLY of the original corrected complex
+two-real-component action density derivative. The two real
+components of the proposed weak Euler functional are not a separate
+surrogate energy: their sum IS the original S004 local Gâteaux
+derivative including F' and all mixed curvature terms. -/
+theorem fullLocalDirection_eq_component_sum
+    (epsilon alpha kappa theta gamma Vprime : ℝ) (u h : Jet 1) :
+    fullLocalDirection epsilon alpha kappa theta gamma Vprime u h =
+      weakPointwiseComponent true epsilon alpha kappa theta gamma Vprime u h +
+      weakPointwiseComponent false epsilon alpha kappa theta gamma Vprime u h := by
+  rw [fullLocalDirection_coefficients]
+  simp only [weakPointwiseComponent, force, component, velocity,
+    acceleration, gradient, laplacian, timeMomentum, accelerationMomentum,
+    gradientMomentum, laplacianMomentum, if_true, if_false]
+  simp [Fin.sum_univ_succ, Fin.sum_univ_zero]
+  ring
+
+/-- **True integrated action variation decomposes exactly** into
+the two real component weak Euler densities, on an arbitrary measured
+domain, when those components are integrable. This is a genuine
+Lebesgue integral identity obtained by linearity, not the assumption
+that the action equals the desired Euler pairing. The further
+1+1 spacetime Green theorem above gives the actual weak-to-strong
+higher-derivative transfer under its differentiated field hypotheses. -/
+theorem integrated_fullLocalDirection_component_split
+    {Ω : Type*} [MeasurableSpace Ω] (mu : Measure Ω)
+    (epsilon alpha kappa theta gamma : ℝ)
+    (Vprime : Ω → ℝ) (u h : Ω → Jet 1)
+    (hintX : Integrable
+      (fun z => weakPointwiseComponent true epsilon alpha kappa theta gamma
+        (Vprime z) (u z) (h z)) mu)
+    (hintY : Integrable
+      (fun z => weakPointwiseComponent false epsilon alpha kappa theta gamma
+        (Vprime z) (u z) (h z)) mu) :
+    (∫ z, fullLocalDirection epsilon alpha kappa theta gamma
+      (Vprime z) (u z) (h z) ∂mu) =
+    (∫ z, weakPointwiseComponent true epsilon alpha kappa theta gamma
+      (Vprime z) (u z) (h z) ∂mu) +
+    (∫ z, weakPointwiseComponent false epsilon alpha kappa theta gamma
+      (Vprime z) (u z) (h z) ∂mu) := by
+  simp_rw [fullLocalDirection_eq_component_sum]
+  exact integral_add hintX hintY
+
+/-- **Direct derivative theorem for the ORIGINAL integrated S004
+action**, expressed as the sum of its two true weak component
+integrals. The density derivative comes from the existing verified
+dominated first-variation theorem and the split is proved above by
+exact algebra and genuine Lebesgue integral linearity.
+
+This is no longer merely a decomposition of a declared jet derivative:
+it identifies the actual derivative of the nonlinear integrated action.
+Its analytic domination and component integrability hypotheses remain
+explicit; the full strong PDE critical-point equivalence is not
+assumed or claimed. -/
+theorem originalAction_hasDerivAt_two_weak_components
+    {Ω : Type*} [MeasurableSpace Ω] (mu : Measure Ω)
+    (epsilon alpha kappa theta gamma : ℝ) (V : ℝ → ℝ)
+    (u h : Ω → Jet 1) (Vprime bound : Ω → ℝ)
+    (heps : 0 < epsilon) (ha : 0 ≤ alpha)
+    (hV : ∀ᵐ z ∂mu,
+      HasDerivAt V (Vprime z)
+        (WCTLean.realTwoComponentDensity (u z).x (u z).y))
+    (hmeas : ∀ᶠ t in 𝓝 (0 : ℝ),
+      AEStronglyMeasurable
+        (fun z => fullLocalDensity epsilon alpha kappa theta gamma
+          V (shift (u z) (h z) t)) mu)
+    (hint : Integrable
+      (fun z => fullLocalDensity epsilon alpha kappa theta gamma
+        V (shift (u z) (h z) (0 : ℝ))) mu)
+    (hdmeas : AEStronglyMeasurable
+      (fun z => fullLocalDirection epsilon alpha kappa theta gamma
+        (Vprime z) (u z) (h z)) mu)
+    (hboundInt : Integrable bound mu)
+    (hlip : ∀ᵐ z ∂mu,
+      LipschitzOnWith (Real.nnabs (bound z))
+        (fun t : ℝ => fullLocalDensity epsilon alpha kappa theta gamma
+          V (shift (u z) (h z) t))
+        (Metric.ball (0 : ℝ) 1))
+    (hintX : Integrable
+      (fun z => weakPointwiseComponent true epsilon alpha kappa theta gamma
+        (Vprime z) (u z) (h z)) mu)
+    (hintY : Integrable
+      (fun z => weakPointwiseComponent false epsilon alpha kappa theta gamma
+        (Vprime z) (u z) (h z)) mu) :
+    HasDerivAt
+      (WCTLean.S004FullSpatialIntegral.action mu
+        epsilon alpha kappa theta gamma V u h)
+      ((∫ z, weakPointwiseComponent true epsilon alpha kappa theta gamma
+        (Vprime z) (u z) (h z) ∂mu) +
+       (∫ z, weakPointwiseComponent false epsilon alpha kappa theta gamma
+        (Vprime z) (u z) (h z) ∂mu)) 0 := by
+  have hder :=
+    (WCTLean.S004FullSpatialIntegral.action_hasDerivAt_of_dominated
+      mu epsilon alpha kappa theta gamma V u h Vprime bound
+      heps ha hV hmeas hint hdmeas hboundInt hlip).2
+  have hsplit :=
+    integrated_fullLocalDirection_component_split mu
+      epsilon alpha kappa theta gamma Vprime u h hintX hintY
+  rw [← hsplit]
+  simpa only [WCTLean.S004FullSpatialIntegral.actionDirection] using hder
+
+end WCTLean.S004SpacetimeEuler
