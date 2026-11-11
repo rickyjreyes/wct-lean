@@ -1,6 +1,7 @@
 import Mathlib
 import WCTLean.Models.S004SpacetimeGreen
 import WCTLean.Models.S004EulerCoefficients
+import WCTLean.Models.S004FullSpatialIntegratedVariation
 
 /-!
 # One-dimensional periodic S004: combined spacetime weak Euler identity
@@ -306,5 +307,63 @@ theorem integrated_fullLocalDirection_component_split
       (Vprime z) (u z) (h z) ∂mu) := by
   simp_rw [fullLocalDirection_eq_component_sum]
   exact integral_add hintX hintY
+
+/-- **Direct derivative theorem for the ORIGINAL integrated S004
+action**, expressed as the sum of its two true weak component
+integrals. The density derivative comes from the existing verified
+dominated first-variation theorem and the split is proved above by
+exact algebra and genuine Lebesgue integral linearity.
+
+This is no longer merely a decomposition of a declared jet derivative:
+it identifies the actual derivative of the nonlinear integrated action.
+Its analytic domination and component integrability hypotheses remain
+explicit; the full strong PDE critical-point equivalence is not
+assumed or claimed. -/
+theorem originalAction_hasDerivAt_two_weak_components
+    {Ω : Type*} [MeasurableSpace Ω] (mu : Measure Ω)
+    (epsilon alpha kappa theta gamma : ℝ) (V : ℝ → ℝ)
+    (u h : Ω → Jet 1) (Vprime bound : Ω → ℝ)
+    (heps : 0 < epsilon) (ha : 0 ≤ alpha)
+    (hV : ∀ᵐ z ∂mu,
+      HasDerivAt V (Vprime z)
+        (WCTLean.realTwoComponentDensity (u z).x (u z).y))
+    (hmeas : ∀ᶠ t in 𝓝 (0 : ℝ),
+      AEStronglyMeasurable
+        (fun z => fullLocalDensity epsilon alpha kappa theta gamma
+          V (shift (u z) (h z) t)) mu)
+    (hint : Integrable
+      (fun z => fullLocalDensity epsilon alpha kappa theta gamma
+        V (shift (u z) (h z) (0 : ℝ))) mu)
+    (hdmeas : AEStronglyMeasurable
+      (fun z => fullLocalDirection epsilon alpha kappa theta gamma
+        (Vprime z) (u z) (h z)) mu)
+    (hboundInt : Integrable bound mu)
+    (hlip : ∀ᵐ z ∂mu,
+      LipschitzOnWith (Real.nnabs (bound z))
+        (fun t : ℝ => fullLocalDensity epsilon alpha kappa theta gamma
+          V (shift (u z) (h z) t))
+        (Metric.ball (0 : ℝ) 1))
+    (hintX : Integrable
+      (fun z => weakPointwiseComponent true epsilon alpha kappa theta gamma
+        (Vprime z) (u z) (h z)) mu)
+    (hintY : Integrable
+      (fun z => weakPointwiseComponent false epsilon alpha kappa theta gamma
+        (Vprime z) (u z) (h z)) mu) :
+    HasDerivAt
+      (WCTLean.S004FullSpatialIntegral.action mu
+        epsilon alpha kappa theta gamma V u h)
+      ((∫ z, weakPointwiseComponent true epsilon alpha kappa theta gamma
+        (Vprime z) (u z) (h z) ∂mu) +
+       (∫ z, weakPointwiseComponent false epsilon alpha kappa theta gamma
+        (Vprime z) (u z) (h z) ∂mu)) 0 := by
+  have hder :=
+    (WCTLean.S004FullSpatialIntegral.action_hasDerivAt_of_dominated
+      mu epsilon alpha kappa theta gamma V u h Vprime bound
+      heps ha hV hmeas hint hdmeas hboundInt hlip).2
+  have hsplit :=
+    integrated_fullLocalDirection_component_split mu
+      epsilon alpha kappa theta gamma Vprime u h hintX hintY
+  rw [← hsplit]
+  simpa only [WCTLean.S004FullSpatialIntegral.actionDirection] using hder
 
 end WCTLean.S004SpacetimeEuler
