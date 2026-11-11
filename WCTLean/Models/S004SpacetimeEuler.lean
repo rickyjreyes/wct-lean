@@ -132,6 +132,7 @@ inside one 2D continuum functional with all original S004 coefficients.
 theorem weakComponent_eq_strongComponent
     (side : Bool)
     (a b c d epsilon alpha kappa theta gamma : ℝ)
+    (hcd : c ≤ d)
     (Vprime : ℝ → ℝ → ℝ)
     (u h : ℝ → ℝ → Jet 1)
     (time1 accel1 accel2 grad1 lap1 lap2 : ℝ → ℝ → ℝ)
@@ -218,12 +219,12 @@ theorem weakComponent_eq_strongComponent
       Vprime u h =
     strongComponent side a b c d epsilon alpha kappa theta gamma
       Vprime u h time1 accel2 grad1 lap2 := by
-  have ht := temporal_first_spacetime a b c d
+  have ht := temporal_first_spacetime a b c d hcd
     (fun t x => timeMomentum side (u t x)) time1
     (fun t x => component side (h t x))
     (fun t x => velocity side (h t x))
     htm hvt htmInt hvtInt hv0a hv0b hfTm hgTm
-  have hta2 := temporal_second_spacetime a b c d
+  have hta2 := temporal_second_spacetime a b c d hcd
     (fun t x => accelerationMomentum side epsilon alpha kappa gamma (u t x))
     accel1 accel2
     (fun t x => component side (h t x))
