@@ -43,7 +43,8 @@ structure ActionRegularity
     (a b c d epsilon alpha kappa theta gamma : ℝ)
     (V : ℝ → ℝ) (Vprime : ℝ → ℝ → ℝ)
     (u h : ℝ → ℝ → Jet 1) (bound : ℝ × ℝ → ℝ) : Prop where
-  heps : 0 < epsilon) (ha : 0 ≤ alpha
+  heps : 0 < epsilon
+  ha : 0 ≤ alpha
   hV : ∀ᵐ z ∂rectangleVolume a b c d,
       HasDerivAt V (Vprime z.1 z.2)
         (WCTLean.realTwoComponentDensity
@@ -219,7 +220,7 @@ theorem originalAction_hasDerivAt_strong
   have hWeak := originalAction_hasDerivAt_iterated_weak
     a b c d epsilon alpha kappa theta gamma
     hab hcd V Vprime u h bound
-    hAct.heps     hAct.hV     hAct.hmeas     hAct.hint     hAct.hdmeas     hAct.hboundInt     hAct.hlip     hAct.hReal     hAct.hImag
+    hAct.heps hAct.ha hAct.hV     hAct.hmeas     hAct.hint     hAct.hdmeas     hAct.hboundInt     hAct.hlip     hAct.hReal     hAct.hImag
   have hRW := green_data_proves_weak_strong true
     a b c d epsilon alpha kappa theta gamma hcd
     Vprime u h timeR1 accelR1 accelR2 gradR1 lapR1 lapR2 hR
