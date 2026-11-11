@@ -187,4 +187,78 @@ theorem weighted_test_periodic_values
   intro t
   simp [timeWeight, hperiodic t]
 
+/-! ## Concrete temporal-and-periodic test-function separation -/
+
+/-- Explicit boundary-trace class for 1+1 smooth periodic variations.
+Both the variation and its first temporal derivative vanish at
+the time endpoints; its values agree across the spatial period.
+No Euler-equation assumption is present in this definition.
+
+The complete S004 second-order spatial Green theorem additionally
+requires matching first spatial derivatives and regularity of the
+test. Those are NOT silently included in this restricted predicate. -/
+def BoundaryPeriodicTest (a b c d : ℝ)
+    (h : ℝ → ℝ → ℝ) : Prop :=
+  (∀ x,
+    h a x = 0 ∧ h b x = 0 ∧
+    HasDerivAt (fun t => h t x) 0 a ∧
+    HasDerivAt (fun t => h t x) 0 b) ∧
+  (∀ t, h t c = h t d)
+
+/-- The explicit weighted residual test satisfies the ACTUAL temporal
+endpoint conditions and value-level spatial periodicity, under only
+ordinary temporal differentiability and periodicity of E.
+Admissibility is DERIVED, not postulated as a convenient assumption. -/
+theorem weighted_residual_is_boundary_periodic_test
+    (a b c d : ℝ) (E : ℝ → ℝ → ℝ)
+    (hEa : ∀ x, DifferentiableAt ℝ (fun t => E t x) a)
+    (hEb : ∀ x, DifferentiableAt ℝ (fun t => E t x) b)
+    (hPer : ∀ t, E t c = E t d) :
+    BoundaryPeriodicTest a b c d
+      (fun t x => E t x * timeWeight a b (t,x)) := by
+  constructor
+  · intro x
+    exact weighted_test_zero_temporal_traces
+      a b x E (hEa x) (hEb x)
+  · exact weighted_test_periodic_values a b c d E hPer
+
+/-- **Concrete boundary-periodic fundamental lemma** for a smooth
+candidate Euler residual: if its pairing vanishes for every test
+satisfying the specified ZERO temporal first-order traces and
+matching spatial values, the Euler residual is zero almost
+everywhere on the spacetime interior.
+
+The proof constructs one specific nonnegative weighted-residual
+variation, verifies all its stated trace conditions, and derives
+E=0 from nonnegative Lebesgue integration. No L² test-density
+assumption or abstract separation axiom is used.
+
+To apply this directly to ORIGINAL S004 critical points, further
+show that the actual C²/Sobolev variation class contains these
+tests (including matching spatial derivative traces), and connect
+the action derivative to the strong Euler integral. -/
+theorem boundary_periodic_test_critical_forces_ae_euler
+    (a b c d : ℝ) (E : ℝ → ℝ → ℝ)
+    (hEa : ∀ x, DifferentiableAt ℝ (fun t => E t x) a)
+    (hEb : ∀ x, DifferentiableAt ℝ (fun t => E t x) b)
+    (hPer : ∀ t, E t c = E t d)
+    (hInt : Integrable
+      (fun z => E z.1 z.2 ^ 2 * timeWeight a b z)
+      (interiorVolume a b c d))
+    (hCritical : ∀ h : ℝ → ℝ → ℝ,
+      BoundaryPeriodicTest a b c d h →
+      (∫ z, E z.1 z.2 * h z.1 z.2
+        ∂interiorVolume a b c d) = 0) :
+    ∀ᵐ z ∂interiorVolume a b c d, E z.1 z.2 = 0 := by
+  have hAllowed := weighted_residual_is_boundary_periodic_test
+    a b c d E hEa hEb hPer
+  have hzero := hCritical
+    (fun t x => E t x * timeWeight a b (t,x)) hAllowed
+  have hweightzero :
+      (∫ z, E z.1 z.2 ^ 2 * timeWeight a b z
+        ∂interiorVolume a b c d) = 0 := by
+    simpa only [pow_two, mul_assoc] using hzero
+  exact (weighted_zero_integral_iff_ae_zero a b c d
+    (fun z => E z.1 z.2) hInt).mp hweightzero
+
 end WCTLean.S004BoundaryWeightedEuler
