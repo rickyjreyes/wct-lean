@@ -1,0 +1,127 @@
+import Mathlib
+import WCTLean.Models.S004ContinuousEuler
+
+/-!
+# Boundary-compatible weighted fundamental lemma on a real spacetime cell
+
+For a finite open time interval (a,b) and open periodic spatial cell,
+let w(t)=(t-a)^2(b-t)^2. It is strictly positive in the interior,
+but w(a)=w(b)=w'(a)=w'(b)=0.
+
+Instead of demanding a whole L² test-function density theorem, a
+smooth S004 Euler residual E may be tested against h(t,x)=w(t)*E(t,x).
+If this specific test is allowed by the original smooth periodic
+variation class, stationarity forces E=0 a.e. on the spacetime
+interior. This file proves the integral separation and the precise
+abstract admissibility interface WITHOUT assuming E=0.
+
+Still open: show the weighted residual is an admissible C²/Sobolev
+S004 variation for the actual smooth background and traces, and
+identify the action's first variation with its Euler pairing.
+-/
+
+open MeasureTheory Set
+
+namespace WCTLean.S004BoundaryWeightedEuler
+
+/-- The ordinary real Lebesgue measure on the OPEN spacetime rectangle.
+Boundary endpoints have no role in the zero-integral argument. -/
+noncomputable def interiorVolume
+    (a b c d : ℝ) : Measure (ℝ × ℝ) :=
+  (volume : Measure (ℝ × ℝ)).restrict (Ioo a b ×ˢ Ioo c d)
+
+/-- Nonnegative polynomial weight vanishing quadratically at each
+temporal endpoint. -/
+def timeWeight (a b : ℝ) (z : ℝ × ℝ) : ℝ :=
+  (z.1 - a) ^ 2 * (b - z.1) ^ 2
+
+theorem timeWeight_nonneg (a b : ℝ) (z : ℝ × ℝ) :
+    0 ≤ timeWeight a b z := by
+  unfold timeWeight
+  positivity
+
+/-- Strict positivity in the spacetime INTERIOR, with no unproved
+claim about endpoint traces or infinite-volume whole space. -/
+theorem timeWeight_pos_of_mem
+    (a b c d : ℝ) (z : ℝ × ℝ)
+    (hz : z ∈ Ioo a b ×ˢ Ioo c d) :
+    0 < timeWeight a b z := by
+  rcases hz with ⟨⟨hta, htb⟩, _⟩
+  unfold timeWeight
+  exact mul_pos
+    (sq_pos_of_pos (sub_pos.mpr hta))
+    (sq_pos_of_pos (sub_pos.mpr htb))
+
+/-- **Weighted integral fundamental lemma**, proved for the actual
+restricted Lebesgue measure by testing the nonnegative function
+E² w and using its a.e. zero criterion. It is NOT an axiom of
+distributional separation. -/
+theorem weighted_zero_integral_iff_ae_zero
+    (a b c d : ℝ) (E : ℝ × ℝ → ℝ)
+    (hInt : Integrable
+      (fun z => E z ^ 2 * timeWeight a b z)
+      (interiorVolume a b c d)) :
+    (∫ z, E z ^ 2 * timeWeight a b z
+      ∂interiorVolume a b c d) = 0 ↔
+    (∀ᵐ z ∂interiorVolume a b c d, E z = 0) := by
+  have hpos : ∀ z : ℝ × ℝ,
+      0 ≤ E z ^ 2 * timeWeight a b z := by
+    intro z
+    exact mul_nonneg (sq_nonneg (E z)) (timeWeight_nonneg a b z)
+  have hmem : ∀ᵐ z ∂interiorVolume a b c d,
+      z ∈ Ioo a b ×ˢ Ioo c d := by
+    exact MeasureTheory.ae_restrict_mem
+      (measurableSet_Ioo.prod measurableSet_Ioo)
+  constructor
+  · intro hzero
+    have hnonnegZero :=
+      (MeasureTheory.integral_eq_zero_iff_of_nonneg hpos hInt).mp hzero
+    filter_upwards [hnonnegZero, hmem] with z hz hinside
+    have hz0 : E z ^ 2 * timeWeight a b z = 0 := by
+      simpa using hz
+    have hwpos : timeWeight a b z ≠ 0 :=
+      ne_of_gt (timeWeight_pos_of_mem a b c d z hinside)
+    have hE2 : E z ^ 2 = 0 :=
+      (mul_eq_zero.mp hz0).resolve_right hwpos
+    nlinarith [sq_nonneg (E z)]
+  · intro hzero
+    have hae : (fun z => E z ^ 2 * timeWeight a b z) =ᵐ[
+        interiorVolume a b c d] (fun _ => (0 : ℝ)) := by
+      filter_upwards [hzero] with z hz
+      simp [hz]
+    calc
+      (∫ z, E z ^ 2 * timeWeight a b z
+        ∂interiorVolume a b c d) =
+        (∫ _z, (0 : ℝ) ∂interiorVolume a b c d) :=
+        integral_congr_ae hae
+      _ = 0 := by simp
+
+/-- One boundary-compatible TEST SUFFICES, provided the independently
+defined admissible-variation class actually CONTAINS it. Neither the
+Euler equation nor the desired integral is hidden as a hypothesis.
+
+The analytic admissibility proof, including its time derivatives and
+periodic spatial traces, is a separate check on smooth S004 fields. -/
+theorem zero_variation_on_boundary_test_forces_ae_euler
+    (a b c d : ℝ)
+    (E : ℝ × ℝ → ℝ)
+    (Allowed : (ℝ × ℝ → ℝ) → Prop)
+    (hAllowed :
+      Allowed (fun z => E z * timeWeight a b z))
+    (hInt : Integrable
+      (fun z => E z ^ 2 * timeWeight a b z)
+      (interiorVolume a b c d))
+    (hCritical : ∀ h : ℝ × ℝ → ℝ,
+      Allowed h →
+      (∫ z, E z * h z ∂interiorVolume a b c d) = 0) :
+    ∀ᵐ z ∂interiorVolume a b c d, E z = 0 := by
+  have hzero := hCritical
+    (fun z => E z * timeWeight a b z) hAllowed
+  have hweighted :
+      (∫ z, E z ^ 2 * timeWeight a b z
+        ∂interiorVolume a b c d) = 0 := by
+    simpa only [pow_two, mul_assoc] using hzero
+  exact (weighted_zero_integral_iff_ae_zero a b c d E hInt).mp
+    hweighted
+
+end WCTLean.S004BoundaryWeightedEuler
