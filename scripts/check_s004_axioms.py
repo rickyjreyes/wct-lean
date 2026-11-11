@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""Fail closed on unexpected axioms in the 38 maintained corrected S004 proofs."""
+"""Fail closed on unexpected axioms in the 54 maintained corrected S004 proofs."""
 from pathlib import Path
 import re
 import sys
 
-EXPECTED_ROOTS = 38
+EXPECTED_ROOTS = 54
 ALLOWED = {"propext", "Classical.choice", "Quot.sound"}
 
 if len(sys.argv) != 2:
