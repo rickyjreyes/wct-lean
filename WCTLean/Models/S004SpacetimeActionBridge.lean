@@ -23,7 +23,7 @@ automatically from a particular Sobolev class. This proof alone is
 not yet the final admissible smooth/Sobolev critical-point theorem.
 -/
 
-open MeasureTheory Set
+open MeasureTheory Set Filter Topology
 open scoped Interval
 
 namespace WCTLean.S004SpacetimeActionBridge
@@ -60,6 +60,7 @@ theorem rectangleVolume_integral_eq_iterated
         ∂(((volume : Measure ℝ).restrict (Ioc a b)).prod
           ((volume : Measure ℝ).restrict (Ioc c d))) := by
             rw [hmeasure]
+            rfl
     _ = ∫ t, ∫ x, f t x ∂((volume : Measure ℝ).restrict (Ioc c d))
           ∂((volume : Measure ℝ).restrict (Ioc a b)) :=
         integral_prod (Function.uncurry f) hprod
@@ -165,11 +166,28 @@ theorem weakPointwise_integral_eq_weakComponent
         (u z.1 z.2) * laplacian side (h z.1 z.2))
         (rectangleVolume a b c d) :=
     hi.laplaceTerm
-  simp only [weakPointwiseComponent, weakComponent]
+  let f1 : ℝ × ℝ → ℝ := fun z =>
+    force side epsilon alpha kappa theta gamma
+      (Vprime z.1 z.2) (u z.1 z.2) * component side (h z.1 z.2)
+  let f2 : ℝ × ℝ → ℝ := fun z =>
+    timeMomentum side (u z.1 z.2) * velocity side (h z.1 z.2)
+  let f3 : ℝ × ℝ → ℝ := fun z =>
+    accelerationMomentum side epsilon alpha kappa gamma (u z.1 z.2) *
+      acceleration side (h z.1 z.2)
+  let f4 : ℝ × ℝ → ℝ := fun z =>
+    gradientMomentum side (u z.1 z.2) * gradient side (h z.1 z.2)
+  let f5 : ℝ × ℝ → ℝ := fun z =>
+    laplacianMomentum side epsilon alpha kappa theta gamma (u z.1 z.2) *
+      laplacian side (h z.1 z.2)
+  change (∫ z, (f1 + f2 + f3 + f4 + f5) z
+      ∂rectangleVolume a b c d) =
+    weakComponent side a b c d epsilon alpha kappa theta gamma
+      Vprime u h
   rw [integral_add (((hf.add ht).add ha).add hg) hl,
       integral_add ((hf.add ht).add ha) hg,
       integral_add (hf.add ht) ha,
       integral_add hf ht]
+  dsimp only [f1, f2, f3, f4, f5, weakComponent]
   rw [rectangleVolume_integral_eq_iterated a b c d hab hcd
        (fun t x => force side epsilon alpha kappa theta gamma
          (Vprime t x) (u t x) * component side (h t x)) hi.forceTerm,
@@ -249,6 +267,7 @@ theorem originalAction_hasDerivAt_iterated_weak
       theta gamma Vprime u h hReal)
     (five_terms_integrable false a b c d epsilon alpha kappa
       theta gamma Vprime u h hImag)
+  simp only [Function.uncurry] at hder
   rw [weakPointwise_integral_eq_weakComponent true a b c d
       epsilon alpha kappa theta gamma hab hcd Vprime u h hReal,
     weakPointwise_integral_eq_weakComponent false a b c d
