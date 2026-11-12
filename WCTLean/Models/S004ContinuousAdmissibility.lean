@@ -37,6 +37,7 @@ open WCTLean.S004SpacetimeActionBridge
 open WCTLean.S004SpacetimeStrongBridge
 open WCTLean.S004SpacetimeEulerPairing
 open WCTLean.S004SpacetimeEuler
+open WCTLean.S004ContinuousEuler
 open WCTLean.S004SpacetimeFubini
 
 /-- The true corrected S004 quotient is continuous even at
@@ -65,8 +66,10 @@ theorem corrected_weight_continuous_for_field
       (realTwoComponentDensity (x z) (y z)) :=
     (correctedRadialWeight_hasDerivAt epsilon alpha _
       (ne_of_gt hdenpos)).continuousAt
-  simpa only [realTwoComponentWeight] using
-    hcont.comp (hrho.continuousAt)
+  change ContinuousAt
+    (fun w : ℝ × ℝ => correctedRadialWeight epsilon alpha
+      (realTwoComponentDensity (x w) (y w))) z
+  exact hcont.comp z (hrho.continuousAt)
 
 /-- Continuous original-model regulator fields are actually
 Lebesgue integrable over any finite spacetime rectangle. -/
