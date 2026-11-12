@@ -584,3 +584,7 @@ Six strict axiom-audited roots are added in `S004ContinuousAdmissibility.lean`: 
 ### Phase XXIII classical full-action integrability (2026-11-12)
 
 Five Lean theorem roots in `S004ClassicalDensity.lean` establish closure of continuous real/imag nonlinear S004 jets under the true affine shift, actual curvature-quadratic continuity, original corrected action-density continuity, and genuine product-Lebesgue integrability on finite rectangles for unshifted and all shifted jets. The separate domination and physical derivative compatibility/Sobolev trace hypotheses remain open. Counts: 73→78 roots expected.
+
+### Phase XXIII classical field derivative witnesses
+
+The original S004 two-real-component field jet is now constructed from actual scalar classical derivative witnesses (`HasDerivAt` in time and space) with joint continuity; the physical acceleration and Laplacian are the *second derivatives* of the same scalar fields. Shifts preserve these certified jets and all perturbed densities remain genuinely Lebesgue integrable. The analytic action derivative domination and nonlinear PDE equivalence remain open. Count 78→83 audited roots.

@@ -140,3 +140,10 @@ Only standard Lean logical axioms may occur.
 #print axioms WCTLean.S004ClassicalDensity.continuous_fullLocalDensity
 #print axioms WCTLean.S004ClassicalDensity.integrable_fullLocalDensity_on_rectangle
 #print axioms WCTLean.S004ClassicalDensity.integrable_fullLocalDensity_all_shifts
+
+-- Phase XXIII verified classical real-field differentiation and exact action jets.
+#print axioms WCTLean.S004ClassicalField.genuine_jet_temporal_compatibility
+#print axioms WCTLean.S004ClassicalField.genuine_jet_spatial_compatibility
+#print axioms WCTLean.S004ClassicalField.genuine_jet_shift
+#print axioms WCTLean.S004ClassicalField.genuine_jet_continuous
+#print axioms WCTLean.S004ClassicalField.genuine_action_all_shifts_integrable
