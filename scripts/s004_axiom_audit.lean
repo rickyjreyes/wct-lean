@@ -147,3 +147,10 @@ Only standard Lean logical axioms may occur.
 #print axioms WCTLean.S004ClassicalField.genuine_jet_shift
 #print axioms WCTLean.S004ClassicalField.genuine_jet_continuous
 #print axioms WCTLean.S004ClassicalField.genuine_action_all_shifts_integrable
+
+-- Phase XXIII periodic real fields force all first/second time and spatial derivative traces.
+#print axioms WCTLean.S004ClassicalPeriodicity.real_derivative_periodic
+#print axioms WCTLean.S004ClassicalPeriodicity.real_second_derivative_periodic
+#print axioms WCTLean.S004ClassicalPeriodicity.classical_time_jets_periodic
+#print axioms WCTLean.S004ClassicalPeriodicity.classical_space_jets_periodic
+#print axioms WCTLean.S004ClassicalPeriodicity.classical_all_five_jets_periodic

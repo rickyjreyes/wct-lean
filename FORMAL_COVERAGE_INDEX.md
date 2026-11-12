@@ -588,3 +588,7 @@ Five Lean theorem roots in `S004ClassicalDensity.lean` establish closure of cont
 ### Phase XXIII classical field derivative witnesses
 
 The original S004 two-real-component field jet is now constructed from actual scalar classical derivative witnesses (`HasDerivAt` in time and space) with joint continuity; the physical acceleration and Laplacian are the *second derivatives* of the same scalar fields. Shifts preserve these certified jets and all perturbed densities remain genuinely Lebesgue integrable. The analytic action derivative domination and nonlinear PDE equivalence remain open. Count 78→83 audited roots.
+
+### Phase XXIII original field periodicity implies jet trace matching
+
+Five additional classical derivative roots in `S004ClassicalPeriodicity.lean` show that global spatial translation periodicity of the original scalar field forces first/second spatial and time derivative periodicity by genuine `HasDerivAt` uniqueness. This proves the physical jet periodic values for both scalar field components without arbitrary independent jet trace hypotheses. Does not yet discharge high-order Green or Sobolev trace conditions. 83→88 roots expected.
