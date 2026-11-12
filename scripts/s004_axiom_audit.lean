@@ -8,6 +8,7 @@ import WCTLean.Models.S004SpacetimeEuler
 import WCTLean.Models.S004SpacetimeActionBridge
 import WCTLean.Models.S004SpacetimeStrongBridge
 import WCTLean.Models.S004SpacetimeEulerPairing
+import WCTLean.Models.S004ContinuousAdmissibility
 import WCTLean.Models.S004EulerCoefficients
 import WCTLean.Models.S004IntervalGreen
 import WCTLean.Models.S004CompatibleFields
@@ -124,3 +125,11 @@ Only standard Lean logical axioms may occur.
 #print axioms WCTLean.S004SpacetimeEulerPairing.integral_five_signed
 #print axioms WCTLean.S004SpacetimeEulerPairing.strongComponent_eq_residual_pairing
 #print axioms WCTLean.S004SpacetimeEulerPairing.originalAction_hasDerivAt_euler_pairing
+
+-- Phase XXII: corrected quotient continuity and true finite-cell integrability.
+#print axioms WCTLean.S004ContinuousAdmissibility.corrected_weight_continuous_for_field
+#print axioms WCTLean.S004ContinuousAdmissibility.corrected_weight_rectangle_integrable
+#print axioms WCTLean.S004ContinuousAdmissibility.closed_rectangle_continuous_integrable
+#print axioms WCTLean.S004ContinuousAdmissibility.continuous_weak_products_integrable
+#print axioms WCTLean.S004ContinuousAdmissibility.continuous_strong_products_integrable
+#print axioms WCTLean.S004ContinuousAdmissibility.originalAction_hasDerivAt_euler_pairing_of_continuity

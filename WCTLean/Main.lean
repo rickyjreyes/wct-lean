@@ -31,6 +31,7 @@ import WCTLean.Models.S004SpacetimeEuler
 import WCTLean.Models.S004SpacetimeActionBridge
 import WCTLean.Models.S004SpacetimeStrongBridge
 import WCTLean.Models.S004SpacetimeEulerPairing
+import WCTLean.Models.S004ContinuousAdmissibility
 import WCTLean.Models.S004EulerSeparation
 import WCTLean.Models.S004ContinuousEuler
 import WCTLean.Models.S004BoundaryWeightedEuler
