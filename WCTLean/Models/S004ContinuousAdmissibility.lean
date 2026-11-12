@@ -69,7 +69,7 @@ theorem corrected_weight_continuous_for_field
   change ContinuousAt
     (fun w : ℝ × ℝ => correctedRadialWeight epsilon alpha
       (realTwoComponentDensity (x w) (y w))) z
-  exact hcont.comp z (hrho.continuousAt)
+  exact hcont.comp_of_eq (hrho.continuousAt) rfl
 
 /-- Continuous original-model regulator fields are actually
 Lebesgue integrable over any finite spacetime rectangle. -/
