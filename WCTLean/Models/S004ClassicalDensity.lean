@@ -91,13 +91,13 @@ theorem continuous_curvature_of_jet
     unfold curvatureQuadratic
     exact ((continuous_const.mul ((hu.bx.sub hu.ax).pow 2)).add
       (continuous_const.mul (hu.bx.pow 2))).add
-        (continuous_const.mul ((hu.bx.sub hu.ax).mul hu.bx))
+        ((continuous_const.mul (hu.bx.sub hu.ax)).mul hu.bx)
   have hI : Continuous (fun z =>
       curvatureQuadratic kappa theta gamma (u z).ay (u z).bY) := by
     unfold curvatureQuadratic
     exact ((continuous_const.mul ((hu.bY.sub hu.ay).pow 2)).add
       (continuous_const.mul (hu.bY.pow 2))).add
-        (continuous_const.mul ((hu.bY.sub hu.ay).mul hu.bY))
+        ((continuous_const.mul (hu.bY.sub hu.ay)).mul hu.bY)
   change Continuous (fun z =>
     curvatureQuadratic kappa theta gamma (u z).ax (u z).bx +
     curvatureQuadratic kappa theta gamma (u z).ay (u z).bY)
