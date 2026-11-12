@@ -133,3 +133,10 @@ Only standard Lean logical axioms may occur.
 #print axioms WCTLean.S004ContinuousAdmissibility.continuous_weak_products_integrable
 #print axioms WCTLean.S004ContinuousAdmissibility.continuous_strong_products_integrable
 #print axioms WCTLean.S004ContinuousAdmissibility.originalAction_hasDerivAt_euler_pairing_of_continuity
+
+-- Phase XXIII: original corrected nonlinear S004 action continuity and all-shift integrability.
+#print axioms WCTLean.S004ClassicalDensity.continuous_shift
+#print axioms WCTLean.S004ClassicalDensity.continuous_curvature_of_jet
+#print axioms WCTLean.S004ClassicalDensity.continuous_fullLocalDensity
+#print axioms WCTLean.S004ClassicalDensity.integrable_fullLocalDensity_on_rectangle
+#print axioms WCTLean.S004ClassicalDensity.integrable_fullLocalDensity_all_shifts

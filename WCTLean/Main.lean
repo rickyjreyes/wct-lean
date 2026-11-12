@@ -76,3 +76,5 @@ theorem wctlean_registry_smoke : canonicalRegistry.length = 142 :=
   canonicalRegistry_length
 
 end WCTLean
+
+import WCTLean.Models.S004ClassicalDensity
