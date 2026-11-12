@@ -117,9 +117,9 @@ in 1+1) are likewise actual derivatives of the same fields. -/
 theorem genuine_jet_spatial_compatibility
     (uR uI : ClassicalScalarField) (t x : ℝ) :
     HasDerivAt (fun s => (genuineJet uR uI (t,s)).x)
-      (genuineJet uR uI (t,x)).gx 0 x ∧
+      ((genuineJet uR uI (t,x)).gx 0) x ∧
     HasDerivAt (fun s => (genuineJet uR uI (t,s)).y)
-      (genuineJet uR uI (t,x)).gy 0 x ∧
+      ((genuineJet uR uI (t,x)).gy 0) x ∧
     HasDerivAt (fun s => (genuineJet uR uI (t,s)).gx 0)
       (genuineJet uR uI (t,x)).bx x ∧
     HasDerivAt (fun s => (genuineJet uR uI (t,s)).gy 0)
