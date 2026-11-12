@@ -580,3 +580,15 @@ The three audited declarations in `S004SpacetimeEulerPairing.lean` derive a rigo
 ### Phase XXII finite-cell classical regularity layer, 2026-11-11
 
 Six strict axiom-audited roots are added in `S004ContinuousAdmissibility.lean`: original S004 regulator continuity at field nodes for continuous real fields, its actual finite-rectangle Lebesgue integrability, domain-local compact continuity ⇒ integrability, 10 weak-term continuity ⇒ integrability, 4 strong spatial-term continuity ⇒ integrability, and original corrected action-to-Euler pairing with these 14 integrability premises discharged. **Not a Sobolev-space closure:** only named classical product continuity and pre-existing domination and Green derivative/trace hypotheses are provided. Do not close #18 or assert completed #17 criticality equivalence. 67 → 73 S004 root audit.
+
+### Phase XXIII classical full-action integrability (2026-11-12)
+
+Five Lean theorem roots in `S004ClassicalDensity.lean` establish closure of continuous real/imag nonlinear S004 jets under the true affine shift, actual curvature-quadratic continuity, original corrected action-density continuity, and genuine product-Lebesgue integrability on finite rectangles for unshifted and all shifted jets. The separate domination and physical derivative compatibility/Sobolev trace hypotheses remain open. Counts: 73→78 roots expected.
+
+### Phase XXIII classical field derivative witnesses
+
+The original S004 two-real-component field jet is now constructed from actual scalar classical derivative witnesses (`HasDerivAt` in time and space) with joint continuity; the physical acceleration and Laplacian are the *second derivatives* of the same scalar fields. Shifts preserve these certified jets and all perturbed densities remain genuinely Lebesgue integrable. The analytic action derivative domination and nonlinear PDE equivalence remain open. Count 78→83 audited roots.
+
+### Phase XXIII original field periodicity implies jet trace matching
+
+Five additional classical derivative roots in `S004ClassicalPeriodicity.lean` show that global spatial translation periodicity of the original scalar field forces first/second spatial and time derivative periodicity by genuine `HasDerivAt` uniqueness. This proves the physical jet periodic values for both scalar field components without arbitrary independent jet trace hypotheses. Does not yet discharge high-order Green or Sobolev trace conditions. 83→88 roots expected.

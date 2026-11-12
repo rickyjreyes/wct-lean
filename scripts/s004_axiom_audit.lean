@@ -9,6 +9,9 @@ import WCTLean.Models.S004SpacetimeActionBridge
 import WCTLean.Models.S004SpacetimeStrongBridge
 import WCTLean.Models.S004SpacetimeEulerPairing
 import WCTLean.Models.S004ContinuousAdmissibility
+import WCTLean.Models.S004ClassicalDensity
+import WCTLean.Models.S004ClassicalField
+import WCTLean.Models.S004ClassicalPeriodicity
 import WCTLean.Models.S004EulerCoefficients
 import WCTLean.Models.S004IntervalGreen
 import WCTLean.Models.S004CompatibleFields
@@ -133,3 +136,24 @@ Only standard Lean logical axioms may occur.
 #print axioms WCTLean.S004ContinuousAdmissibility.continuous_weak_products_integrable
 #print axioms WCTLean.S004ContinuousAdmissibility.continuous_strong_products_integrable
 #print axioms WCTLean.S004ContinuousAdmissibility.originalAction_hasDerivAt_euler_pairing_of_continuity
+
+-- Phase XXIII: original corrected nonlinear S004 action continuity and all-shift integrability.
+#print axioms WCTLean.S004ClassicalDensity.continuous_shift
+#print axioms WCTLean.S004ClassicalDensity.continuous_curvature_of_jet
+#print axioms WCTLean.S004ClassicalDensity.continuous_fullLocalDensity
+#print axioms WCTLean.S004ClassicalDensity.integrable_fullLocalDensity_on_rectangle
+#print axioms WCTLean.S004ClassicalDensity.integrable_fullLocalDensity_all_shifts
+
+-- Phase XXIII verified classical real-field differentiation and exact action jets.
+#print axioms WCTLean.S004ClassicalField.genuine_jet_temporal_compatibility
+#print axioms WCTLean.S004ClassicalField.genuine_jet_spatial_compatibility
+#print axioms WCTLean.S004ClassicalField.genuine_jet_shift
+#print axioms WCTLean.S004ClassicalField.genuine_jet_continuous
+#print axioms WCTLean.S004ClassicalField.genuine_action_all_shifts_integrable
+
+-- Phase XXIII periodic real fields force all first/second time and spatial derivative traces.
+#print axioms WCTLean.S004ClassicalPeriodicity.real_derivative_periodic
+#print axioms WCTLean.S004ClassicalPeriodicity.real_second_derivative_periodic
+#print axioms WCTLean.S004ClassicalPeriodicity.classical_time_jets_periodic
+#print axioms WCTLean.S004ClassicalPeriodicity.classical_space_jets_periodic
+#print axioms WCTLean.S004ClassicalPeriodicity.classical_all_five_jets_periodic
