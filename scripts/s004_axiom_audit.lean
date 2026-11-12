@@ -9,6 +9,9 @@ import WCTLean.Models.S004SpacetimeActionBridge
 import WCTLean.Models.S004SpacetimeStrongBridge
 import WCTLean.Models.S004SpacetimeEulerPairing
 import WCTLean.Models.S004ContinuousAdmissibility
+import WCTLean.Models.S004ClassicalDensity
+import WCTLean.Models.S004ClassicalField
+import WCTLean.Models.S004ClassicalPeriodicity
 import WCTLean.Models.S004EulerCoefficients
 import WCTLean.Models.S004IntervalGreen
 import WCTLean.Models.S004CompatibleFields
