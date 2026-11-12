@@ -576,3 +576,7 @@ The four kernel-audited roots in `WCTLean/Models/S004SpacetimeActionBridge.lean`
 ### Single corrected S004 Euler residual pairing, 2026-11-11
 
 The three audited declarations in `S004SpacetimeEulerPairing.lean` derive a rigorous full two-component 1+1 action first-variation formula as two actual integrals of the original S004 corrected strong Euler residuals times test components, conditional on exact action domination, Green derivatives/traces and five strong-product integrability hypotheses. This is an integral-assembly advance, **not** the smooth/Sobolev admissibility and test-density closure. Strict original-model S004 audit expanded to 67 theorem roots; #17/#18 remain OPEN.
+
+### Phase XXII finite-cell classical regularity layer, 2026-11-11
+
+Six strict axiom-audited roots are added in `S004ContinuousAdmissibility.lean`: original S004 regulator continuity at field nodes for continuous real fields, its actual finite-rectangle Lebesgue integrability, domain-local compact continuity ⇒ integrability, 10 weak-term continuity ⇒ integrability, 4 strong spatial-term continuity ⇒ integrability, and original corrected action-to-Euler pairing with these 14 integrability premises discharged. **Not a Sobolev-space closure:** only named classical product continuity and pre-existing domination and Green derivative/trace hypotheses are provided. Do not close #18 or assert completed #17 criticality equivalence. 67 → 73 S004 root audit.
