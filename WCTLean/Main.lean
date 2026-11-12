@@ -32,6 +32,7 @@ import WCTLean.Models.S004SpacetimeActionBridge
 import WCTLean.Models.S004SpacetimeStrongBridge
 import WCTLean.Models.S004SpacetimeEulerPairing
 import WCTLean.Models.S004ContinuousAdmissibility
+import WCTLean.Models.S004ClassicalDensity
 import WCTLean.Models.S004EulerSeparation
 import WCTLean.Models.S004ContinuousEuler
 import WCTLean.Models.S004BoundaryWeightedEuler
@@ -76,5 +77,3 @@ theorem wctlean_registry_smoke : canonicalRegistry.length = 142 :=
   canonicalRegistry_length
 
 end WCTLean
-
-import WCTLean.Models.S004ClassicalDensity
