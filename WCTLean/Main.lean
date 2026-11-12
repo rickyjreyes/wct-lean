@@ -35,6 +35,7 @@ import WCTLean.Models.S004ContinuousAdmissibility
 import WCTLean.Models.S004ClassicalDensity
 import WCTLean.Models.S004ClassicalField
 import WCTLean.Models.S004ClassicalPeriodicity
+import WCTLean.Models.S004PeriodicAdmissible
 import WCTLean.Models.S004EulerSeparation
 import WCTLean.Models.S004ContinuousEuler
 import WCTLean.Models.S004BoundaryWeightedEuler
