@@ -12,6 +12,8 @@ import WCTLean.Models.S004ContinuousAdmissibility
 import WCTLean.Models.S004ClassicalDensity
 import WCTLean.Models.S004ClassicalField
 import WCTLean.Models.S004ClassicalPeriodicity
+import WCTLean.Models.S004PeriodicAdmissible
+import WCTLean.Models.S004VacuumOnset
 import WCTLean.Models.S004EulerCoefficients
 import WCTLean.Models.S004IntervalGreen
 import WCTLean.Models.S004CompatibleFields
@@ -157,3 +159,15 @@ Only standard Lean logical axioms may occur.
 #print axioms WCTLean.S004ClassicalPeriodicity.classical_time_jets_periodic
 #print axioms WCTLean.S004ClassicalPeriodicity.classical_space_jets_periodic
 #print axioms WCTLean.S004ClassicalPeriodicity.classical_all_five_jets_periodic
+
+-- Phase XXIV audit: previously merged classical periodic-field closure.
+#print axioms WCTLean.S004PeriodicAdmissible.all_classical_traces
+#print axioms WCTLean.S004PeriodicAdmissible.genuine_periodic_jet_shift
+#print axioms WCTLean.S004PeriodicAdmissible.periodic_genuine_action_all_shifts_integrable
+
+-- Phase XXIV: exact original-model field-node curvature onset.
+#print axioms WCTLean.S004VacuumOnset.vacuum_density_exact_quadratic
+#print axioms WCTLean.S004VacuumOnset.vacuum_curvature_form_exact_quadratic
+#print axioms WCTLean.S004VacuumOnset.vacuum_curvature_term_exact_quartic
+#print axioms WCTLean.S004VacuumOnset.vacuum_local_direction_zero
+#print axioms WCTLean.S004VacuumOnset.vacuum_localDensity_hasDerivAt_zero
