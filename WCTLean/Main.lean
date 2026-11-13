@@ -44,6 +44,7 @@ import WCTLean.Models.S004CompatibleFields
 import WCTLean.Models.S004FullSpatialIntegratedVariation
 import WCTLean.Models.S004IntegratedVariation
 import WCTLean.Models.S004PrincipalDegeneracy
+import WCTLean.Models.S004VacuumOnset
 import WCTLean.Models.S004AmplitudeAnnulus
 import WCTLean.Models.CorrectedWeightCalculus
 import WCTLean.Models.CorrectedWeightDirection
