@@ -1,0 +1,5 @@
+import WCTLean.Models.CurvatureQuantitativeLimit
+
+#print axioms WCTLean.positive_reciprocal_regularization_bound
+#print axioms WCTLean.complex_regularizer_inverse_error
+#print axioms WCTLean.complex_regularizer_inverse_uniform_quadratic
