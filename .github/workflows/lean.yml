@@ -48,6 +48,11 @@ jobs:
           set -o pipefail
           lake env lean scripts/s004_axiom_audit.lean 2>&1 | tee s004-axioms.log
           python scripts/check_s004_axioms.py s004-axioms.log
+      - name: Audit quantitative curvature regularization theorems
+        shell: bash
+        run: |
+          set -o pipefail
+          lake env lean scripts/curvature_quantitative_axioms.lean 2>&1 | tee curvature-axioms.log
       - name: Confirm the locked dependency graph is unchanged
         run: git diff --exit-code -- lake-manifest.json lean-toolchain lakefile.lean
       - name: Upload Lean build diagnostics
