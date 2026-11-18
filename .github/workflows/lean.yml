@@ -2,7 +2,7 @@ name: Lean formal reproducibility
 
 on:
   push:
-    branches: [main]
+    branches: [main, agent/curvature-quantitative-limit-20261117]
   pull_request:
   workflow_dispatch:
 
