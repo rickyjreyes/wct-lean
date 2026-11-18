@@ -21,6 +21,7 @@ import WCTLean.Models.ComplexCurvature
 import WCTLean.Models.ComplexCurvatureLimit
 import WCTLean.Models.CurvatureLpLimit
 import WCTLean.Models.CurvatureGlobalEnvelope
+import WCTLean.Models.CurvatureDominatedIntegrals
 import WCTLean.Models.ComplexClosureNonuniqueness
 import WCTLean.Models.S004JetVariation
 import WCTLean.Models.S004TwoComponentVariation
