@@ -46,7 +46,7 @@ theorem thetaComplex_zero_epsilon
   simp only [complexRegularizerDenominator, zero_pow (by norm_num : (2 : ℕ) ≠ 0),
     zero_mul, add_zero]
   rw [hnorm]
-  field_simp [hpsi, hconj] <;> ring
+  field_simp [hpsi, hconj] <;> simp <;> ring
 
 /-- At a field node the corrected curvature is identically zero for
 any supplied Laplacian and any epsilon. This is not a definition of
