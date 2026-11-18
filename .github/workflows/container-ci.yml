@@ -2,7 +2,7 @@ name: Lean container CI
 
 on:
   push:
-    branches: [main, agent/curvature-quantitative-limit-20261117]
+    branches: [main]
     paths:
       - "Dockerfile"
       - ".dockerignore"
