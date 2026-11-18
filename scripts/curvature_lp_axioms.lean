@@ -1,0 +1,9 @@
+import WCTLean.Models.CurvatureLpLimit
+
+#print axioms WCTLean.theta_nonnodal_uniform_bound
+#print axioms WCTLean.theta_regularization_memLp
+#print axioms WCTLean.reciprocal_regularization_error_le
+#print axioms WCTLean.theta_regularization_error_le
+#print axioms WCTLean.theta_regularization_eLpNorm_le
+#print axioms WCTLean.theta_regularization_tendsto_eLpNorm_zero
+#print axioms WCTLean.theta_regularization_tendsto_unregularized
