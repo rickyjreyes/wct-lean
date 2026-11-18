@@ -184,4 +184,21 @@ theorem theta_regularization_tendsto_unregularized
     rw [thetaComplex_zero_epsilon (lapPsi x) (psi x) alpha hn]
   simp_rw [heq]
   exact theta_regularization_tendsto_eLpNorm_zero mu p psi lapPsi alpha delta ha hd hpsi hlap
+/-- A bounded supplied Laplacian does not give a uniform field-value limit
+near nodes: on the diagonal psi=epsilon>0 the quotient error is 1/(2 epsilon).
+This is an algebraic jet counterexample, not a constructed PDE solution. -/
+theorem theta_node_scale_error (epsilon : ℝ) (he : 0 < epsilon) :
+    ‖thetaComplex 1 (epsilon : ℂ) epsilon 0 -
+      (-(1 / (epsilon : ℂ)))‖ = 1 / (2 * epsilon) := by
+  have hc : (epsilon : ℂ) ≠ 0 := by exact_mod_cast he.ne'
+  have h :
+      thetaComplex 1 (epsilon : ℂ) epsilon 0 - (-(1 / (epsilon : ℂ))) =
+        ((1 / (2 * epsilon) : ℝ) : ℂ) := by
+    simp [thetaComplex, complexRegularizedReciprocal, complexRegularizerDenominator,
+      Complex.normSq_ofReal]
+    push_cast
+    field_simp
+    <;> ring
+  rw [h, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (by positivity)]
+
 end WCTLean
