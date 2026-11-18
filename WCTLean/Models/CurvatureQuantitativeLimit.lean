@@ -132,8 +132,7 @@ theorem thetaComplex_nonnodal_error_bound
     rw [← mul_sub]
     congr 1
     push_cast
-    ring
-  rw [hform, norm_mul, norm_mul, norm_neg, norm_star, Complex.norm_real]
+  rw [hform, norm_mul, norm_mul, norm_neg, norm_star, ← Complex.ofReal_sub, Complex.norm_real]
   have herr := complex_regularizer_inverse_uniform_quadratic
     psi epsilon alpha delta hdelta hpsi halpha
   have hfac : 0 ≤ ‖lapPsi‖ * ‖psi‖ := mul_nonneg (norm_nonneg _) (norm_nonneg _)
@@ -166,6 +165,8 @@ theorem thetaComplex_field_uniform_error
         thetaComplex_nonnodal_error_bound _ _ _ _ _ hdelta (hnodal x) halpha
     _ ≤ lapBound * ampBound * (epsilon ^ 2 / delta ^ 2) := by
         gcongr
+        · exact hlap x
+        · exact hamp x
 
 
 end WCTLean
