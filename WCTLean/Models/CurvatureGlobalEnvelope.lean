@@ -101,9 +101,14 @@ theorem theta_no_gap_memLp
     exact (hlap.aemeasurable.neg.mul
       ((continuous_star.measurable.comp_aemeasurable hm.aemeasurable).div
         hden.aemeasurable)).aestronglyMeasurable
-  apply hquot.of_le_mul hmeas
-  filter_upwards [] with x
-  simpa only [one_mul] using theta_no_gap_domination (lapPsi x) (psi x) epsilon alpha
+  have hbound :
+      ∀ᵐ x ∂mu,
+        ‖thetaComplex (lapPsi x) (psi x) epsilon alpha‖ ≤
+          (1 : ℝ) * ‖lapPsi x / psi x‖ := by
+    filter_upwards [] with x
+    simpa only [one_mul] using
+      theta_no_gap_domination (lapPsi x) (psi x) epsilon alpha
+  exact hquot.of_le_mul hmeas hbound
 
 
 end WCTLean
