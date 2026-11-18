@@ -201,4 +201,21 @@ theorem theta_node_scale_error (epsilon : ℝ) (he : 0 < epsilon) :
     <;> ring
   rw [h, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (by positivity)]
 
+/-- The same family converges in the actual common Lp space, for every
+1 <= p <= infinity, once measurability of the field is supplied. -/
+theorem theta_regularization_tendsto_Lp
+    {X : Type*} [MeasurableSpace X] (mu : Measure X) (p : ℝ≥0∞) [Fact (1 ≤ p)]
+    (psi lapPsi : X → ℂ) (alpha delta : ℝ)
+    (ha : 0 ≤ alpha) (hd : 0 < delta)
+    (hpsi : ∀ᵐ x ∂mu, delta ≤ ‖psi x‖)
+    (hm : AEStronglyMeasurable psi mu) (hlap : MemLp lapPsi p mu) :
+    Tendsto (fun epsilon : ℝ =>
+      (theta_regularization_memLp mu p psi lapPsi epsilon alpha delta hd hpsi hm hlap).toLp
+        (fun x => thetaComplex (lapPsi x) (psi x) epsilon alpha))
+      (nhds 0)
+      (nhds ((theta_regularization_memLp mu p psi lapPsi 0 alpha delta hd hpsi hm hlap).toLp
+        (fun x => thetaComplex (lapPsi x) (psi x) 0 alpha))) := by
+  apply (Lp.tendsto_Lp_iff_tendsto_eLpNorm'' _ _ _ _).mpr
+  exact theta_regularization_tendsto_eLpNorm_zero mu p psi lapPsi alpha delta ha hd hpsi hlap
+
 end WCTLean

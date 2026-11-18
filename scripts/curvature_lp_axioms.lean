@@ -8,3 +8,4 @@ import WCTLean.Models.CurvatureLpLimit
 #print axioms WCTLean.theta_regularization_tendsto_eLpNorm_zero
 #print axioms WCTLean.theta_regularization_tendsto_unregularized
 #print axioms WCTLean.theta_node_scale_error
+#print axioms WCTLean.theta_regularization_tendsto_Lp
