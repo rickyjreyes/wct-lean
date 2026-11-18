@@ -64,4 +64,45 @@ theorem theta_no_gap_error_majorant
         (theta_no_gap_domination lapPsi psi 0 alpha)
     _ = 2 * ‖lapPsi / psi‖ := by ring
 
+/-- An exact no-gap Lp seminorm majorant. This is independent of p and
+of the measure space, and needs no claim about the near-node denominator. -/
+theorem theta_no_gap_eLpNorm_le
+    {X : Type*} [MeasurableSpace X] (mu : MeasureTheory.Measure X)
+    (p : ℝ≥0∞) (psi lapPsi : X → ℂ) (epsilon alpha : ℝ) :
+    MeasureTheory.eLpNorm
+      (fun x => thetaComplex (lapPsi x) (psi x) epsilon alpha) p mu ≤
+      MeasureTheory.eLpNorm (fun x => lapPsi x / psi x) p mu := by
+  apply MeasureTheory.eLpNorm_mono_ae
+  filter_upwards [] with x
+  exact theta_no_gap_domination (lapPsi x) (psi x) epsilon alpha
+
+/-- The actual corrected curvature belongs to the common Lp space
+whenever the singular quotient is in Lp and the supplied field and
+Laplacian are a.e. strongly measurable. No uniform nonzero-field gap
+is needed. This does not claim all WCT states satisfy the Lp premise. -/
+theorem theta_no_gap_memLp
+    {X : Type*} [MeasurableSpace X] (mu : MeasureTheory.Measure X)
+    (p : ℝ≥0∞) (psi lapPsi : X → ℂ) (epsilon alpha : ℝ)
+    (hm : MeasureTheory.AEStronglyMeasurable psi mu)
+    (hlap : MeasureTheory.AEStronglyMeasurable lapPsi mu)
+    (hquot : MeasureTheory.MemLp (fun x => lapPsi x / psi x) p mu) :
+    MeasureTheory.MemLp
+      (fun x => thetaComplex (lapPsi x) (psi x) epsilon alpha) p mu := by
+  have hden : MeasureTheory.AEStronglyMeasurable
+      (fun x => ((complexRegularizerDenominator (psi x) epsilon alpha : ℝ) : ℂ)) mu := by
+    have hc : Continuous
+        (fun z : ℂ => ((complexRegularizerDenominator z epsilon alpha : ℝ) : ℂ)) := by
+      unfold complexRegularizerDenominator
+      fun_prop
+    exact hc.comp_aestronglyMeasurable hm
+  have hmeas : MeasureTheory.AEStronglyMeasurable
+      (fun x => thetaComplex (lapPsi x) (psi x) epsilon alpha) mu := by
+    exact (hlap.aemeasurable.neg.mul
+      ((continuous_star.measurable.comp_aemeasurable hm.aemeasurable).div
+        hden.aemeasurable)).aestronglyMeasurable
+  apply hquot.of_le_mul hmeas
+  filter_upwards [] with x
+  simpa only [one_mul] using theta_no_gap_domination (lapPsi x) (psi x) epsilon alpha
+
+
 end WCTLean
