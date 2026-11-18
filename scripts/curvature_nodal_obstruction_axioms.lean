@@ -1,0 +1,3 @@
+import WCTLean.Models.CurvatureNodalObstruction
+
+#print axioms WCTLean.theta_no_uniform_limit_near_nodes
