@@ -94,4 +94,78 @@ theorem complex_regularizer_inverse_uniform_quadratic
   exact le_trans
     (complex_regularizer_inverse_error psi epsilon alpha delta hdelta hpsi) hfrac
 
+/-! ## Full complex curvature operator, pointwise estimate -/
+
+/-- The exact corrected complex curvature operator may be factored through
+the real reciprocal denominator without adding an assumption or changing
+its definition. This identity includes the original supplied Laplacian. -/
+theorem thetaComplex_as_real_reciprocal (lapPsi psi : ℂ)
+    (epsilon alpha : ℝ) :
+    thetaComplex lapPsi psi epsilon alpha =
+      (-lapPsi * star psi) *
+        ((1 / complexRegularizerDenominator psi epsilon alpha : ℝ) : ℂ) := by
+  unfold thetaComplex complexRegularizedReciprocal
+  push_cast
+  ring
+
+/-- A quantitative pointwise estimate for the FULL complex curvature
+quotient with a fixed supplied Laplacian. The norm is the complex modulus;
+the result is not a PDE convergence theorem. -/
+theorem thetaComplex_nonnodal_error_bound
+    (lapPsi psi : ℂ) (epsilon alpha delta : ℝ)
+    (hdelta : 0 < delta) (hpsi : delta ≤ Complex.normSq psi)
+    (halpha : 0 ≤ alpha) :
+    ‖thetaComplex lapPsi psi epsilon alpha -
+      thetaComplex lapPsi psi 0 alpha‖ ≤
+      ‖lapPsi‖ * ‖psi‖ * (epsilon ^ 2 / delta ^ 2) := by
+  have hzero :
+      complexRegularizerDenominator psi 0 alpha = Complex.normSq psi := by
+    simp [complexRegularizerDenominator]
+  have hform :
+      thetaComplex lapPsi psi epsilon alpha -
+        thetaComplex lapPsi psi 0 alpha =
+      (-lapPsi * star psi) *
+        (((1 / complexRegularizerDenominator psi epsilon alpha : ℝ) -
+          (1 / Complex.normSq psi : ℝ)) : ℂ) := by
+    rw [thetaComplex_as_real_reciprocal,
+      thetaComplex_as_real_reciprocal, hzero]
+    rw [← mul_sub]
+    congr 1
+    push_cast
+    ring
+  rw [hform, norm_mul, norm_mul, norm_neg, norm_star, Complex.norm_real]
+  have herr := complex_regularizer_inverse_uniform_quadratic
+    psi epsilon alpha delta hdelta hpsi halpha
+  have hfac : 0 ≤ ‖lapPsi‖ * ‖psi‖ := mul_nonneg (norm_nonneg _) (norm_nonneg _)
+  nlinarith [mul_le_mul_of_nonneg_left herr hfac]
+
+/-- Uniform pointwise convergence of the full quotient on a nodal-free
+field family with certified Laplacian and amplitude bounds. This is an
+explicit quantitative estimate for every spatial point, independent
+of the spatial domain type. -/
+theorem thetaComplex_field_uniform_error
+    {X : Type*} (lapPsi psi : X → ℂ)
+    (epsilon alpha delta lapBound ampBound : ℝ)
+    (hdelta : 0 < delta) (halpha : 0 ≤ alpha)
+    (hlap : ∀ x, ‖lapPsi x‖ ≤ lapBound)
+    (hamp : ∀ x, ‖psi x‖ ≤ ampBound)
+    (hnodal : ∀ x, delta ≤ Complex.normSq (psi x)) :
+    ∀ x,
+      ‖thetaComplex (lapPsi x) (psi x) epsilon alpha -
+        thetaComplex (lapPsi x) (psi x) 0 alpha‖ ≤
+        lapBound * ampBound * (epsilon ^ 2 / delta ^ 2) := by
+  intro x
+  have hδ : 0 ≤ epsilon ^ 2 / delta ^ 2 :=
+    div_nonneg (sq_nonneg _) (sq_nonneg _)
+  have hL : 0 ≤ lapBound := le_trans (norm_nonneg _) (hlap x)
+  have hA : 0 ≤ ampBound := le_trans (norm_nonneg _) (hamp x)
+  calc
+    ‖thetaComplex (lapPsi x) (psi x) epsilon alpha -
+        thetaComplex (lapPsi x) (psi x) 0 alpha‖
+      ≤ ‖lapPsi x‖ * ‖psi x‖ * (epsilon ^ 2 / delta ^ 2) :=
+        thetaComplex_nonnodal_error_bound _ _ _ _ _ hdelta (hnodal x) halpha
+    _ ≤ lapBound * ampBound * (epsilon ^ 2 / delta ^ 2) := by
+        gcongr
+
+
 end WCTLean
