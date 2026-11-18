@@ -53,6 +53,11 @@ jobs:
         run: |
           set -o pipefail
           lake env lean scripts/curvature_quantitative_axioms.lean 2>&1 | tee curvature-axioms.log
+      - name: Audit corrected complex-curvature limit theorem axioms
+        shell: bash
+        run: |
+          set -o pipefail
+          lake env lean scripts/complex_curvature_limit_axiom_audit.lean 2>&1 | tee curvature-limit-axioms.log
       - name: Confirm the locked dependency graph is unchanged
         run: git diff --exit-code -- lake-manifest.json lean-toolchain lakefile.lean
       - name: Upload Lean build diagnostics
@@ -65,6 +70,7 @@ jobs:
             lean-build.log
             d4-axioms.log
             s004-axioms.log
+            curvature-limit-axioms.log
       - name: Upload formal-source manifest
         if: always()
         uses: actions/upload-artifact@v4
