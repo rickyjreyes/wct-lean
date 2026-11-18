@@ -130,13 +130,12 @@ theorem thetaComplex_nonnodal_error_bound
     rw [thetaComplex_as_real_reciprocal,
       thetaComplex_as_real_reciprocal, hzero]
     rw [← mul_sub]
-    congr 1
-    push_cast
-  rw [hform, norm_mul, norm_mul, norm_neg, norm_star, ← Complex.ofReal_sub, Complex.norm_real]
+  rw [hform, norm_mul, norm_mul, norm_neg, norm_star,
+    ← Complex.ofReal_sub, Complex.norm_real, Real.norm_eq_abs]
   have herr := complex_regularizer_inverse_uniform_quadratic
     psi epsilon alpha delta hdelta hpsi halpha
   have hfac : 0 ≤ ‖lapPsi‖ * ‖psi‖ := mul_nonneg (norm_nonneg _) (norm_nonneg _)
-  nlinarith [mul_le_mul_of_nonneg_left herr hfac]
+  exact mul_le_mul_of_nonneg_left herr hfac
 
 /-- Uniform pointwise convergence of the full quotient on a nodal-free
 field family with certified Laplacian and amplitude bounds. This is an
