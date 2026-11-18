@@ -72,8 +72,12 @@ theorem curvature_squared_integral_dominated_limit
     intro epsilon
     apply Filter.Eventually.of_forall
     intro x
-    simpa only [Real.norm_eq_abs, abs_of_nonneg (sq_nonneg _)] using
-      theta_no_gap_energy_majorant (lapPsi x) (psi x) epsilon alpha
+    have hs : 0 ≤ (‖thetaComplex (lapPsi x) (psi x) epsilon alpha‖ ^ 2 : ℝ) :=
+      sq_nonneg _
+    have habs : |‖thetaComplex (lapPsi x) (psi x) epsilon alpha‖ ^ 2| =
+        ‖thetaComplex (lapPsi x) (psi x) epsilon alpha‖ ^ 2 := abs_of_nonneg hs
+    rw [Real.norm_eq_abs, habs]
+    exact theta_no_gap_energy_majorant (lapPsi x) (psi x) epsilon alpha
   · exact hbound
   · apply Filter.Eventually.of_forall
     intro x
