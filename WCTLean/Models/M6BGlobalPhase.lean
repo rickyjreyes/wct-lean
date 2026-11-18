@@ -47,7 +47,7 @@ theorem m6b_unit_phase_numerator_invariant
       _ = 1 := by rw [hnormSq]; norm_num
   rw [map_mul]
   calc
-    (u * lapPsi) * ((starRingEnd ℂ) psi * (starRingEnd ℂ) u) =
+    (u * lapPsi) * ((starRingEnd ℂ) u * (starRingEnd ℂ) psi) =
         (u * (starRingEnd ℂ) u) * (lapPsi * (starRingEnd ℂ) psi) := by ring
     _ = lapPsi * (starRingEnd ℂ) psi := by rw [hconj, one_mul]
 
