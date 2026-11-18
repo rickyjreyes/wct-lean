@@ -70,6 +70,12 @@ jobs:
           set -o pipefail
           lake env lean scripts/curvature_global_envelope_axioms.lean | tee curvature-global-axioms.log
           python3 scripts/check_axiom_roots.py scripts/curvature_global_envelope_axioms.lean curvature-global-axioms.log
+      - name: Audit conditional curvature integral convergence
+        shell: bash
+        run: |
+          set -o pipefail
+          lake env lean scripts/curvature_dominated_integrals_axioms.lean | tee curvature-integral-axioms.log
+          python3 scripts/check_axiom_roots.py scripts/curvature_dominated_integrals_axioms.lean curvature-integral-axioms.log
       - name: Confirm the locked dependency graph is unchanged
         run: git diff --exit-code -- lake-manifest.json lean-toolchain lakefile.lean
       - name: Upload Lean build diagnostics
@@ -86,6 +92,7 @@ jobs:
             m6b-closure-axioms.log
             curvature-lp-axioms.log
             curvature-global-axioms.log
+            curvature-integral-axioms.log
       - name: Upload formal-source manifest
         if: always()
         uses: actions/upload-artifact@v4
