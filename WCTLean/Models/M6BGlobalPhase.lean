@@ -34,22 +34,22 @@ theorem m6b_unit_phase_intensity_invariant
 field is invariant under a common phase rotation. -/
 theorem m6b_unit_phase_numerator_invariant
     (u psi lapPsi : ℂ) (hu : ‖u‖ = 1) :
-    (u * lapPsi) * star (u * psi) = lapPsi * star psi := by
+    (u * lapPsi) * (starRingEnd ℂ) (u * psi) = lapPsi * (starRingEnd ℂ) psi := by
   have hnormSq : Complex.normSq u = 1 := by
     rw [Complex.normSq_eq_norm_sq, hu]
     norm_num
-  have hconj : u * star u = (1 : ℂ) := by
-    have h : ((Complex.normSq u : ℝ) : ℂ) = u * star u := by
+  have hconj : u * (starRingEnd ℂ) u = (1 : ℂ) := by
+    have h : ((Complex.normSq u : ℝ) : ℂ) = u * (starRingEnd ℂ) u := by
       rw [Complex.normSq_eq_conj_mul_self]
       ring
     calc
-      u * star u = ((Complex.normSq u : ℝ) : ℂ) := h.symm
+      u * (starRingEnd ℂ) u = ((Complex.normSq u : ℝ) : ℂ) := h.symm
       _ = 1 := by rw [hnormSq]; norm_num
-  rw [star_mul]
+  rw [map_mul]
   calc
-    (u * lapPsi) * (star psi * star u) =
-        (u * star u) * (lapPsi * star psi) := by ring
-    _ = lapPsi * star psi := by rw [hconj, one_mul]
+    (u * lapPsi) * ((starRingEnd ℂ) psi * (starRingEnd ℂ) u) =
+        (u * (starRingEnd ℂ) u) * (lapPsi * (starRingEnd ℂ) psi) := by ring
+    _ = lapPsi * (starRingEnd ℂ) psi := by rw [hconj, one_mul]
 
 /-- Full M6B pointwise curvature scalar is invariant under a global
 U(1) rotation of both inputs, for arbitrary real family parameter. -/
