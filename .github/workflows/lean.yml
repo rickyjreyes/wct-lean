@@ -48,6 +48,11 @@ jobs:
           set -o pipefail
           lake env lean scripts/s004_axiom_audit.lean 2>&1 | tee s004-axioms.log
           python scripts/check_s004_axioms.py s004-axioms.log
+      - name: Audit corrected M6B nonuniqueness theorem axioms
+        shell: bash
+        run: |
+          set -o pipefail
+          lake env lean scripts/complex_closure_nonuniqueness_axiom_audit.lean 2>&1 | tee m6b-closure-axioms.log
       - name: Confirm the locked dependency graph is unchanged
         run: git diff --exit-code -- lake-manifest.json lean-toolchain lakefile.lean
       - name: Upload Lean build diagnostics
@@ -60,6 +65,7 @@ jobs:
             lean-build.log
             d4-axioms.log
             s004-axioms.log
+            m6b-closure-axioms.log
       - name: Upload formal-source manifest
         if: always()
         uses: actions/upload-artifact@v4
