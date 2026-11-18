@@ -36,10 +36,10 @@ theorem curvature_integral_dominated_limit
     (bound := fun x => ‖lapPsi x / psi x‖)
   · exact Filter.Eventually.of_forall (fun epsilon =>
       (theta_no_gap_memLp mu 1 psi lapPsi epsilon alpha hm hlap hquot).aestronglyMeasurable)
-  · exact hbound
   · exact Filter.Eventually.of_forall (fun epsilon =>
       Filter.Eventually.of_forall (fun x =>
         theta_no_gap_domination (lapPsi x) (psi x) epsilon alpha))
+  · exact hbound
   · apply Filter.Eventually.of_forall
     intro x
     by_cases hx : psi x = 0
@@ -68,13 +68,13 @@ theorem curvature_squared_integral_dominated_limit
     have hmeas := (theta_no_gap_memLp mu 2 psi lapPsi epsilon alpha hm hlap hquot).aestronglyMeasurable
     have hc : Continuous (fun z : ℂ => (‖z‖ ^ 2 : ℝ)) := by fun_prop
     exact hc.comp_aestronglyMeasurable hmeas
-  · exact hbound
   · apply Filter.Eventually.of_forall
     intro epsilon
     apply Filter.Eventually.of_forall
     intro x
     simpa only [Real.norm_eq_abs, abs_of_nonneg (sq_nonneg _)] using
       theta_no_gap_energy_majorant (lapPsi x) (psi x) epsilon alpha
+  · exact hbound
   · apply Filter.Eventually.of_forall
     intro x
     have hθ : Tendsto (fun epsilon : ℝ =>
