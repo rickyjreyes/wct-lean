@@ -19,6 +19,7 @@ import WCTLean.Contracts.UniformCurvatureDenominator
 import WCTLean.Models.CurvatureOperator
 import WCTLean.Models.ComplexCurvature
 import WCTLean.Models.ComplexCurvatureLimit
+import WCTLean.Models.ComplexClosureNonuniqueness
 import WCTLean.Models.S004JetVariation
 import WCTLean.Models.S004TwoComponentVariation
 import WCTLean.Models.S004FullSpatialJet
