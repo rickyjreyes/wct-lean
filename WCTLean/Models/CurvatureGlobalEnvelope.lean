@@ -19,6 +19,7 @@ proved measurability/integrability and weak-form control.
 -/
 
 namespace WCTLean
+open scoped ENNReal
 
 /-- Exact pointwise domination by the (totalized) unregularized complex
 quotient, including field nodes and with no global positive gap. -/
