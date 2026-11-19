@@ -24,6 +24,7 @@ import WCTLean.Models.CurvatureGlobalEnvelope
 import WCTLean.Models.CurvatureDominatedIntegrals
 import WCTLean.Models.CurvatureMultiplicativeLaplacian
 import WCTLean.Models.CurvatureNodalObstruction
+import WCTLean.Models.CurvatureStructuredDominatedLimit
 import WCTLean.Models.ComplexClosureNonuniqueness
 import WCTLean.Models.S004JetVariation
 import WCTLean.Models.S004TwoComponentVariation
