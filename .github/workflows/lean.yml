@@ -88,6 +88,12 @@ jobs:
           set -o pipefail
           lake env lean scripts/curvature_nodal_obstruction_axioms.lean 2>&1 | tee curvature-nodal-axioms.log
           python3 scripts/check_axiom_roots.py scripts/curvature_nodal_obstruction_axioms.lean curvature-nodal-axioms.log
+      - name: Audit PDE-structured curvature integral convergence
+        shell: bash
+        run: |
+          set -o pipefail
+          lake env lean scripts/curvature_structured_dct_axioms.lean 2>&1 | tee curvature-structured-dct-axioms.log
+          python3 scripts/check_axiom_roots.py scripts/curvature_structured_dct_axioms.lean curvature-structured-dct-axioms.log
       - name: Confirm the locked dependency graph is unchanged
         run: git diff --exit-code -- lake-manifest.json lean-toolchain lakefile.lean
       - name: Upload Lean build diagnostics
@@ -105,6 +111,7 @@ jobs:
             curvature-lp-axioms.log
             curvature-global-axioms.log
             curvature-integral-axioms.log
+            curvature-structured-dct-axioms.log
       - name: Upload formal-source manifest
         if: always()
         uses: actions/upload-artifact@v4
