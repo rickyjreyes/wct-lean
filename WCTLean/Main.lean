@@ -19,6 +19,10 @@ import WCTLean.Models.CurvatureOperator
 import WCTLean.Models.ComplexCurvature
 import WCTLean.Models.CurvatureLimit
 import WCTLean.Models.ClosureNonuniqueness
+import WCTLean.Models.VariationalKernel
+import WCTLean.Models.InformationGeometry
+import WCTLean.Models.ModalEntropyBounds
+import WCTLean.Models.PhaseCoherenceIntegral
 import WCTLean.Models.PhaseFlux
 import WCTLean.Models.RestDensity
 import WCTLean.Models.Locking

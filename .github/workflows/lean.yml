@@ -31,12 +31,15 @@ jobs:
           lake update
           lake exe cache get
       - name: Audit source closure and emit SHA-256 manifest
-        run: python scripts/audit_formal_sources.py
+        run: |
+          python scripts/audit_formal_sources.py
+          python scripts/audit_coverage.py --check
+          python -m unittest discover -s tests -p test_coverage.py
       - name: Build all maintained Lean targets
         shell: bash
         run: |
           set -o pipefail
-          lake build 2>&1 | tee lean-build.log
+          lake build MyProject WCTLean my_project 2>&1 | tee lean-build.log
       - name: Confirm the locked dependency graph is unchanged
         run: git diff --exit-code -- lake-manifest.json lean-toolchain lakefile.lean
       - name: Upload Lean build diagnostics

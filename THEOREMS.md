@@ -266,3 +266,37 @@ Not closed by the current theorem set:
 | `d4_maps_closed_ball` | Normed-additive-group self-mapping theorem under supplied center residual and local Taylor bound; not a D4 state/root certificate |
 | `ContinuumClosureObligations`, `HasContinuumClosure` | Eight open continuum theorem targets packaged as a non-instantiated contract |
 
+
+## PR #31: exact local variation, E79/E82, and corrected Fourier boundary
+
+| Declaration | Mathematical result | Limitation |
+|---|---|---|
+| `radialCurvatureDenominator_hasDerivAt` | derivative of `q + ε² exp(-2αq)` is `1 - 2α ε² exp(-2αq)` | q is supplied squared modulus; no full function-space calculus |
+| `complexDenominatorDirection`, `curvatureNumeratorDirection` | full local real-direction tangent ingredients | supplied direction and Laplacian variation |
+| `correctedCurvatureDirection_quotient`, `correctedCurvatureDirection_positive_regulator` | exact rational local quotient-rule first variation with nonzero denominator | not the first variation of integrated fourth-order action |
+| `entropyProductionRate_nonnegative` (E79) | sign from nonnegative entropy rate, curvature energy, positive T | no independent second-law derivation |
+| `informationMetricEntry_symmetric`, `informationMetricEntry_diagonal_nonnegative`, `informationMetricQuadratic_nonnegative` (E82) | properties of real curvature-derivative Gram form | derivative input and empirical identification not derived |
+| `cos_opposite_integer_frequency`, `cos_one_mode_integral_sq`, `cos_orthogonality_TODO_false` | signed-frequency counterexample to historical incorrect integral proposition | proper separated-frequency orthogonality and E78 Fisher bound remain open |
+
+| `phaseCoherenceIntegrable` (E50) | proves genuine `MeasureTheory.Integrable` quotient on arbitrary measured space from measurable input, integrable a.e. nonnegative density, and a.e. positive gradient floor | does not prove WCT dynamics maintains this floor |
+
+## 2026-10-15 equation-specific batch (stacked on PR #31)
+
+<!-- coverage-audit: registered=142 typed=84 registry_only=58 -->
+
+Main remains at 80 typed IDs; PR #31 proposes 82 but its inspected head failed
+CI because `integral_cos_sq` was incorrectly namespaced. This batch repairs
+that import use and proposes 84/142, conditional on the complete Lean build.
+The generated `coverage_ledger.json` contains all 58 registry-only IDs.
+`python scripts/audit_coverage.py --check` rejects count, declaration and
+document-summary drift. Scientific registry classifications remain unchanged.
+
+| Canonical ID | Module and declarations | Exact scope |
+|---|---|---|
+| E15 | `Models/ModalEntropyBounds.lean`: `modalGrowthRhs`, `ModalGrowthBound`, `modalGrowth_nonpositive_above_threshold` | Actual differentiable modal-power inequality as a contract; nonpositive derivative above the supplied saturation threshold. The nonlinear projection hypothesis is not derived. |
+| E31 | Same module: `spectralEntropyDrop`, `EntropyDissipationBound`, `entropy_nonincreasing_of_dissipation_bound`, `cumulative_dissipation_le_entropy_drop` | Given independent nonnegative dissipation and the canonical step inequality, proves monotonic entropy and the finite telescoping budget. No field entropy law or complexity-class claim. |
+
+Canonical source: `geometry_of_resonance` at
+`31d346e7b62c5a61042a57fdab9c5bec3e825e95`,
+`WCT_FULL_EQUATION_LIST_CORRECTED.md`, E15 and E31.
+Maintained public targets: `lake build MyProject WCTLean my_project`.

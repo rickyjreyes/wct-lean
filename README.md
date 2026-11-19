@@ -46,7 +46,7 @@ These are symbolic classifications, with Lean theorem coverage tracked separatel
 
 ## Typed Lean support
 
-The maintained library now has non-registry equation-specific support for **80 of 142 IDs**:
+The maintained library now has non-registry equation-specific support for **82 of 142 IDs**:
 
 ```text
 M1 M2 M3 M4 M5 M6A M6B M7
@@ -56,14 +56,14 @@ E24 E25 E26 E27 E28 E29 E32 E33 E36 E37 E38 E41
 E45 E47 E49 E50 E51 E53
 E57 E58 E59 E61 E62 E64
 E65 E66 E67 E68 E69 E70 E72
-E78 E81
+E78 E79 E81 E82
 CLE4 CLE5 CLE8 CLE9 CLE10
 G1 EX EY EZ FA
 CM9 CM11 CM12 CM13 CM16
 TOP3 TOP7 CORR2
 ```
 
-The remaining **62 IDs** are registry-only, preserving complete inventory and classification coverage while equation-specific formalization continues.
+The remaining **60 IDs** are registry-only, preserving complete inventory and classification coverage while equation-specific formalization continues.
 
 The support strength varies by object:
 
@@ -78,7 +78,7 @@ The support strength varies by object:
 
 See [`FORMAL_COVERAGE_INDEX.md`](FORMAL_COVERAGE_INDEX.md) for the complete partition and [`THEOREMS.md`](THEOREMS.md) for the declaration-level inventory.
 
-The latest merged expansion adds 18 IDs beyond the original 62-ID baseline, including exact or conditional support for `E16`, `E19`, `E22`, `E32`, `E37`, `E38`, `E41`, `E50`, `E72`, `CLE4`, `CLE5`, `CLE8`, `CLE9`, `CLE10`, `CM11`, `TOP3`, `TOP7`, and `CORR2`. These entries span exact results, conditional results, constraints, and diagnostics with their strength recorded individually.
+The prior coverage expansion adds 18 IDs beyond the original 62-ID baseline, including exact or conditional support for `E16`, `E19`, `E22`, `E32`, `E37`, `E38`, `E41`, `E50`, `E72`, `CLE4`, `CLE5`, `CLE8`, `CLE9`, `CLE10`, `CM11`, `TOP3`, `TOP7`, and `CORR2`. These entries span exact results, conditional results, constraints, and diagnostics with their strength recorded individually.
 
 ## October 14, 2026: scoped formalization progress (PR #30)
 
@@ -248,3 +248,11 @@ A green Lean build means the encoded declarations are syntactically valid, type-
 - `Contracts/Spatial.lean` (#18): typed Cartesian free-space domain, explicit boundary set and closure containment, pointwise Dirichlet data and Cartesian componentwise periodicity, with elementary closure under field addition. **Not** an H² Sobolev/trace or manifold theorem.
 - `Models/D4Radius.lean` (#21): a conditional scalar D4 certificate and Banach-space closed-radius-ball self-mapping theorem **if supplied residual and Taylor bounds hold**. It does not certify computed D4 constants, a continuum root, coercivity or global orbital stability. D4 is the separate square-symmetric 2D periodic model, not four-dimensional space or the full WCT action.
 - `Contracts/ContinuumTargets.lean` (#28): all eight remaining analysis steps are named as fields of an uninstantiated Lean proof-obligation record. None is silently discharged.
+
+## Stacked implementation in PR #31 — mathematical scope
+
+- **#17 (partial):** `VariationalKernel.lean` proves the radial denominator derivative, preserves the exact squared-modulus complex convention, defines the supplied real directional numerator/denominator variations, and proves the full *local quotient-rule algebra*. It does not integrate the entire action or discharge gradient/Laplacian integration by parts.
+- **#23 correction:** the historical all-integer cosine TODO is false: the 1 and −1 modes coincide and their squared cosine integral is π. `Fourier.lean` proves the explicit counterexample and introduces the necessary index separation `n ≠ m ∧ n ≠ -m`. Genuine integral orthogonality and the *separate* canonical E78 Fisher inequality remain open.
+- **#27 promotion:** `InformationGeometry.lean` adds E79's entropy-production formula and conditional sign theorem; and E82's real symmetric information-Gram metric, diagonal positivity and a nonnegative finite weighted curvature-variation quadratic form. The compiled typed-support inventory is now **82/142**, with **60 registry-only** objects. These are mathematical formula/conditional checks, not new scientific PASS classifications.
+
+- **#28 E50 continuum step:** `PhaseCoherenceIntegral.lean` proves genuine integrability of `rho/|∇θ|` from an integrable, a.e. nonnegative density and a measurable phase-gradient magnitude with an a.e. positive lower bound. The lower bound is a hypothesis, not a consequence of WCT dynamics.
