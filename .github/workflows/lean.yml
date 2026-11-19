@@ -82,6 +82,12 @@ jobs:
           set -o pipefail
           lake env lean scripts/curve_locking_axiom_audit.lean 2>&1 | tee curve-locking-axioms.log
           python scripts/check_axiom_log.py curve-locking-axioms.log 15 "curve-locking"
+      - name: Audit linear M7 semigroup theorem axioms (#19/#21)
+        shell: bash
+        run: |
+          set -o pipefail
+          lake env lean scripts/m7_linear_semigroup_axiom_audit.lean 2>&1 | tee m7-linear-axioms.log
+          python scripts/check_axiom_log.py m7-linear-axioms.log 18 "m7-linear-semigroup"
       - name: Confirm the locked dependency graph is unchanged
         run: git diff --exit-code -- lake-manifest.json lean-toolchain lakefile.lean
       - name: Upload Lean build diagnostics
@@ -100,6 +106,7 @@ jobs:
             curvature-nodal-energy-axioms.log
             closure-classification-axioms.log
             curve-locking-axioms.log
+            m7-linear-axioms.log
       - name: Upload formal-source manifest
         if: always()
         uses: actions/upload-artifact@v4

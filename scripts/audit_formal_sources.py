@@ -56,6 +56,7 @@ def main() -> None:
         "WCTLean.Models.CurvatureNodalEnergy",
         "WCTLean.Models.ClosureClassification",
         "WCTLean.Models.CurveLocking",
+        "WCTLean.Models.M7LinearSemigroup",
         "WCTLean.Contracts.Analytic",
         "WCTLean.Models.CurvatureOperator",
         "WCTLean.Models.ComplexCurvature",

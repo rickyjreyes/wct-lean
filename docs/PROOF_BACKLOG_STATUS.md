@@ -24,6 +24,8 @@ lake env lean scripts/closure_classification_axiom_audit.lean > cc.log
 python3 scripts/check_axiom_log.py cc.log 17 "closure-classification"
 lake env lean scripts/curve_locking_axiom_audit.lean > cl.log
 python3 scripts/check_axiom_log.py cl.log 15 "curve-locking"
+lake env lean scripts/m7_linear_semigroup_axiom_audit.lean > m7.log
+python3 scripts/check_axiom_log.py m7.log 18 "m7-linear-semigroup"
 ```
 
 Hosted CI runs only on `pull_request` and pushes to `main`; this branch has
@@ -111,26 +113,37 @@ Remaining: an *action-level* derivation of either extra principle (no
 variational principle in the repository currently selects `Φ`); closures
 depending on derivatives of `ψ` beyond `(ψ, Δψ)`; local (gauge) covariance.
 
-### #19 — nonlinear well-posedness — OPEN (no new work yet)
+### #19 — nonlinear well-posedness — PARTIAL (linear part done)
 
 Draft PR #37 (pinned MathProofs dependency) has M7 symbol and Lipschitz
-estimates. Realistic next step on the periodic model: finite-dimensional
-Galerkin truncation of M7 on `span{e_n : |n| ≤ N}` using
-`FourierSpectral.lean` — local existence/uniqueness via Picard–Lindelöf for
-the band-limited system, with the a priori `L²` bound from
-`swiftHohenbergMultiplier_energy_le` — clearly labelled as a Galerkin
-(finite-dimensional) result, not PDE well-posedness.
+estimates. New on this branch (`WCTLean/Models/M7LinearSemigroup.lean`,
+18 roots): the *linear* M7 flow on `L²(AddCircle T)` is globally well posed
+(evolution operator, semigroup law, `e^{Ct}` bound, Lipschitz dependence,
+strong continuity, existence and uniqueness of Fourier-mild solutions).
+
+Next concrete targets: (1) `L² → H²` smoothing `‖Δ S(t) f‖ ≲ t^{-1/2}‖f‖`
+from the quartic symbol (PR #37 has the multiplier-level estimate);
+(2) Duhamel fixed point for the nonlinear curvature term in
+`C([0,T]; H²(AddCircle))`, which needs the `H²` space as a weighted `ℓ²`
+subspace and the Lipschitz bound of `N_curv` (PR #37). No nonlinear
+statement is proved on this branch.
 
 ### #20 — free-space existence/localization/decay — OPEN
 
 D4 Phase VI conditional chain on main. Needs concentration compactness;
 not attempted on this branch.
 
-### #21 — linearized spectrum and orbital stability — OPEN
+### #21 — linearized spectrum and orbital stability — PARTIAL (trivial state, periodic model)
 
-Possible periodic-model contribution: spectrum of the linearized M7 operator
-around constant states via `bandMultiplier` eigen-relations
-(`bandMultiplier_fourierMode`) and coercivity (`re_inner_bandMultiplier_le`).
+New on this branch: around the trivial state the linearized M7 /
+Swift–Hohenberg flow has the Fourier modes as eigenmodes
+(`evolution_fourierMode`); exponential stability when the symbol is
+`≤ -γ` and unbounded modal growth when a symbol value is positive
+(`evolution_exponentially_stable`, `evolution_mode_unbounded`,
+`swiftHohenberg_shell_unstable`, `swiftHohenberg_subcritical_stable`).
+
+Remaining: linearization around nontrivial confined states, symmetry
+quotient, orbital/Lyapunov stability (D4 handoff in the issue body).
 
 ### #24 — curve-integral locking on manifolds — CLOSED for C¹ loops on open subsets of real normed spaces
 
@@ -154,4 +167,5 @@ instantiation from an explicit radial phase field.
 - Commit `57b1906`: #23 Fourier/spectral/E78 (44 audited roots).
 - Commit `bbfd270`: #22 nodal energy dichotomy (12 audited roots) + this record.
 - Commit `254bd38`: #26 closure classification (17 audited roots).
-- Next commit: #24 curve-integral locking (15 audited roots).
+- Commit `d7fd8a6`: #24 curve-integral locking (15 audited roots).
+- Next commit: #19/#21 linear M7 semigroup (18 audited roots).

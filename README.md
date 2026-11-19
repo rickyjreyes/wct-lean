@@ -204,6 +204,9 @@ WCTLean/
     ├── CurvatureOperator.lean
     ├── ComplexCurvature.lean
     ├── FisherCurvature.lean
+    ├── CurveLocking.lean
+    ├── M7LinearSemigroup.lean
+    ├── ClosureClassification.lean
     ├── CurvatureNodalEnergy.lean
     ├── PhaseFlux.lean
     ├── RestDensity.lean
@@ -248,7 +251,7 @@ The highest-value open work is:
 
 1. exact functional variation of the full WCT action, including denominator derivatives and higher-order terms;
 2. admissible function spaces and boundary conditions;
-3. local and global well-posedness for the full nonlinear evolution;
+3. local and global well-posedness for the full nonlinear evolution — linear M7 part globally well posed on `L²(AddCircle T)` (`WCTLean/Models/M7LinearSemigroup.lean`); nonlinear curvature term open;
 4. existence, localization, finite energy, decay, and non-box-induced confinement;
 5. linearized spectrum and orbital or Lyapunov stability under nonsymmetric perturbations;
 6. control of the regularized quotient as `ε → 0` — partially closed: one-dimensional nodal dichotomy for the curvature energy in `WCTLean/Models/CurvatureNodalEnergy.lean` (divergence like `1/ε` at simple nodes with nonzero Laplacian; convergence under `ψ'' = Vψ`); whole-space, weak-formulation and PDE-trajectory limits open;

@@ -342,6 +342,24 @@ holds when the Laplacian factors through the field. Not addressed: whole-space
 fields, two-dimensional vortex nodes, weak-formulation (distributional)
 limits, and nodes of actual WCT PDE trajectories.
 
+## Linear M7 evolution on `L²(AddCircle T)` (issues #19/#21, linear part only)
+
+`WCTLean/Models/M7LinearSemigroup.lean`; 18 roots audited fail-closed
+(`scripts/m7_linear_semigroup_axiom_audit.lean`), only standard axioms.
+Periodic one-dimensional model; the nonlinear curvature term is **not**
+included.
+
+| Declaration | Content |
+|---|---|
+| `evolution`, `fourierCoeff_evolution` | `S(t)f = ∑ e^{t⁺σ(n)} f̂(n) e_n` for any real symbol bounded above |
+| `evolution_zero`, `evolution_add_time`, `evolution_sub`, `evolution_smul` | identity, semigroup law, linearity |
+| `norm_evolution_le`, `norm_evolution_sub_le` | `‖S(t)f‖ ≤ e^{μt⁺}‖f‖`; Lipschitz dependence on data |
+| `tendsto_evolution_zero` | strong continuity at `t = 0` |
+| `evolution_fourier_mild`, `fourier_mild_unique` | existence and uniqueness of Fourier-mild solutions on `[0, ∞)` |
+| `evolution_fourierMode`, `evolution_exponentially_stable`, `evolution_mode_unbounded` | eigenmodes; exponential stability if `σ ≤ -γ`; modal instability if `σ(k) > 0` |
+| `m7SymbolAtWavenumber_le`, `m7_linear_well_posed` | M7 symbol `c₁(σ₀²-k²) - c₂(k⋆²-k²)²` bounded above for `c₂ > 0`; global linear well-posedness |
+| `swiftHohenberg_shell_unstable`, `swiftHohenberg_subcritical_stable` | onset instability of a resonant shell mode; subcritical exponential stability |
+
 ## Curve-integral locking and winding (issue #24)
 
 `WCTLean/Models/CurveLocking.lean`; 15 roots audited fail-closed
@@ -377,7 +395,7 @@ Not closed by the current theorem set:
 
 - exact variation of the full WCT action;
 - function spaces, admissible domains, and boundary conditions;
-- local/global well-posedness of the full nonlinear PDE;
+- local/global well-posedness of the full nonlinear PDE (the linear M7 part is well posed on `L²(AddCircle T)`, `Models/M7LinearSemigroup.lean`);
 - existence, localization, finite energy, decay, and continuum-limit survival;
 - linearized spectral and orbital stability;
 - `ε → 0` quotient control beyond the one-dimensional nodal dichotomy below (whole-space, weak-formulation and PDE-trajectory limits);
