@@ -1,0 +1,4 @@
+import WCTLean.Main
+
+#print axioms WCTLean.curvature_integral_limit_of_multiplicative_laplacian
+#print axioms WCTLean.curvature_energy_integral_limit_of_multiplicative_laplacian
