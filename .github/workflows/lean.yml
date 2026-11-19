@@ -88,6 +88,12 @@ jobs:
           set -o pipefail
           lake env lean scripts/m7_linear_semigroup_axiom_audit.lean 2>&1 | tee m7-linear-axioms.log
           python scripts/check_axiom_log.py m7-linear-axioms.log 18 "m7-linear-semigroup"
+      - name: Audit nodal L1-divergence and weak-limit theorem axioms (#22)
+        shell: bash
+        run: |
+          set -o pipefail
+          lake env lean scripts/curvature_nodal_weak_limit_axiom_audit.lean 2>&1 | tee nodal-weak-limit-axioms.log
+          python scripts/check_axiom_log.py nodal-weak-limit-axioms.log 10 "nodal-weak-limit"
       - name: Confirm the locked dependency graph is unchanged
         run: git diff --exit-code -- lake-manifest.json lean-toolchain lakefile.lean
       - name: Upload Lean build diagnostics
@@ -107,6 +113,7 @@ jobs:
             closure-classification-axioms.log
             curve-locking-axioms.log
             m7-linear-axioms.log
+            nodal-weak-limit-axioms.log
       - name: Upload formal-source manifest
         if: always()
         uses: actions/upload-artifact@v4

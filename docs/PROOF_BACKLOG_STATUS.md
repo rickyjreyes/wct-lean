@@ -26,6 +26,8 @@ lake env lean scripts/curve_locking_axiom_audit.lean > cl.log
 python3 scripts/check_axiom_log.py cl.log 15 "curve-locking"
 lake env lean scripts/m7_linear_semigroup_axiom_audit.lean > m7.log
 python3 scripts/check_axiom_log.py m7.log 18 "m7-linear-semigroup"
+lake env lean scripts/curvature_nodal_weak_limit_axiom_audit.lean > nw.log
+python3 scripts/check_axiom_log.py nw.log 10 "nodal-weak-limit"
 ```
 
 Hosted CI runs only on `pull_request` and pushes to `main`; this branch has
@@ -78,11 +80,16 @@ New on this branch (`WCTLean/Models/CurvatureNodalEnergy.lean`, genuine
 This shows the integrable-quotient hypothesis of the draft stack *fails* for
 every field with a simple node carrying nonzero Laplacian.
 
+Also new (`WCTLean/Models/CurvatureNodalWeakLimit.lean`, 10 roots): `L¹`
+divergence `~ log(1/ε)` at such nodes, and **weak convergence** of
+`∫Θ_ε φ` for `α = 0` with an explicit limit (logarithmic integration by
+parts).  Operator / `L¹` / energy / weak modes are now all separated at
+simple nodes.
+
 Next concrete targets:
 
-1. weak (distributional) limit at a simple node — expected principal value
-   `-(ψ''(x₀)/ψ'(x₀)) p.v. 1/(x - x₀)` locally; would show weak convergence
-   survives where energy diverges;
+1. weak limit for `α > 0` (extra factor `1 - 2αε²e^{-2αψ²}` in the
+   logarithmic derivative; uniformly → 1);
 2. 2D vortex nodes: logarithmic energy divergence `~ log(1/ε)` when `Δψ ≠ 0`
    at the vortex core;
 3. nodes of actual WCT evolution trajectories (needs #19).

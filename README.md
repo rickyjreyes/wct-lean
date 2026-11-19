@@ -208,6 +208,7 @@ WCTLean/
     ├── M7LinearSemigroup.lean
     ├── ClosureClassification.lean
     ├── CurvatureNodalEnergy.lean
+    ├── CurvatureNodalWeakLimit.lean
     ├── PhaseFlux.lean
     ├── RestDensity.lean
     ├── Locking.lean
@@ -254,7 +255,7 @@ The highest-value open work is:
 3. local and global well-posedness for the full nonlinear evolution — linear M7 part globally well posed on `L²(AddCircle T)` (`WCTLean/Models/M7LinearSemigroup.lean`); nonlinear curvature term open;
 4. existence, localization, finite energy, decay, and non-box-induced confinement;
 5. linearized spectrum and orbital or Lyapunov stability under nonsymmetric perturbations;
-6. control of the regularized quotient as `ε → 0` — partially closed: one-dimensional nodal dichotomy for the curvature energy in `WCTLean/Models/CurvatureNodalEnergy.lean` (divergence like `1/ε` at simple nodes with nonzero Laplacian; convergence under `ψ'' = Vψ`); whole-space, weak-formulation and PDE-trajectory limits open;
+6. control of the regularized quotient as `ε → 0` — partially closed: one-dimensional nodal dichotomy for the curvature energy in `WCTLean/Models/CurvatureNodalEnergy.lean` (divergence like `1/ε` in `L²` and `log(1/ε)` in `L¹` at simple nodes with nonzero Laplacian; convergence under `ψ'' = Vψ`) and weak (distributional) convergence at such nodes for `α = 0` (`WCTLean/Models/CurvatureNodalWeakLimit.lean`); whole-space, `α > 0` weak and PDE-trajectory limits open;
 7. ~~full Fourier orthogonality and spectral projection on function spaces~~ — closed for the periodic model (issue #23): `WCTLean/Fourier.lean`, `WCTLean/FourierSpectral.lean`, and E78 in `WCTLean/Models/FisherCurvature.lean` (printed universal Fisher bound refuted; exact identity and reverse inequality proved). Whole-space/curved-domain spectral theory remains open;
 8. curve-integral locking on manifolds — closed for `C¹` loops of nonvanishing fields on open subsets of real normed spaces (`WCTLean/Models/CurveLocking.lean`, issue #24); homotopy invariance and general manifold charts open;
 9. theorem-level bridges from confined solutions to physical mass, force, gauge, gravity, cosmology, and experiments.

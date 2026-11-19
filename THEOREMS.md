@@ -336,6 +336,18 @@ maintained `thetaComplex` and `Δψ = ψ''`; 12 roots audited fail-closed
 | `curvature_energy_tendsto_of_multiplicative` | if `ψ'' = Vψ`, `V` continuous, nodal set null: `∫₀^{2π}|Θ_ε|² → ∫₀^{2π}V²` (any `α`) |
 | `sin_curvature_energy_tendsto` | eigenmodes `sin(kx)`, `k ≠ 0`: energy `→ 2πk⁴` |
 
+`WCTLean/Models/CurvatureNodalWeakLimit.lean` (10 roots,
+`scripts/curvature_nodal_weak_limit_axiom_audit.lean`) separates the modes of
+convergence at a simple node with nonzero Laplacian:
+
+| Declaration | Content |
+|---|---|
+| `nodal_curvature_L1_lower_bound`, `nodal_curvature_L1_tendsto_atTop` | `∫|Θ_ε| ≥ C log(δ/ε)`; no strong `L¹_loc` limit (any `α ≥ 0`) |
+| `nodal_ibp_identity` | `α = 0`: `∫Θ_ε φ = [u log(ψ²+ε²)]_a^b - ∫u' log(ψ²+ε²)`, `u = -ψ''φ/(2ψ')` |
+| `nodal_log_integral_tendsto`, `log_sq_add_sq_bound`, `tendsto_log_sq_add_sq` | dominated convergence of the logarithmic term (log-integrable majorant) |
+| `nodal_curvature_weak_limit` | `α = 0`, `C³` field, slope floor `|ψ'| ≥ c` on `[a,b]`, zero in `(a,b)`, `C¹` test function: `∫_a^b Θ_ε φ` converges, with explicit limit `nodalWeakLimit` |
+| `cos_sub_half_nodal_trichotomy` | `cos x - 1/2` on `[π/6, π/2]`: `L²` and `L¹` norms diverge, weak pairing converges |
+
 Interpretation: energy convergence as `ε → 0⁺` is decided at the nodal set.
 It fails at rate `1/ε` whenever a simple node carries nonzero Laplacian and
 holds when the Laplacian factors through the field. Not addressed: whole-space
