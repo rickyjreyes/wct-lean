@@ -71,6 +71,12 @@ jobs:
           set -o pipefail
           lake env lean scripts/m6b_global_phase_axioms.lean 2>&1 | tee m6b-phase-axioms.log
           python3 scripts/check_axiom_roots.py scripts/m6b_global_phase_axioms.lean m6b-phase-axioms.log
+      - name: Audit M6B explicit admissible-class nonuniqueness
+        shell: bash
+        run: |
+          set -o pipefail
+          lake env lean scripts/m6b_admissible_class_axioms.lean 2>&1 | tee m6b-admissible-axioms.log
+          python3 scripts/check_axiom_roots.py scripts/m6b_admissible_class_axioms.lean m6b-admissible-axioms.log
       - name: Confirm the locked dependency graph is unchanged
         run: git diff --exit-code -- lake-manifest.json lean-toolchain lakefile.lean
       - name: Upload Lean build diagnostics
@@ -87,6 +93,7 @@ jobs:
             m6b-closure-axioms.log
             m6b-family-limit-axioms.log
             m6b-phase-axioms.log
+            m6b-admissible-axioms.log
       - name: Upload formal-source manifest
         if: always()
         uses: actions/upload-artifact@v4
