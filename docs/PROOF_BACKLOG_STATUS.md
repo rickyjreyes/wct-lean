@@ -168,4 +168,14 @@ instantiation from an explicit radial phase field.
 - Commit `bbfd270`: #22 nodal energy dichotomy (12 audited roots) + this record.
 - Commit `254bd38`: #26 closure classification (17 audited roots).
 - Commit `d7fd8a6`: #24 curve-integral locking (15 audited roots).
-- Next commit: #19/#21 linear M7 semigroup (18 audited roots).
+- Commit `ae5c83b`: #19/#21 linear M7 semigroup (18 audited roots).
+
+Total new audited roots on this branch: 106 (44 + 12 + 17 + 15 + 18), all
+depending only on `propext`, `Classical.choice`, `Quot.sound`.
+
+Suggested next session order (highest verified-progress per cost first):
+1. #22 weak (distributional) limit at a simple node;
+2. #19 `H²`-smoothing of the linear M7 semigroup, then the Duhamel fixed
+   point for the curvature nonlinearity;
+3. #24 homotopy invariance of the winding;
+4. #28 improper-integral threshold and E50 measurability obligations.
