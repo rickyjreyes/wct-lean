@@ -73,7 +73,7 @@ The independent [math compendium](https://github.com/rickyjreyes/math/blob/main/
 | `complexRegularizedReciprocal_at_zero` | M2/E17 | regularized reciprocal is defined and zero at a node |
 | `thetaComplex_zero_state` | M2/E17/M6B | supplied zero field/Laplacian state gives zero local curvature product |
 
-The M6B results establish exact local operator form and denominator safety. They do not prove uniqueness of the nonlinear closure or PDE well-posedness.
+The M6B results establish exact local form, denominator safety, and **non-uniqueness among an explicit positive, node-safe family**: `m6bInfinitelyManyClosures` constructs infinitely many distinct pointwise operators; `m6b_two_safe_distinct_candidates` certifies two positive examples; `m6b_reference_intensity_selects_canonical` proves uniqueness **within that family** under a separately imposed denominator anchor at intensity one. The anchor is not a WCT-derived selection principle. Uniqueness under the complete intended covariance/scaling/PDE admissibility criteria and nonlinear PDE well-posedness remain unproved. The new roots are included in the M6B axiom audit.
 
 ## Curvature-phase locking (`WCTLean/Models/Locking.lean`)
 

@@ -140,7 +140,7 @@ N_curv(ψ) = (-Δψ · conjugate ψ) /
 
 and proves exact equality with the typed `thetaComplex` definition together with denominator nonvanishing for `ε > 0`.
 
-Uniqueness of the nonlinear closure, local existence, and global PDE regularity remain explicit PDE-analysis targets.
+**Operator selection:** `ComplexClosureNonuniqueness.lean` proves infinitely many distinct node-safe, positive-denominator pointwise regularizations containing canonical M6B. Positivity and node safety alone do not select it. An additional reference-intensity denominator calibration provably selects the canonical member within this one-parameter family, but that calibration is not derived from the WCT action. Full covariance, scaling, nonlinear PDE uniqueness and regularity remain open.
 
 ### E10 and E11 — quantization closure
 

@@ -264,7 +264,7 @@ These are finite-dimensional update theorems, not complexity-class equivalences.
 
 after reassociation. `thetaComplex_denominator_ne_zero` supplies the positive-`ε` denominator condition.
 
-This does not prove uniqueness of the nonlinear closure or PDE well-posedness.
+**Scoped nonuniqueness is proved:** `m6bInfinitelyManyClosures` constructs an infinite positive-denominator, node-safe family containing the maintained operator. `m6b_two_safe_distinct_candidates` supplies two certified distinct examples; `m6b_reference_intensity_selects_canonical` gives a **conditional** uniqueness criterion within the one-parameter family under an extra intensity-one denominator anchor. The original action does not derive that anchor, and full covariance/scaling/PDE admissibility classification and well-posedness remain open.
 
 ### E10 and E11 — quantization closure
 
