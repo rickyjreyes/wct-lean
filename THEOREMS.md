@@ -298,6 +298,29 @@ Scope: these are periodic one-dimensional statements. They are not
 whole-space WCT results and do not address complex fields with nontrivial
 phase in the identity (only the counterexample allows general complex fields).
 
+## Nodal ε → 0 dichotomy for the curvature energy (issue #22)
+
+`WCTLean/Models/CurvatureNodalEnergy.lean`, one-dimensional model with the
+maintained `thetaComplex` and `Δψ = ψ''`; 12 roots audited fail-closed
+(`scripts/curvature_nodal_energy_axiom_audit.lean`), only standard axioms.
+
+| Declaration | Content |
+|---|---|
+| `norm_thetaComplex` | exact modulus `|Θ_ε| = |Δψ||ψ|/D_ε(ψ)` |
+| `curvature_energy_node_lower_bound` | complex fields, supplied Laplacian: if `c|x-x₀| ≤ |ψ| ≤ L|x-x₀|` and `|Δψ| ≥ m` on `[x₀-ε, x₀+ε]`, `α ≥ 0`, then `∫|Θ_ε|² ≥ 2m²c²/(3(L²+1)²ε)` |
+| `simple_zero_local_bounds` | a simple zero of a `C¹` real field vanishes exactly linearly nearby |
+| `nodal_curvature_energy_lower_bound` | real `C²` field, simple zero with `ψ''(x₀) ≠ 0`: `∫_{x₀-ε}^{x₀+ε}|Θ_ε|² ≥ C/ε` for `0 < ε ≤ δ` |
+| `nodal_curvature_energy_tendsto_atTop` | the energy on any interval containing such a node tends to `+∞` as `ε → 0⁺` |
+| `cos_sub_half_curvature_energy_tendsto_atTop` | concrete smooth `2π`-periodic witness `cos x - 1/2`: one-period energy `→ +∞` |
+| `curvature_energy_tendsto_of_multiplicative` | if `ψ'' = Vψ`, `V` continuous, nodal set null: `∫₀^{2π}|Θ_ε|² → ∫₀^{2π}V²` (any `α`) |
+| `sin_curvature_energy_tendsto` | eigenmodes `sin(kx)`, `k ≠ 0`: energy `→ 2πk⁴` |
+
+Interpretation: energy convergence as `ε → 0⁺` is decided at the nodal set.
+It fails at rate `1/ε` whenever a simple node carries nonzero Laplacian and
+holds when the Laplacian factors through the field. Not addressed: whole-space
+fields, two-dimensional vortex nodes, weak-formulation (distributional)
+limits, and nodes of actual WCT PDE trajectories.
+
 ## Koide derivation module
 
 `WCTLean/Models/KoideDerivation.lean` proves:
@@ -319,7 +342,7 @@ Not closed by the current theorem set:
 - local/global well-posedness of the full nonlinear PDE;
 - existence, localization, finite energy, decay, and continuum-limit survival;
 - linearized spectral and orbital stability;
-- `ε → 0` quotient control;
+- `ε → 0` quotient control beyond the one-dimensional nodal dichotomy below (whole-space, weak-formulation and PDE-trajectory limits);
 - Fourier analysis beyond the periodic one-dimensional `L²(AddCircle T)` layer (whole-space or curved-domain spectral projection);
 - curve-integral locking on manifolds;
 - theorem-level derivation of particle masses, forces, gauge fields, gravity, cosmology, or experimental claims.

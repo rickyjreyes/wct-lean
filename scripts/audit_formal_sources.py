@@ -53,6 +53,7 @@ def main() -> None:
         "WCTLean.Fourier",
         "WCTLean.FourierSpectral",
         "WCTLean.Models.FisherCurvature",
+        "WCTLean.Models.CurvatureNodalEnergy",
         "WCTLean.Contracts.Analytic",
         "WCTLean.Models.CurvatureOperator",
         "WCTLean.Models.ComplexCurvature",

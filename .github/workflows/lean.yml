@@ -64,6 +64,12 @@ jobs:
           set -o pipefail
           lake env lean scripts/fourier_e78_axiom_audit.lean 2>&1 | tee fourier-e78-axioms.log
           python scripts/check_axiom_log.py fourier-e78-axioms.log 44 "Fourier/E78"
+      - name: Audit nodal curvature-energy theorem axioms (#22)
+        shell: bash
+        run: |
+          set -o pipefail
+          lake env lean scripts/curvature_nodal_energy_axiom_audit.lean 2>&1 | tee curvature-nodal-energy-axioms.log
+          python scripts/check_axiom_log.py curvature-nodal-energy-axioms.log 12 "nodal-energy"
       - name: Confirm the locked dependency graph is unchanged
         run: git diff --exit-code -- lake-manifest.json lean-toolchain lakefile.lean
       - name: Upload Lean build diagnostics
@@ -79,6 +85,7 @@ jobs:
             curvature-limit-axioms.log
             m6b-closure-axioms.log
             fourier-e78-axioms.log
+            curvature-nodal-energy-axioms.log
       - name: Upload formal-source manifest
         if: always()
         uses: actions/upload-artifact@v4
