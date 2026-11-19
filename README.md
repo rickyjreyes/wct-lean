@@ -191,6 +191,7 @@ WCTLean/
 ├── Energy.lean
 ├── Koide.lean
 ├── Fourier.lean
+├── FourierSpectral.lean
 ├── ResolvedAudit.lean
 ├── DerivedAudit.lean
 ├── Contracts/
@@ -198,6 +199,7 @@ WCTLean/
 └── Models/
     ├── CurvatureOperator.lean
     ├── ComplexCurvature.lean
+    ├── FisherCurvature.lean
     ├── PhaseFlux.lean
     ├── RestDensity.lean
     ├── Locking.lean
@@ -245,7 +247,7 @@ The highest-value open work is:
 4. existence, localization, finite energy, decay, and non-box-induced confinement;
 5. linearized spectrum and orbital or Lyapunov stability under nonsymmetric perturbations;
 6. control of the regularized quotient as `ε → 0`;
-7. full Fourier orthogonality and spectral projection on function spaces;
+7. ~~full Fourier orthogonality and spectral projection on function spaces~~ — closed for the periodic model (issue #23): `WCTLean/Fourier.lean`, `WCTLean/FourierSpectral.lean`, and E78 in `WCTLean/Models/FisherCurvature.lean` (printed universal Fisher bound refuted; exact identity and reverse inequality proved). Whole-space/curved-domain spectral theory remains open;
 8. curve-integral locking on manifolds;
 9. theorem-level bridges from confined solutions to physical mass, force, gauge, gravity, cosmology, and experiments.
 

@@ -133,7 +133,17 @@ The contracts expose missing Sobolev, regularity, interpolation, and stability h
 E17 E78
 ```
 
-E17 includes both the historical scalar-denominator counterexample and the corrected complex denominator theorem. E78 remains a proposition/TODO rather than a completed Fisher-information theorem.
+E17 includes both the historical scalar-denominator counterexample and the corrected complex denominator theorem.
+
+E78 (issue #23) is now resolved at theorem level on the periodic one-dimensional model `[0, 2π]` with the maintained corrected operator `thetaComplex` (`WCTLean/Models/FisherCurvature.lean`):
+
+- **Printed universal form refuted.** `e78_no_universal_constant` / `e78_universal_bound_false`: for every regulator `ε`, every `α ≥ 0` and every `c > 0` there is a smooth `2π`-periodic field with `|ψ|² ≥ 1/4` and `I_F[|ψ|²] < c ∫|Θ_ε[ψ]|²`. Witness `ψ_k = 1 + cos(kx)/2`: `I_F = k²π` (`e78Probe_fisher`), `∫|Θ_ε|² ≥ k⁴π/(9+4ε²)²` (`e78Probe_curvatureEnergy_ge`), fixed mass `9π/4` (`e78Probe_mass`).
+- **Corrected identity.** `e78_fisher_curvature_identity`: for a real `C²` field with no zeros and periodic boundary values of `ψ, ψ'`, `I_F[ψ²] = 4∫Re Θ_ε[ψ]·D_ε(ψ) = 4∫(ψ')²` for every `(ε, α)`.
+- **Corrected inequality (reverse direction).** `e78_fisher_sq_le_curvature_energy`: `I_F² ≤ 16 (∫D_ε²)(∫|Θ_ε|²)`.
+
+The registry keeps E78 in the open-claim partition because the printed statement is false, not established. Hypotheses (zero-free field, `HasDerivAt` for `ψ` and `ψ'`, continuous `ψ''`, periodic boundary values) are explicit; integrability is derived from continuity.
+
+The issue-#23 Fourier layer is complete for the periodic model: real orthogonality and normalization on `[0, 2π]` (`WCTLean/Fourier.lean`; the historical integer TODO is refuted by `cos_orthogonality_TODO_false` and replaced by `integral_cos_mul_cos_of_natAbs_ne`) and the `L²(AddCircle T)` spectral projection (`WCTLean/FourierSpectral.lean`: `spectralProjection_eq_starProjection`, `tendsto_symmetric_spectralProjection`, `hasSum_norm_sq_fourierCoeff`, band-limited multipliers and the M3/M7/E12 symbol energy bounds). Whole-space and curved-domain spectral theory remain outside this layer.
 
 
 ### Current 12-ID source-level closure batch

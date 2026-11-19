@@ -58,6 +58,12 @@ jobs:
         run: |
           set -o pipefail
           lake env lean scripts/complex_closure_nonuniqueness_axiom_audit.lean 2>&1 | tee m6b-closure-axioms.log
+      - name: Audit Fourier orthogonality, spectral projection and E78 theorem axioms (#23)
+        shell: bash
+        run: |
+          set -o pipefail
+          lake env lean scripts/fourier_e78_axiom_audit.lean 2>&1 | tee fourier-e78-axioms.log
+          python scripts/check_axiom_log.py fourier-e78-axioms.log 44 "Fourier/E78"
       - name: Confirm the locked dependency graph is unchanged
         run: git diff --exit-code -- lake-manifest.json lean-toolchain lakefile.lean
       - name: Upload Lean build diagnostics
@@ -72,6 +78,7 @@ jobs:
             s004-axioms.log
             curvature-limit-axioms.log
             m6b-closure-axioms.log
+            fourier-e78-axioms.log
       - name: Upload formal-source manifest
         if: always()
         uses: actions/upload-artifact@v4

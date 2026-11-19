@@ -69,7 +69,8 @@ A SymPy `PASS` is not automatically a Lean proof. The relationship column distin
 | `E53` | `curvaturePressureDensity_nonnegative` | exact nonnegativity theorem |
 | `E59` | `maskProjection_idempotent` | finite coordinate-mask projection theorem |
 | `E62` | `spectralEnergyFraction_mem_unitInterval` | exact unit-interval theorem |
-| `E78` | `cos_orthogonality_TODO` | unresolved proposition only |
+| `E78` | `e78_no_universal_constant`, `e78_universal_bound_false`, `e78_fisher_curvature_identity`, `e78_fisher_sq_le_curvature_energy` | periodic 1D model, maintained `thetaComplex`: printed universal inequality refuted for every regulator; exact identity `I_F = 4∫Re Θ_ε·D_ε = 4∫(ψ')²` and reverse bound `I_F² ≤ 16(∫D_ε²)(∫|Θ_ε|²)` proved |
+| E78/#23 Fourier layer | `integral_cos_mul_cos_of_natAbs_ne`, `cos_orthogonality_TODO_false`, `spectralProjection_eq_starProjection`, `hasSum_norm_sq_fourierCoeff` | real orthogonality on `[0,2π]` (historical integer TODO refuted at `n=1,m=-1`); `L²(AddCircle T)` spectral projection and Parseval |
 | `E81` | `spectralCoherenceLength`, `gradientCoherenceLength` | definitions |
 
 ## Explicit unmapped examples

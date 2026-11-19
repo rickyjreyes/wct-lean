@@ -244,7 +244,59 @@ koide_positive
 two_cos_mul_cos
 ```
 
-`cos_orthogonality_TODO` is a proposition definition, not a proof.
+`cos_orthogonality_TODO` is retained only as the historical proposition; it is
+**false** as stated (integer labels with only `n ≠ m`), and is refuted by
+`cos_orthogonality_TODO_false` at `n = 1`, `m = -1`.
+
+## Fourier orthogonality, spectral projection, and E78 (issue #23)
+
+All declarations below are kernel-checked with only `propext`,
+`Classical.choice`, and `Quot.sound` (audited fail-closed by
+`scripts/fourier_e78_axiom_audit.lean` + `scripts/check_axiom_log.py`, 44 roots).
+
+`WCTLean/Fourier.lean` — real trigonometric system on `[0, 2π]` (Lebesgue
+interval integrals):
+
+| Declaration | Content |
+|---|---|
+| `integral_cos_int_mul_period`, `integral_sin_int_mul_period` | `∫₀^{2π} cos(kx) = 0` (`k ≠ 0`), `∫₀^{2π} sin(kx) = 0` |
+| `integral_cos_mul_cos_of_natAbs_ne`, `integral_cos_mul_cos_nat_of_ne` | cosine orthogonality for `|n| ≠ |m|` (integers) / `n ≠ m` (naturals) |
+| `integral_sin_mul_sin_of_natAbs_ne`, `integral_sin_mul_sin_nat_of_ne` | sine orthogonality |
+| `integral_sin_mul_cos_int` | sine/cosine orthogonality for all integer labels |
+| `integral_cos_mul_cos_self`, `integral_sin_mul_sin_self`, `integral_cos_sq_int_mul`, `integral_sin_sq_int_mul` | normalization `= π` for `n ≠ 0` |
+| `integral_cos_mul_cos_int` | full cosine Gram matrix: `0` if `|n| ≠ |m|`, `π` if `|n| = |m| ≠ 0`, `2π` if `n = m = 0` |
+| `cos_orthogonality_TODO_false` | the historical integer TODO is false (`n = 1`, `m = -1` gives `π`) |
+| `cos_orthogonality_corrected_holds` | corrected integer statement with `|n| ≠ |m|` |
+
+`WCTLean/FourierSpectral.lean` — `L²(AddCircle T; ℂ)` with normalized Haar
+measure and modes `e_n = fourierLp 2 n` (periodic model, `T > 0`):
+
+| Declaration | Content |
+|---|---|
+| `spectralProjection_eq_starProjection` | `P_S f = ∑_{n∈S} f̂(n) e_n` is the orthogonal projection onto `span{e_n : n ∈ S}` |
+| `spectralProjection_idem`, `spectralProjection_inner_symm`, `fourierCoeff_spectralProjection` | idempotent, self-adjoint, diagonal on coefficients |
+| `norm_sq_spectralProjection`, `norm_sq_eq_spectralProjection_add_remainder`, `norm_sq_sub_spectralProjection`, `sum_norm_sq_fourierCoeff_le`, `norm_spectralProjection_le` | finite Parseval, Pythagoras, exact remainder, Bessel, contraction |
+| `norm_sub_spectralProjection_le` | best approximation in the band |
+| `tendsto_spectralProjection`, `tendsto_symmetric_spectralProjection`, `tendsto_norm_sub_symmetric_spectralProjection` | infinite resolution: `P_S f → f`; symmetric partial sums `P_{[-N,N]} f → f` in `L²` |
+| `hasSum_norm_sq_fourierCoeff`, `tsum_tail_eq_norm_sq_sub_spectralProjection` | Parseval in norm form; tail energy equals projection error |
+| `bandMultiplier_fourierMode`, `inner_bandMultiplier_self`, `re_inner_bandMultiplier_le`, `norm_bandMultiplier_le` | band-limited Fourier multipliers: eigenvectors, quadratic form, coercivity and boundedness from symbol bounds |
+| `swiftHohenbergMultiplier_energy_le`, `quarticGrowthMultiplier_energy_le` | M3/M7 and E12/E64 scalar symbols lifted to `L²` energy bounds `≤ μ‖P_S f‖²`, `≤ (r + a²/4b)‖P_S f‖²` |
+
+`WCTLean/Models/FisherCurvature.lean` — E78 on the periodic 1D model
+`[0, 2π]` with the maintained corrected operator `thetaComplex` and `Δψ = ψ''`:
+
+| Declaration | Content |
+|---|---|
+| `e78_no_universal_constant` | for every `c > 0`, every `ε`, every `α ≥ 0`, a smooth periodic witness `ψ_k = 1 + cos(kx)/2` violates `c∫|Θ_ε|² ≤ I_F` |
+| `e78_universal_bound_false` | no `c > 0` makes E78 hold on smooth periodic fields with `|ψ|² ≥ 1/4` |
+| `e78Probe_fisher`, `e78Probe_curvatureEnergy_ge`, `e78Probe_mass` | `I_F[ψ_k²] = k²π`, `∫|Θ_ε[ψ_k]|² ≥ k⁴π/(9+4ε²)²`, fixed mass `∫ψ_k² = 9π/4` |
+| `e78_fisher_curvature_identity` | real `C²`, zero-free, periodic boundary values: `I_F[ψ²] = 4∫Re Θ_ε[ψ]·D_ε(ψ) = 4∫(ψ')²` for every `(ε, α)` |
+| `e78_fisher_sq_le_curvature_energy` | reverse inequality `I_F² ≤ 16 (∫D_ε²)(∫|Θ_ε|²)` |
+| `periodic_integral_mul_second_deriv`, `fisher_sq_eq_four_dirichlet`, `interval_cauchy_schwarz` | periodic integration by parts, Fisher–Dirichlet identity, Cauchy–Schwarz |
+
+Scope: these are periodic one-dimensional statements. They are not
+whole-space WCT results and do not address complex fields with nontrivial
+phase in the identity (only the counterexample allows general complex fields).
 
 ## Koide derivation module
 
@@ -268,7 +320,7 @@ Not closed by the current theorem set:
 - existence, localization, finite energy, decay, and continuum-limit survival;
 - linearized spectral and orbital stability;
 - `ε → 0` quotient control;
-- complete Fourier integral orthogonality;
+- Fourier analysis beyond the periodic one-dimensional `L²(AddCircle T)` layer (whole-space or curved-domain spectral projection);
 - curve-integral locking on manifolds;
 - theorem-level derivation of particle masses, forces, gauge fields, gravity, cosmology, or experimental claims.
 

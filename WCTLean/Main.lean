@@ -14,6 +14,8 @@ import WCTLean.Curvature
 import WCTLean.Energy
 import WCTLean.Koide
 import WCTLean.Fourier
+import WCTLean.FourierSpectral
+import WCTLean.Models.FisherCurvature
 import WCTLean.Contracts.Analytic
 import WCTLean.Contracts.UniformCurvatureDenominator
 import WCTLean.Models.CurvatureOperator
