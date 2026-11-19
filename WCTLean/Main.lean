@@ -57,6 +57,7 @@ import WCTLean.Models.CorrectedWeightDirection
 import WCTLean.Models.PhaseFlux
 import WCTLean.Models.RestDensity
 import WCTLean.Models.Locking
+import WCTLean.Models.CurveLocking
 import WCTLean.Models.BandPass
 import WCTLean.Models.AlgebraicChecks
 import WCTLean.Models.CoverageExpansion

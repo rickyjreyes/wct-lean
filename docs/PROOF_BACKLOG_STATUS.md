@@ -22,6 +22,8 @@ lake env lean scripts/curvature_nodal_energy_axiom_audit.lean > nodal.log
 python3 scripts/check_axiom_log.py nodal.log 12 "nodal-energy"
 lake env lean scripts/closure_classification_axiom_audit.lean > cc.log
 python3 scripts/check_axiom_log.py cc.log 17 "closure-classification"
+lake env lean scripts/curve_locking_axiom_audit.lean > cl.log
+python3 scripts/check_axiom_log.py cl.log 15 "curve-locking"
 ```
 
 Hosted CI runs only on `pull_request` and pushes to `main`; this branch has
@@ -130,11 +132,18 @@ Possible periodic-model contribution: spectrum of the linearized M7 operator
 around constant states via `bandMultiplier` eigen-relations
 (`bandMultiplier_fourierMode`) and coercivity (`re_inner_bandMultiplier_le`).
 
-### #24 — curve-integral locking on manifolds — OPEN
+### #24 — curve-integral locking on manifolds — CLOSED for C¹ loops on open subsets of real normed spaces
 
-Possible next step: winding number of a `C¹` loop in `ℂ \ {0}` via
-`∮ dψ/ψ` and integrality (Mathlib has circle integrals and `Complex.log`
-branch tools), linking E10/E11 phase quantization.
+New on this branch (`WCTLean/Models/CurveLocking.lean`, 15 roots): integer
+winding of `∮ dψ/ψ` for every `C¹` nonvanishing closed loop
+(`winding_quantized`, `field_loop_winding_quantized`); E11 predicate derived
+from geometry; local polar identity vs global obstruction (every integer
+occurs); E11 additivity from products; E4 locking constant determined by the
+geometric winding.
+
+Remaining: homotopy invariance of the winding; loops on manifolds beyond
+Euclidean chart domains (Mathlib `ContMDiff` setting); E10 radial-shell
+instantiation from an explicit radial phase field.
 
 ### #25 — physical observable bridges — OPEN (blocked on upstream existence results)
 
@@ -144,4 +153,5 @@ branch tools), linking E10/E11 phase quantization.
 
 - Commit `57b1906`: #23 Fourier/spectral/E78 (44 audited roots).
 - Commit `bbfd270`: #22 nodal energy dichotomy (12 audited roots) + this record.
-- Next commit: #26 closure classification (17 audited roots).
+- Commit `254bd38`: #26 closure classification (17 audited roots).
+- Next commit: #24 curve-integral locking (15 audited roots).

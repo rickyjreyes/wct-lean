@@ -284,6 +284,8 @@ This does not prove PDE well-posedness.
 
 `radialShellQuantized_add` and `windingQuantized_add` prove closure under addition of phase integrals and integer indices. `radialShellQuantized_iff_windingQuantized` proves that the two predicates implement the same integer quantization law once the observable is fixed.
 
+`WCTLean/Models/CurveLocking.lean` (issue #24) derives the winding law from the geometric line integral instead of assuming it. For every `C¹` closed loop of nonvanishing field values, `∮ dψ/ψ = 2πi n` with `n ∈ ℤ` (`winding_quantized`). The phase circulation therefore satisfies `WindingQuantized` (`phaseCirculation_windingQuantized`), and the amplitude part vanishes (`amplitude_return_zero`). The same holds for any `C¹` field nonvanishing on an open subset of a real normed space, composed with a `C¹` loop there (`field_loop_winding_quantized`). The module also distinguishes local phase identities from global topology. With a single-valued `C¹` logarithm the circulation is zero (`logCurveIntegral_eq_zero_of_global_log`), and with an explicit polar phase it equals `θ(b) − θ(a)` (`polar_phaseCirculation`). Nonzero winding is a global obstruction (`no_global_log_of_winding_ne_zero`), and every integer occurs (`logCurveIntegral_exp_int`, `exp_int_loop_no_global_log`). E11 additivity follows from the logarithmic derivative of products (`product_loop_windingQuantized`). For E4, a pointwise lock `θ' = σ + α/w` around a loop of winding `n` forces `α = alphaLock n (∫σ) (∫1/w)` (`alpha_determined_by_winding`). Homotopy invariance and charts beyond Euclidean open sets are not formalized.
+
 ### E29 — entropy-pruning bound
 
 Lean proves:

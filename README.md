@@ -148,6 +148,8 @@ Local existence and global PDE regularity remain explicit PDE-analysis targets.
 
 Lean proves that radial shell quantization and winding quantization are closed under addition of phase integrals and integer indices. It also proves that both predicates instantiate the same integer quantization law once the geometric observable is fixed.
 
+`WCTLean/Models/CurveLocking.lean` (issue #24) derives the winding law from the geometric line integral instead of assuming it. For every `C¹` closed loop of nonvanishing field values, `∮ dψ/ψ = 2πi n` with `n ∈ ℤ` (`winding_quantized`). The phase circulation therefore satisfies `WindingQuantized` (`phaseCirculation_windingQuantized`), and the amplitude part vanishes (`amplitude_return_zero`). The same holds for any `C¹` field nonvanishing on an open subset of a real normed space, composed with a `C¹` loop there (`field_loop_winding_quantized`). The module also distinguishes local phase identities from global topology. With a single-valued `C¹` logarithm the circulation is zero (`logCurveIntegral_eq_zero_of_global_log`), and with an explicit polar phase it equals `θ(b) − θ(a)` (`polar_phaseCirculation`). Nonzero winding is a global obstruction (`no_global_log_of_winding_ne_zero`), and every integer occurs (`logCurveIntegral_exp_int`, `exp_int_loop_no_global_log`). E11 additivity follows from the logarithmic derivative of products (`product_loop_windingQuantized`). For E4, a pointwise lock `θ' = σ + α/w` around a loop of winding `n` forces `α = alphaLock n (∫σ) (∫1/w)` (`alpha_determined_by_winding`). Homotopy invariance and charts beyond Euclidean open sets are not formalized.
+
 ### E29 — entropy-pruning bound
 
 For nonnegative mode count `K`, Lean proves:
@@ -251,7 +253,7 @@ The highest-value open work is:
 5. linearized spectrum and orbital or Lyapunov stability under nonsymmetric perturbations;
 6. control of the regularized quotient as `ε → 0` — partially closed: one-dimensional nodal dichotomy for the curvature energy in `WCTLean/Models/CurvatureNodalEnergy.lean` (divergence like `1/ε` at simple nodes with nonzero Laplacian; convergence under `ψ'' = Vψ`); whole-space, weak-formulation and PDE-trajectory limits open;
 7. ~~full Fourier orthogonality and spectral projection on function spaces~~ — closed for the periodic model (issue #23): `WCTLean/Fourier.lean`, `WCTLean/FourierSpectral.lean`, and E78 in `WCTLean/Models/FisherCurvature.lean` (printed universal Fisher bound refuted; exact identity and reverse inequality proved). Whole-space/curved-domain spectral theory remains open;
-8. curve-integral locking on manifolds;
+8. curve-integral locking on manifolds — closed for `C¹` loops of nonvanishing fields on open subsets of real normed spaces (`WCTLean/Models/CurveLocking.lean`, issue #24); homotopy invariance and general manifold charts open;
 9. theorem-level bridges from confined solutions to physical mass, force, gauge, gravity, cosmology, and experiments.
 
 ## Build meaning

@@ -342,6 +342,23 @@ holds when the Laplacian factors through the field. Not addressed: whole-space
 fields, two-dimensional vortex nodes, weak-formulation (distributional)
 limits, and nodes of actual WCT PDE trajectories.
 
+## Curve-integral locking and winding (issue #24)
+
+`WCTLean/Models/CurveLocking.lean`; 15 roots audited fail-closed
+(`scripts/curve_locking_axiom_audit.lean`), only standard axioms.
+
+| Declaration | Content |
+|---|---|
+| `exp_logCurveIntegral` | `exp(∫_a^b γ'/γ) = γ(b)/γ(a)` for `C¹` nonvanishing curves |
+| `winding_quantized` | closed loop: `∮ dψ/ψ = 2πi n`, `n ∈ ℤ` |
+| `phaseCirculation_windingQuantized`, `amplitude_return_zero` | `Im ∮ dψ/ψ` satisfies E11 `WindingQuantized`; `Re ∮ dψ/ψ = 0` |
+| `field_loop_winding_quantized` | `ψ` `C¹` and nonvanishing on open `U ⊆ E` (real normed space), `c` a `C¹` loop in `U` |
+| `logCurveIntegral_of_global_log`, `logCurveIntegral_eq_zero_of_global_log` | path independence with a single-valued `C¹` logarithm |
+| `polar_phaseCirculation` | local identity: `γ = ρe^{iθ}` ⇒ circulation `θ(b) − θ(a)` |
+| `no_global_log_of_winding_ne_zero`, `logCurveIntegral_exp_int`, `exp_int_loop_closed`, `exp_int_loop_no_global_log` | global obstruction; every integer winding occurs |
+| `logCurveIntegral_mul`, `product_loop_windingQuantized` | E11 additivity from products of loops |
+| `alpha_determined_by_winding` | E4 locking constant fixed by the geometric winding |
+
 ## Koide derivation module
 
 `WCTLean/Models/KoideDerivation.lean` proves:
@@ -365,7 +382,7 @@ Not closed by the current theorem set:
 - linearized spectral and orbital stability;
 - `ε → 0` quotient control beyond the one-dimensional nodal dichotomy below (whole-space, weak-formulation and PDE-trajectory limits);
 - Fourier analysis beyond the periodic one-dimensional `L²(AddCircle T)` layer (whole-space or curved-domain spectral projection);
-- curve-integral locking on manifolds;
+- curve-integral locking beyond `C¹` loops on open subsets of real normed spaces (homotopy invariance, general manifold charts);
 - theorem-level derivation of particle masses, forces, gauge fields, gravity, cosmology, or experimental claims.
 
 ## Frozen D4 Phase VI (`WCTLean/Models/D4Binding.lean`)
