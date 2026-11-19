@@ -73,7 +73,28 @@ The independent [math compendium](https://github.com/rickyjreyes/math/blob/main/
 | `complexRegularizedReciprocal_at_zero` | M2/E17 | regularized reciprocal is defined and zero at a node |
 | `thetaComplex_zero_state` | M2/E17/M6B | supplied zero field/Laplacian state gives zero local curvature product |
 
-The M6B results establish exact local operator form and denominator safety. They do not prove uniqueness of the nonlinear closure or PDE well-posedness.
+The M6B results establish exact local operator form and denominator safety. They do not prove PDE well-posedness.
+
+### M6B closure classification (issue #26)
+
+`WCTLean/Models/ClosureClassification.lean`; 17 roots audited fail-closed
+(`scripts/closure_classification_axiom_audit.lean`), only standard axioms.
+Operator selection for pointwise jet maps `(ψ, Δψ) ↦ Θ`, not PDE-solution
+uniqueness.
+
+| Declaration | Content |
+|---|---|
+| `closure_classification` | `ℂ`-homogeneous in `Δψ` + global phase invariant ⇒ `Θ = -(Δψ ψ̄) g(|ψ|²)` |
+| `radialClosure_homogeneous`, `radialClosure_phaseInvariant`, `denominatorClosure_structural` | converse: every radial reweighting is in the structural class |
+| `denominatorClosure_maintained` | maintained `thetaComplex` = radial closure of `s + ε²e^{-2αs}` |
+| `denominatorClosure_unit_invariant` | unit covariance of `D` ⇒ closure invariant under `(ψ, Δψ, ε) ↦ (λψ, λΔψ, λε)` |
+| `admissible_profile`, `admissible_profile_asymptotic`, `profileRegularizer_admissible` | admissible regularizers are exactly `D_ε(s) = ε²Φ(s/ε²)`, `Φ > 0`, `Φ(u)/u → 1` |
+| `shift_profile_admissible`, `admissible_closures_infinite` | infinitely many pairwise distinct admissible closures at fixed `ε` |
+| `maintainedDenominator_not_unitCovariant` | fixed `α ≠ 0` violates unit covariance |
+| `maintained_scaled_eq_profile`, `maintained_scaled_profile_admissible` | `α = a/ε²` gives the admissible profile `u + e^{-2au}` |
+| `closure_unique_affine_normalized` | admissible + affine profile + `D_ε(0) = ε²` ⇒ closure = `thetaComplex · · ε 0` |
+| `selected_regularizer_satisfies_principles` | the uniqueness hypotheses are satisfiable (non-vacuity) |
+| `extra_principles_independent` | `u + 2` (affine, not normalized) and `u + e^{-u}` (normalized, not affine) are admissible and different |
 
 ## Curvature-phase locking (`WCTLean/Models/Locking.lean`)
 

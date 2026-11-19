@@ -20,6 +20,8 @@ lake env lean scripts/fourier_e78_axiom_audit.lean > fourier-e78-axioms.log
 python3 scripts/check_axiom_log.py fourier-e78-axioms.log 44 "Fourier/E78"
 lake env lean scripts/curvature_nodal_energy_axiom_audit.lean > nodal.log
 python3 scripts/check_axiom_log.py nodal.log 12 "nodal-energy"
+lake env lean scripts/closure_classification_axiom_audit.lean > cc.log
+python3 scripts/check_axiom_log.py cc.log 17 "closure-classification"
 ```
 
 Hosted CI runs only on `pull_request` and pushes to `main`; this branch has
@@ -81,18 +83,31 @@ Next concrete targets:
    at the vortex core;
 3. nodes of actual WCT evolution trajectories (needs #19).
 
-### #26 — uniqueness/non-uniqueness of the curvature closure — PARTIAL (no new work yet)
+### #26 — uniqueness/non-uniqueness of the curvature closure — RESOLVED at operator-selection level
 
 Main: `m6bInfinitelyManyClosures` (explicit infinite family). Draft stack
-#50 → #51 → #53: canonical selection anchor, common ε→0 limit,
-global-U(1) invariance — all insufficient to select the closure.
+#50 → #51 → #53: selection anchor, common ε→0 limit, global-U(1) invariance.
 
-Next concrete target: classification theorem for a precisely defined
-admissible class, e.g. closures `Θ = -Δψ·ψ̄·g(|ψ|², ε)` with `g` continuous,
-positive, scale-covariant (`g(λ²s, λε) = λ^{-2} g(s, ε)`), with the
-`ε → 0` limit `1/s` — show the family `g = 1/(s + ε² h(s/ε²))` is exactly
-the admissible set (non-uniqueness parametrized by one function `h`), and
-identify which extra principle (e.g. action derivability) pins `h`.
+New on this branch (`WCTLean/Models/ClosureClassification.lean`, 17 roots):
+
+- precise admissible class: `LaplacianHomogeneous`, `PhaseInvariant`,
+  `AdmissibleRegularizer` (node-safe positivity, off-node limit,
+  `UnitCovariant`);
+- `closure_classification`: structural class = radial reweightings
+  `-(Δψψ̄)g(|ψ|²)`;
+- admissible regularizers ⇔ profiles `Φ > 0`, `Φ(u)/u → 1`
+  (`admissible_profile`, `admissible_profile_asymptotic`,
+  `profileRegularizer_admissible`) ⇒ **non-unique**
+  (`admissible_closures_infinite`);
+- maintained fixed-`α ≠ 0` regularizer is *not* unit covariant;
+  `α = a/ε²` is admissible;
+- uniqueness ⇔ two explicit extra principles (affine profile, `D_ε(0) = ε²`)
+  ⇒ `thetaComplex` with `α = 0` (`closure_unique_affine_normalized`); the two
+  principles are independent (`extra_principles_independent`).
+
+Remaining: an *action-level* derivation of either extra principle (no
+variational principle in the repository currently selects `Φ`); closures
+depending on derivatives of `ψ` beyond `(ψ, Δψ)`; local (gauge) covariance.
 
 ### #19 — nonlinear well-posedness — OPEN (no new work yet)
 
@@ -128,4 +143,5 @@ branch tools), linking E10/E11 phase quantization.
 ## Change log
 
 - Commit `57b1906`: #23 Fourier/spectral/E78 (44 audited roots).
-- Next commit: #22 nodal energy dichotomy (12 audited roots) + this record.
+- Commit `bbfd270`: #22 nodal energy dichotomy (12 audited roots) + this record.
+- Next commit: #26 closure classification (17 audited roots).

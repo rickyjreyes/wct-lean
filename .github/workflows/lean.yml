@@ -70,6 +70,12 @@ jobs:
           set -o pipefail
           lake env lean scripts/curvature_nodal_energy_axiom_audit.lean 2>&1 | tee curvature-nodal-energy-axioms.log
           python scripts/check_axiom_log.py curvature-nodal-energy-axioms.log 12 "nodal-energy"
+      - name: Audit curvature-closure classification theorem axioms (#26)
+        shell: bash
+        run: |
+          set -o pipefail
+          lake env lean scripts/closure_classification_axiom_audit.lean 2>&1 | tee closure-classification-axioms.log
+          python scripts/check_axiom_log.py closure-classification-axioms.log 17 "closure-classification"
       - name: Confirm the locked dependency graph is unchanged
         run: git diff --exit-code -- lake-manifest.json lean-toolchain lakefile.lean
       - name: Upload Lean build diagnostics
@@ -86,6 +92,7 @@ jobs:
             m6b-closure-axioms.log
             fourier-e78-axioms.log
             curvature-nodal-energy-axioms.log
+            closure-classification-axioms.log
       - name: Upload formal-source manifest
         if: always()
         uses: actions/upload-artifact@v4

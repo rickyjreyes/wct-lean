@@ -276,7 +276,9 @@ These are finite-dimensional update theorems, not complexity-class equivalences.
 
 after reassociation. `thetaComplex_denominator_ne_zero` supplies the positive-`ε` denominator condition.
 
-This does not prove uniqueness of the nonlinear closure or PDE well-posedness.
+`WCTLean/Models/ClosureClassification.lean` (issue #26) settles operator selection for pointwise closures. Every closure that is `ℂ`-homogeneous in `Δψ` and invariant under a common global unit phase is a radial reweighting `-(Δψ ψ̄) g(|ψ|²)` (`closure_classification`). Requiring a real node-safe denominator `D_ε(s) > 0`, the correct off-node limit `D_ε(s) → s`, and unit covariance `D_{λε}(λ²s) = λ²D_ε(s)` (rescaling the field unit, in which `ε` carries the field dimension) forces `D_ε(s) = ε²Φ(s/ε²)` with `Φ > 0` and `Φ(u)/u → 1`, and every such profile occurs (`admissible_profile`, `admissible_profile_asymptotic`, `profileRegularizer_admissible`). The admissible class is therefore infinite (`admissible_closures_infinite`): the closure is **not unique**. The maintained regularizer with a fixed `α ≠ 0` is not unit covariant (`maintainedDenominator_not_unitCovariant`); with `α = a/ε²` it is the admissible profile `u + e^{-2au}`. Uniqueness is recovered only by two explicit extra principles, an affine profile and nodal normalization `D_ε(0) = ε²`, which select `D_ε(s) = s + ε²`, i.e. `thetaComplex` with `α = 0` (`closure_unique_affine_normalized`). Both principles are necessary (`extra_principles_independent`). This is operator selection only, not PDE-solution uniqueness.
+
+This does not prove PDE well-posedness.
 
 ### E10 and E11 — quantization closure
 
