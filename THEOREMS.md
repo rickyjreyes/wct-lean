@@ -372,6 +372,15 @@ included.
 | `m7SymbolAtWavenumber_le`, `m7_linear_well_posed` | M7 symbol `c₁(σ₀²-k²) - c₂(k⋆²-k²)²` bounded above for `c₂ > 0`; global linear well-posedness |
 | `swiftHohenberg_shell_unstable`, `swiftHohenberg_subcritical_stable` | onset instability of a resonant shell mode; subcritical exponential stability |
 
+`WCTLean/Models/M7Smoothing.lean` (6 roots, `scripts/m7_smoothing_axiom_audit.lean`):
+
+| Declaration | Content |
+|---|---|
+| `m7Symbol_coercive` | M7 symbol `≤ C - (c₂/2)k⁴` for `c₂ > 0` |
+| `evolution_H2_smoothing` | any symbol `≤ C - a k⁴`: `∑|k_n²(S(t)f)^(n)|² ≤ e^{2tC}/(2at)‖f‖²`, `t > 0` |
+| `m7_H2_smoothing` | M7: spectral `‖ΔS(t)f‖ ≤ e^{tC}(c₂t)^{-1/2}‖f‖` |
+| `smoothing_rate_integrable` | `t^{-1/2}` integrable on `(0, τ)` (Duhamel requirement) |
+
 ## Curve-integral locking and winding (issue #24)
 
 `WCTLean/Models/CurveLocking.lean`; 15 roots audited fail-closed

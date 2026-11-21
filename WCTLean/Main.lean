@@ -16,6 +16,7 @@ import WCTLean.Koide
 import WCTLean.Fourier
 import WCTLean.FourierSpectral
 import WCTLean.Models.M7LinearSemigroup
+import WCTLean.Models.M7Smoothing
 import WCTLean.Models.FisherCurvature
 import WCTLean.Contracts.Analytic
 import WCTLean.Contracts.UniformCurvatureDenominator

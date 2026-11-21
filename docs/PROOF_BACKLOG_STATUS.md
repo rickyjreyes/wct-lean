@@ -30,6 +30,8 @@ lake env lean scripts/curvature_nodal_weak_limit_axiom_audit.lean > nw.log
 python3 scripts/check_axiom_log.py nw.log 10 "nodal-weak-limit"
 lake env lean scripts/continuum_obligations_axiom_audit.lean > co.log
 python3 scripts/check_axiom_log.py co.log 9 "continuum-obligations"
+lake env lean scripts/m7_smoothing_axiom_audit.lean > sm.log
+python3 scripts/check_axiom_log.py sm.log 6 "m7-smoothing"
 ```
 
 Hosted CI runs only on `pull_request` and pushes to `main`; this branch has
@@ -130,9 +132,10 @@ estimates. New on this branch (`WCTLean/Models/M7LinearSemigroup.lean`,
 (evolution operator, semigroup law, `e^{Ct}` bound, Lipschitz dependence,
 strong continuity, existence and uniqueness of Fourier-mild solutions).
 
-Next concrete targets: (1) `L² → H²` smoothing `‖Δ S(t) f‖ ≲ t^{-1/2}‖f‖`
-from the quartic symbol (PR #37 has the multiplier-level estimate);
-(2) Duhamel fixed point for the nonlinear curvature term in
+Also new (`WCTLean/Models/M7Smoothing.lean`, 6 roots): the spectral
+`L² → Ḣ²` smoothing `‖ΔS(t)f‖ ≤ e^{tC}(c₂t)^{-1/2}‖f‖` with integrable rate.
+
+Next concrete target: Duhamel fixed point for the nonlinear curvature term in
 `C([0,T]; H²(AddCircle))`, which needs the `H²` space as a weighted `ℓ²`
 subspace and the Lipschitz bound of `N_curv` (PR #37). No nonlinear
 statement is proved on this branch.
