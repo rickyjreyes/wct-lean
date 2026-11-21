@@ -28,6 +28,8 @@ lake env lean scripts/m7_linear_semigroup_axiom_audit.lean > m7.log
 python3 scripts/check_axiom_log.py m7.log 18 "m7-linear-semigroup"
 lake env lean scripts/curvature_nodal_weak_limit_axiom_audit.lean > nw.log
 python3 scripts/check_axiom_log.py nw.log 10 "nodal-weak-limit"
+lake env lean scripts/continuum_obligations_axiom_audit.lean > co.log
+python3 scripts/check_axiom_log.py co.log 9 "continuum-obligations"
 ```
 
 Hosted CI runs only on `pull_request` and pushes to `main`; this branch has
@@ -167,7 +169,17 @@ instantiation from an explicit radial phase field.
 
 ### #25 — physical observable bridges — OPEN (blocked on upstream existence results)
 
-### #28 — remaining continuum obligations — OPEN
+### #28 — remaining continuum obligations — PARTIAL (3 of 8 closed)
+
+New on this branch (`WCTLean/Models/ContinuumObligations.lean`, 9 roots):
+core improper-integral threshold (`coreIntegrability_improper_iff`), E50
+integration step (`phaseCoherence_integral_bound`), EX–FA chain rule in 1+1
+dimensions (`coleHopf_heat_iff_log_flow`).  Typed inventory
+`ContinuumObligation` records the five blocked items: E29 `ΔH` derivation
+(entropy functional and dynamics unspecified), CLE5/CLE8 curved-torus
+spectrum (no Laplace–Beltrami API), TOP3 singular gradient flow, thin-shell
+torus asymptotics (no surface-integral Willmore API), finite-reduction
+justification (continuum objects unspecified).
 
 ## Change log
 

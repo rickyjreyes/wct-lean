@@ -61,7 +61,7 @@ This certifies the geometry but does not assert that the integer label is a phys
 2p-2 > -1  <->  p > 1/2.
 ```
 
-This is the exponent reduction used by the local radial-integrability argument. The full improper-integral theorem remains a continuum-analysis obligation.
+This is the exponent reduction used by the local radial-integrability argument. The full improper-integral theorem is now proved in `WCTLean/Models/ContinuumObligations.lean` (issue #28): `coreIntegrability_improper_iff` shows that `r ↦ r^(2p-2)` is integrable on `(0, R)` iff `p > 1/2`, and `coreIntegrability_integral` gives the value `R^(2p-1)/(2p-1)`.
 
 ## Constrained curvature locking
 

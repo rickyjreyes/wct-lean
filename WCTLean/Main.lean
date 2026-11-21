@@ -75,6 +75,7 @@ import WCTLean.Models.UnifiedOperator
 import WCTLean.Models.CompactDynamics
 import WCTLean.Models.ClosureFormalization
 import WCTLean.Models.FormalUpgrades
+import WCTLean.Models.ContinuumObligations
 import WCTLean.ResolvedAudit
 import WCTLean.DerivedAudit
 

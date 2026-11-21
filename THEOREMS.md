@@ -389,6 +389,18 @@ included.
 | `logCurveIntegral_mul`, `product_loop_windingQuantized` | E11 additivity from products of loops |
 | `alpha_determined_by_winding` | E4 locking constant fixed by the geometric winding |
 
+## Continuum obligations (issue #28)
+
+`WCTLean/Models/ContinuumObligations.lean`; 9 roots audited fail-closed
+(`scripts/continuum_obligations_axiom_audit.lean`).
+
+| Declaration | Content |
+|---|---|
+| `coreIntegrability_improper_iff`, `coreIntegrability_integral`, `coreIntegrability_not_integrable` | `r^(2p-2)` integrable on `(0,R)` iff `p > 1/2`; value `R^(2p-1)/(2p-1)` |
+| `phaseCoherence_integral_bound`, `phaseCoherence_finite_of_memLp` | E50 measurability and integration step; `ψ ∈ L²` corollary |
+| `coleHopf_log_derivatives`, `coleHopf_function_bridge`, `coleHopf_heat_iff_log_flow` | EX–FA chain rule derived in 1+1 dimensions; heat flow ⇔ log-curvature flow |
+| `ContinuumObligation`, `continuumObligationStatus`, `continuumObligations_closed_count` | typed inventory: 3 of 8 obligations closed, 5 blocked with named missing infrastructure |
+
 ## Koide derivation module
 
 `WCTLean/Models/KoideDerivation.lean` proves:

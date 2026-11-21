@@ -184,7 +184,7 @@ Thus the closure error vanishes as the intermittency amplitude tends to zero. Th
 0 ≤ density / |∇θ| ≤ density / δ
 ```
 
-under nonnegative density and a positive floor `|∇θ| ≥ δ > 0`. For `density=|ψ|²` and `ψ∈L²`, integration gives the stated finite coherence bound. The Lean theorem formalizes the pointwise inequality; measurability and integration remain continuum assumptions.
+under nonnegative density and a positive floor `|∇θ| ≥ δ > 0`. For `density=|ψ|²` and `ψ∈L²`, integration gives the stated finite coherence bound. The integration step is now proved (issue #28): `phaseCoherence_integral_bound` shows that an integrable nonnegative density and an a.e.-strongly-measurable phase-gradient magnitude with floor `δ > 0` give an integrable coherence integrand with `∫ ρ/|∇θ| ≤ (∫ρ)/δ`, and `phaseCoherence_finite_of_memLp` specializes to `ρ = |ψ|²`, `ψ ∈ L²` (`WCTLean/Models/ContinuumObligations.lean`).
 
 ### E41 and E72 — discrete retention counting
 
@@ -306,7 +306,7 @@ for nonnegative mode count `K`.
 
 `exp_logField_eq` proves inversion of the logarithmic field on the positive sector. `coleHopf_residual_factorization` and `diffusionResidual_zero_iff_logCurvatureResidual_zero` prove the exact algebraic residual bridge under displayed temporal and Laplacian chain-rule hypotheses. `filamentLocalizationCondition_iff_mismatch_zero` characterizes localization as zero scalar mismatch.
 
-These results do not supply the missing function-space chain rule or PDE regularity theorem.
+The chain rule is now derived rather than assumed in one space and one time dimension (issue #28): `coleHopf_log_derivatives` computes the derivatives of `u = log ψ` from genuine derivatives of a positive field, `coleHopf_function_bridge` proves the residual equivalence for those actual derivatives, and `coleHopf_heat_iff_log_flow` proves that `ψ_t = ψ_xx` holds everywhere iff `u_t = u_xx + u_x²` holds everywhere. The `n`-dimensional Laplacian version and PDE regularity remain open.
 
 ## Layer 3 — Registry-only coverage: 50 IDs (this branch, subject to CI)
 
