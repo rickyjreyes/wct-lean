@@ -2,21 +2,16 @@ import MyProject.Theta.Definitions
 
 namespace WCT
 
-/-
-  Baseline exclusion contract
--/
+/-- Open exclusion obligation for a specified class of baseline operators.
+A distinguishing state must exist for each baseline. -/
+def BaselineExclusion {S : Type} (M : ThetaModel S) (p : ThetaParams)
+    (baselines : Set (S → S)) : Prop :=
+  ∀ B ∈ baselines, ∃ s : S, M.step p s ≠ B s
 
--- A baseline operator type
-axiom BaselineOp : Type
-
--- Application of a baseline operator
-axiom applyBaseline : BaselineOp -> State -> State
-
-/--
-  Theta cannot reduce to any baseline operator.
--/
-axiom Theta_not_baseline :
-  forall (p : ThetaParams) (B : BaselineOp),
-    Ne (Theta p) (applyBaseline B)
+theorem baseline_ne_of_witness {S : Type} (M : ThetaModel S)
+    (p : ThetaParams) (B : S → S) (s : S) (h : M.step p s ≠ B s) :
+    M.step p ≠ B := by
+  intro he
+  exact h (congrFun he s)
 
 end WCT
