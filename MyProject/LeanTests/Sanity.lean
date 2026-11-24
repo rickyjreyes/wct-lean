@@ -2,15 +2,9 @@ import MyProject.Theta.Definitions
 
 namespace WCT
 
-/-
-  LEAN-0: Totality of Theta
--/
-
-/--
-  Theta is total: defined for every state.
--/
-axiom Theta_total :
-  forall (p : ThetaParams) (x : State),
-    exists y : State, Theta p x = y
+/-- Function totality only; this does not prove PDE well-posedness. -/
+theorem Theta_total {S : Type} (M : ThetaModel S) (p : ThetaParams) (x : S) :
+    ∃ y : S, M.step p x = y :=
+  ⟨M.step p x, rfl⟩
 
 end WCT
