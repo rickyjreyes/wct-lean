@@ -1,7 +1,4 @@
-/-
-  MyProject - Root Library Module
--/
-
+/- MyProject: legacy model definitions and open obligations. -/
 import MyProject.Basic
 import MyProject.Theta.Definitions
 import MyProject.Theta.Entropy
@@ -13,17 +10,6 @@ import MyProject.LeanTests.Attractor
 import MyProject.LeanTests.DimensionFailure
 import MyProject.Falsification
 
-namespace WCT
-
-/--
-  Consistency postulate.
--/
-axiom WCT_consistent : Not WCT_Falsified
-
-/--
-  Contract validity follows from consistency.
--/
-theorem WCT_contract_valid : Not WCT_Falsified :=
-  WCT_consistent
-
-end WCT
+/- No global consistency axiom or theorem of WCT validity is asserted.
+Model-specific counterexamples and open obligations must be investigated
+independently. -/
