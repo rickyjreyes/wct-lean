@@ -99,7 +99,7 @@ def main() -> None:
 
     # Inventory every tracked Lean path; non-library tooling is separately hashed.
     tracked = subprocess.check_output(["git", "ls-files", "-z", "--", "*.lean"], cwd=ROOT)
-    tracked_paths = {ROOT / p for p in tracked.decode("utf-8").split("\\0") if p}
+    tracked_paths = {ROOT / p for p in tracked.decode("utf-8").split(chr(0)) if p}
     tooling = {p for p in tracked_paths if p == ROOT / "lakefile.lean" or p.is_relative_to(ROOT / "scripts")}
     unclassified = tracked_paths - set(source_files) - tooling
     for path in sorted(unclassified):
