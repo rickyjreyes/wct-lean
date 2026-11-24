@@ -30,6 +30,8 @@ jobs:
         run: |
           lake update
           lake exe cache get
+      - name: Test source audit against proof bypass examples
+        run: python scripts/test_audit_formal_sources.py
       - name: Audit source closure and emit SHA-256 manifest
         run: python scripts/audit_formal_sources.py --strict-lean-output scripts/GeneratedStrictAudit.lean
       - name: Build all maintained Lean targets
