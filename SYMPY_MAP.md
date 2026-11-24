@@ -8,7 +8,7 @@ A SymPy `PASS` is not automatically a Lean proof. The relationship column distin
 
 | Canonical ID | Lean declarations | Relationship | Formal boundary |
 |---|---|---|---|
-| `M4` | `h2SubcriticalDimension`, `h2Subcritical_iff_le_three`, `SobolevCurvatureContract` | arithmetic theorem plus analytic contract | proves `n < 4 ↔ n ≤ 3`; does not prove the Sobolev embedding itself |
+| `M4` | `h2SubcriticalDimension`, `h2Subcritical_iff_le_three`, `SobolevEmbeddingStatement` | arithmetic theorem plus analytic contract | proves `n < 4 ↔ n ≤ 3`; does not prove the Sobolev embedding itself |
 | `M5` | `averagedUpdate_norm_le`, `InNormBound`, `averagedUpdate_preserves_normBound`, `BandLimitedInvariantSet` | finite bounded-dynamics support | proves norm-bound invariance under displayed nonexpansiveness assumptions; not a complexity theorem |
 | `M6B` | `thetaComplex`, `thetaComplex_canonical_formula`, `thetaComplex_denominator_ne_zero` | exact typed operator form plus denominator safety | does not prove uniqueness of the nonlinear closure or PDE well-posedness |
 | `E10` | `RadialShellQuantized`, `radialShellQuantized_add` | exact quantization predicate plus additive closure | no dynamical shell-selection theorem |

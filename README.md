@@ -259,7 +259,7 @@ The separately built `MyProject` library is now an explicit abstract contract la
 The former 27 global declarations have been removed as global axioms: model types and
 operators are supplied as structure data, unresolved properties are propositions, and
 function totality and congruence follow directly from the supplied function. The former
-unconditional consistency theorem is replaced by `WCT_contract_valid_of`, which needs
+unconditional consistency theorem is replaced by `legacy_fixedPoint_contract_valid_of`, which needs
 independent monotonicity and fixed-point uniqueness hypotheses. No original physical
 obligation has been discharged by this refactor. Fixed-point existence and uniqueness
 are not dynamical attraction or stability; the legacy "nonlinearity" statement actually
@@ -268,3 +268,15 @@ The source audit now includes the legacy build target and rejects its custom axi
 declarations. The maintained `WCTLean` mathematical library remains separate.
 
 Build validation is required before promoting this change as kernel-checked.
+
+## Analytic specification integrity
+
+The obsolete curvature/dimension biconditional has been removed. E24/E67
+are open embedding obligations for actual field classes and their norms; E69
+requires the higher-regularity Laplacian bound separately and proves only the
+a.e. product estimate for the exact corrected curvature quotient. E27 uses
+extended-real energies and a field-level integral; E68 uses a signed exponent
+with regression proofs at dimensions one and two. E70 is a list of hypotheses,
+not a dimension or stability theorem. The legacy model now uses fixed-point
+names, with local attraction defined separately by convergence of iterates.
+No continuum theorem, dynamical attraction, or physical claim is promoted.

@@ -182,13 +182,16 @@ No empirical fit or physical-origin claim is proved.
 | Declaration | Equation | Status |
 |---|---|---|
 | `h2Subcritical_iff_le_three` | M4/E24/E67 | proved arithmetic equivalence `n < 4 ↔ n ≤ 3` |
-| `SobolevCurvatureContract` | M4/E24/E26/E67/E69 | contract/interface, not proof of Sobolev embedding or curvature boundedness |
+| `SobolevEmbeddingStatement` | M4/E24/E67 | open continuous embedding obligation on supplied fields and norm; no dimension biconditional |
+| `E69LaplacianEmbeddingObligation` | E69 | open higher-regularity Laplacian embedding obligation |
+| `thetaComplex_ae_bound` | E69 | a.e. product bound from explicit Laplacian and reciprocal bounds; not a Sobolev theorem |
 | `criticalSobolevExponent` | E25/E65 | definition |
-| `FiniteConfinementEnergy` | E27 | definition |
+| `FiniteConfinementEnergy`, `FiniteFieldConfinementEnergy` | E27 | extended-real finiteness and field-level integral definitions |
+| `infinite_gradient_energy_not_finite` | E27 | regression excluding infinite energy |
 | `GagliardoNirenbergBound` | E66 | proposition encoding the required inequality |
-| `LocalEnergyBound` | E68 | proposition encoding the required localized estimate |
-| `DimensionalStabilityCriterion` | E70 | definition separating hypotheses |
-| `dimensional_stability_implies_le_three` | E70 | criterion implies its explicit `n ≤ 3` component |
+| `LocalEnergyBound` | E68 | open localized estimate with positive radius and signed exponent |
+| `localEnergyScale_one`, `localEnergyScale_two` | E68 | signed-exponent regression proofs |
+| `DimensionalStabilityHypotheses` | E70 | proposed hypotheses only; no stability theorem or dimension projection counted |
 | `biharmonic_scaling_dimension_four` | dimensional audit | at `n=4`, printed scaling factor is scale-invariant rather than divergent |
 
 ## Derived audit (`WCTLean/DerivedAudit.lean`)

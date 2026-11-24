@@ -37,6 +37,12 @@ jobs:
         run: |
           set -o pipefail
           lake build 2>&1 | tee lean-build.log
+      - name: Verify analytic and legacy proof integrity
+        shell: bash
+        run: |
+          set -o pipefail
+          lake env lean scripts/analytic_integrity_axioms.lean 2>&1 | tee analytic-integrity-axioms.log
+          python scripts/check_analytic_integrity_axioms.py analytic-integrity-axioms.log
       - name: Audit D4 theorem dependencies
         shell: bash
         run: |
@@ -68,6 +74,7 @@ jobs:
           if-no-files-found: error
           path: |
             lean-build.log
+            analytic-integrity-axioms.log
             d4-axioms.log
             s004-axioms.log
             curvature-limit-axioms.log
