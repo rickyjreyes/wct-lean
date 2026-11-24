@@ -1,4 +1,4 @@
-import WCTLean
+import MyProject
 
 def main : IO Unit := do
-  IO.println "WCTLean library loaded successfully."
+  IO.println "WCT Theta-LEAN pipeline loaded successfully."

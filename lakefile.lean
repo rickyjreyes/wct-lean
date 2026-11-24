@@ -5,6 +5,9 @@ package my_project where
   version := v!"0.1.0"
 
 @[default_target]
+lean_lib MyProject
+
+@[default_target]
 lean_lib WCTLean
 
 lean_exe my_project where

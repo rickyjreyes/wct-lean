@@ -187,6 +187,8 @@ No empirical fit or physical-origin claim is proved.
 | `FiniteConfinementEnergy` | E27 | definition |
 | `GagliardoNirenbergBound` | E66 | proposition encoding the required inequality |
 | `LocalEnergyBound` | E68 | proposition encoding the required localized estimate |
+| `DimensionalStabilityCriterion` | E70 | definition separating hypotheses |
+| `dimensional_stability_implies_le_three` | E70 | criterion implies its explicit `n ≤ 3` component |
 | `biharmonic_scaling_dimension_four` | dimensional audit | at `n=4`, printed scaling factor is scale-invariant rather than divergent |
 
 ## Derived audit (`WCTLean/DerivedAudit.lean`)
