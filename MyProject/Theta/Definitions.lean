@@ -2,36 +2,27 @@ import MyProject.Theta.Core
 
 namespace WCT
 
-/-
-  Core Theta axioms
--/
+/-- Open model property: each parameter admits a non-fixed state. -/
+def Theta_nontrivial (M : ThetaModel) : Prop :=
+  ∀ p : ThetaParams, ∃ s : M.State, M.Theta p s ≠ s
 
--- Theta is nontrivial
-axiom Theta_nontrivial :
-  forall p : ThetaParams,
-    exists s : State, Ne (Theta p s) s
+/-- Congruence follows from function application, without a model assumption. -/
+theorem Theta_deterministic (M : ThetaModel) (p : ThetaParams)
+    (s1 s2 : M.State) (h : s1 = s2) : M.Theta p s1 = M.Theta p s2 :=
+  congrArg (M.Theta p) h
 
--- Theta is deterministic
-axiom Theta_deterministic :
-  forall (p : ThetaParams) (s1 s2 : State),
-    s1 = s2 -> Theta p s1 = Theta p s2
+/-- The legacy claim called this "nonlinearity"; its actual formula states
+non-injectivity, not nonlinearity. The formula is preserved as an open property. -/
+def Theta_noninjective (M : ThetaModel) : Prop :=
+  ∀ p : ThetaParams, ∃ s1 s2 : M.State, s1 ≠ s2 ∧ M.Theta p s1 = M.Theta p s2
 
--- Theta is many-to-one (nonlinear)
-axiom Theta_nonlinear :
-  forall p : ThetaParams,
-    exists s1 s2 : State,
-      Ne s1 s2 /\ Theta p s1 = Theta p s2
+/-- Open model property: fixed-point existence. -/
+def attractor_exists (M : ThetaModel) : Prop :=
+  ∀ p : ThetaParams, ∃ s : M.State, IsAttractor M p s
 
--- Attractor existence
-axiom attractor_exists :
-  forall p : ThetaParams,
-    exists s : State, IsAttractor p s
-
--- Attractor uniqueness
-axiom attractor_unique :
-  forall (p : ThetaParams) (s1 s2 : State),
-    IsAttractor p s1 ->
-    IsAttractor p s2 ->
-    s1 = s2
+/-- Open model property: fixed-point uniqueness. -/
+def attractor_unique (M : ThetaModel) : Prop :=
+  ∀ (p : ThetaParams) (s1 s2 : M.State),
+    IsAttractor M p s1 → IsAttractor M p s2 → s1 = s2
 
 end WCT

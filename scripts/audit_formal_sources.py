@@ -10,6 +10,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 FORBIDDEN = re.compile(r"(?m)^\s*(sorry|admit)\b")
+LEGACY_AXIOM = re.compile(r"(?m)^[ \t]*(?:(?:private|protected|noncomputable)[ \t]+)*axiom\b")
 
 
 def sha256(path: Path) -> str:
@@ -31,13 +32,16 @@ def main() -> None:
     if f'@ "v{expected_version}"' not in lakefile:
         raise SystemExit("lean-toolchain and mathlib version in lakefile.lean differ")
 
-    source_files = sorted([ROOT / "WCTLean.lean", *(ROOT / "WCTLean").rglob("*.lean")])
+    legacy_files = {ROOT / "Main.lean", ROOT / "MyProject.lean", *(ROOT / "MyProject").rglob("*.lean")}
+    source_files = sorted([ROOT / "WCTLean.lean", *(ROOT / "WCTLean").rglob("*.lean"), *legacy_files])
     failures: list[str] = []
     files: dict[str, str] = {}
     for path in source_files:
         text = path.read_text(encoding="utf-8")
         if FORBIDDEN.search(text):
             failures.append(f"placeholder proof token in {path.relative_to(ROOT)}")
+        if path in legacy_files and LEGACY_AXIOM.search(text):
+            failures.append(f"custom legacy model axiom in {path.relative_to(ROOT)}")
         files[path.relative_to(ROOT).as_posix()] = sha256(path)
 
     root_text = (ROOT / "WCTLean" / "Main.lean").read_text(encoding="utf-8")

@@ -1,7 +1,3 @@
-/-
-  MyProject - Root Library Module
--/
-
 import MyProject.Basic
 import MyProject.Theta.Definitions
 import MyProject.Theta.Entropy
@@ -15,15 +11,19 @@ import MyProject.Falsification
 
 namespace WCT
 
-/--
-  Consistency postulate.
--/
-axiom WCT_consistent : Not WCT_Falsified
+/-- The legacy consistency claim is now a proposition, not a postulate.
+It must be established for a specific model. -/
+def WCT_consistent (M : ThetaModel) : Prop := ¬ WCT_Falsified M
 
-/--
-  Contract validity follows from consistency.
--/
-theorem WCT_contract_valid : Not WCT_Falsified :=
-  WCT_consistent
+/-- The falsification contract follows conditionally from the separately
+stated monotonicity and uniqueness obligations. No physical instance or
+unconditional consistency result is claimed. -/
+theorem WCT_contract_valid_of (M : ThetaModel)
+    (hEntropy : Theta_entropy_monotone M) (hUnique : attractor_unique M) :
+    ¬ WCT_Falsified M := by
+  intro hf
+  rcases hf with ⟨p, hbad⟩ | ⟨p, s1, s2, hne, h1, h2⟩
+  · exact hbad (hEntropy p)
+  · exact hne (hUnique p s1 s2 h1 h2)
 
 end WCT

@@ -2,21 +2,12 @@ import MyProject.Theta.Definitions
 
 namespace WCT
 
-/-
-  Baseline exclusion contract
--/
+structure BaselineModel (M : ThetaModel) where
+  BaselineOp : Type
+  applyBaseline : BaselineOp → M.State → M.State
 
--- A baseline operator type
-axiom BaselineOp : Type
-
--- Application of a baseline operator
-axiom applyBaseline : BaselineOp -> State -> State
-
-/--
-  Theta cannot reduce to any baseline operator.
--/
-axiom Theta_not_baseline :
-  forall (p : ThetaParams) (B : BaselineOp),
-    Ne (Theta p) (applyBaseline B)
+/-- Open exclusion property of a supplied baseline class. -/
+def Theta_not_baseline (M : ThetaModel) (B : BaselineModel M) : Prop :=
+  ∀ (p : ThetaParams) (b : B.BaselineOp), M.Theta p ≠ B.applyBaseline b
 
 end WCT

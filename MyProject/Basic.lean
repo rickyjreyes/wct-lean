@@ -63,12 +63,10 @@ def passes_verifier (cfg : VerifierConfig) (s : StateConfig) : Prop :=
   normalized_overlap s.field s.reference > cfg.tau
   /\ entropy s.field <= cfg.sigma_crit
 
--- Kolmogorov complexity
-axiom K : Vector -> Nat
-
--- Exponential lower bound
-axiom exponential_bound :
-  forall (psi : Vector), K psi >= 2 ^ psi.length
+/-- The historical exponential lower-bound claim, for a supplied complexity
+function. This is an open specification, not an established lower bound. -/
+def exponential_bound (K : Vector → Nat) : Prop :=
+  ∀ psi : Vector, K psi ≥ 2 ^ psi.length
 
 -- Nonconstructibility
 def NonConstructible (M : Nat -> StateConfig) (psi_star : StateConfig) : Prop :=

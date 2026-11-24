@@ -252,3 +252,19 @@ The highest-value open work is:
 ## Build meaning
 
 A green Lean build means the encoded declarations are syntactically valid, type-correct, and accepted by the Lean kernel under explicit hypotheses. Empirical support and physical interpretation are tracked in the corresponding WCT experimental and phenomenological layers.
+
+## Legacy contract integrity (2026-11-24)
+
+The separately built `MyProject` library is now an explicit abstract contract layer.
+The former 27 global declarations have been removed as global axioms: model types and
+operators are supplied as structure data, unresolved properties are propositions, and
+function totality and congruence follow directly from the supplied function. The former
+unconditional consistency theorem is replaced by `WCT_contract_valid_of`, which needs
+independent monotonicity and fixed-point uniqueness hypotheses. No original physical
+obligation has been discharged by this refactor. Fixed-point existence and uniqueness
+are not dynamical attraction or stability; the legacy "nonlinearity" statement actually
+asserted non-injectivity. The 3D/4D contract does not cover all higher dimensions.
+The source audit now includes the legacy build target and rejects its custom axiom
+declarations. The maintained `WCTLean` mathematical library remains separate.
+
+Build validation is required before promoting this change as kernel-checked.

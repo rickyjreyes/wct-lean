@@ -2,25 +2,16 @@ import MyProject.Theta.Definitions
 
 namespace WCT
 
-/-
-  Attractor dynamics
--/
+def UniqueAttractor (M : ThetaModel) (p : ThetaParams) : Prop :=
+  ∀ x y : M.State, IsAttractor M p x → IsAttractor M p y → x = y
 
-/--
-  Uniqueness of the attractor for each fixed Theta-parameter set.
--/
-def UniqueAttractor (p : ThetaParams) : Prop :=
-  forall x y : State,
-    IsAttractor p x ->
-    IsAttractor p y ->
-    x = y
-
-/--
-  For every Theta-parameter set,
-  there exists exactly one curvature-locked state.
--/
-axiom Theta_unique_attractor :
-  forall p : ThetaParams,
-    exists s : State, IsAttractor p s /\ UniqueAttractor p
+/-- Conditional packaging of existence and uniqueness. Neither premise is
+asserted here for the physical model. -/
+theorem Theta_unique_attractor_of (M : ThetaModel)
+    (hex : attractor_exists M) (huniq : attractor_unique M) :
+    ∀ p : ThetaParams, ∃ s : M.State, IsAttractor M p s ∧ UniqueAttractor M p := by
+  intro p
+  obtain ⟨s, hs⟩ := hex p
+  exact ⟨s, hs, huniq p⟩
 
 end WCT
