@@ -1,4 +1,6 @@
 import MyProject.Theta.Entropy
+import MyProject.Theta.Baselines
+import MyProject.LeanTests.DimensionFailure
 
 namespace WCT
 
@@ -8,5 +10,20 @@ def LegacyFixedPointContractFalsified (M : ThetaModel) : Prop :=
   (∃ p : ThetaParams, ¬ EntropyMonotoneTheta M p) ∨
   (∃ p : ThetaParams, ∃ s1 s2 : M.State,
     s1 ≠ s2 ∧ IsFixedPoint M p s1 ∧ IsFixedPoint M p s2)
+
+
+/-- All four alternatives promised by the initial README. This is a
+model-relative falsification predicate, not a validity theorem. Connecting
+the supplied maps and admissibility predicates to the actual physical model
+remains open. The original two-alternative contract is retained above. -/
+def FullContractFalsified (M : ThetaModel) [MetricSpace M.State]
+    [AddCommGroup M.State] [Module ℝ M.State]
+    (B : BaselineModel M) (D : DimensionIndexedModel) : Prop :=
+  (∃ p : ThetaParams, ¬ EntropyMonotoneTheta M p) ∨
+  (∃ p : ThetaParams, ∃ x y : M.State,
+    x ≠ y ∧ IsAttractingFixedPoint M p x ∧ IsAttractingFixedPoint M p y) ∨
+  (∃ d : Nat, 3 < d ∧ ∃ p : ThetaParams,
+    ∃ s : D.State d, IsAdmissibleAttractor D d p s) ∨
+  ¬ Theta_nonlinear M ∨ ¬ Theta_not_baseline M
 
 end WCT
