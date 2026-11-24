@@ -182,13 +182,12 @@ No empirical fit or physical-origin claim is proved.
 | Declaration | Equation | Status |
 |---|---|---|
 | `h2Subcritical_iff_le_three` | M4/E24/E67 | proved arithmetic equivalence `n < 4 ↔ n ≤ 3` |
-| `SobolevCurvatureContract` | M4/E24/E26/E67/E69 | contract/interface, not proof of Sobolev embedding or curvature boundedness |
+| `SobolevCurvatureContract` | M4/E24/E26/E67/E69 | concrete real test-field obligations; neither embedding nor curvature boundedness is proved |
 | `criticalSobolevExponent` | E25/E65 | definition |
 | `FiniteConfinementEnergy` | E27 | definition |
 | `GagliardoNirenbergBound` | E66 | proposition encoding the required inequality |
-| `LocalEnergyBound` | E68 | proposition encoding the required localized estimate |
-| `DimensionalStabilityCriterion` | E70 | definition separating hypotheses |
-| `dimensional_stability_implies_le_three` | E70 | criterion implies its explicit `n ≤ 3` component |
+| `LocalEnergyBound` | E68 | open localized estimate using real exponent `n - 2` |
+| `DimensionalStabilityCriterion` | E70 | open analytic prerequisites; no dimensional stability implication proved |
 | `biharmonic_scaling_dimension_four` | dimensional audit | at `n=4`, printed scaling factor is scale-invariant rather than divergent |
 
 ## Derived audit (`WCTLean/DerivedAudit.lean`)
