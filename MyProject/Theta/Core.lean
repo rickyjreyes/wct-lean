@@ -9,6 +9,7 @@ structure ThetaParams where
 A concrete physical realization must supply these fields independently. -/
 structure ThetaModel where
   State : Type
+  state_nonempty : Nonempty State
   Theta : ThetaParams → State → State
   Entropy : State → Real
   Energy : State → Real
