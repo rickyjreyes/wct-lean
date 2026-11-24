@@ -36,17 +36,7 @@ The following were defined **multiple times** across different files, causing co
 
 **Fix:** Created `MyProject/Theta/Core.lean` as the **single source of truth** for all core types:
 
-```lean
--- Core.lean defines ONCE:
-constant State : Type
-structure ThetaParams where id : Nat
-constant Theta : ThetaParams → State → State
-constant Entropy : State → ℝ
-constant Energy : State → ℝ
-def IsAttractor (p : ThetaParams) (s : State) : Prop := Theta p s = s
-```
-
-All other files now import from Core and **do not redefine** these types.
+As of the proof-integrity repair, `ThetaModel S` supplies the step, entropy, and energy as explicit data. `IsFixedPoint` and `IsAttractor` are distinct: the latter additionally requires Lyapunov stability and local convergence of iterates. The former global declarations are no longer part of the interface. All scientific existence, uniqueness, nonlinearity, dimension and entropy claims remain open for a concrete physical model.
 
 ## Problem 3: WCT_Falsified Conflict
 
