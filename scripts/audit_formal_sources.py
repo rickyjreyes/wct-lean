@@ -9,8 +9,59 @@ import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-FORBIDDEN = re.compile(r"(?m)^\s*(sorry|admit)\b")
-LEGACY_AXIOM = re.compile(r"(?m)^[ \t]*(?:(?:private|protected|noncomputable)[ \t]+)*axiom\b")
+FORBIDDEN = {"sorry", "admit", "axiom", "sorryAx", "native_decide", "ofReduceBool", "unsafe", "implemented_by"}
+
+def source_tokens(text: str):
+    """Conservative lexical screen; nested comments and ordinary strings are ignored.
+    The elaborated dependency audit is authoritative, not this screen.
+    """
+    i = 0
+    while i < len(text):
+        if text.startswith("--", i):
+            end = text.find("\n", i)
+            i = len(text) if end < 0 else end + 1
+        elif text.startswith("/-", i):
+            depth = 1
+            i += 2
+            while depth and i < len(text):
+                if text.startswith("/-", i):
+                    depth += 1
+                    i += 2
+                elif text.startswith("-/", i):
+                    depth -= 1
+                    i += 2
+                else:
+                    i += 1
+            if depth:
+                raise ValueError("unterminated block comment")
+        elif text[i] == '"':
+            i += 1
+            while i < len(text):
+                if text[i] == "\\":
+                    i += 2
+                elif text[i] == '"':
+                    i += 1
+                    break
+                else:
+                    i += 1
+        else:
+            match = re.match(r"[\w'!?]+", text[i:])
+            if match:
+                yield match.group(0)
+                i += len(match.group(0))
+            else:
+                i += 1
+
+def generate_strict_audit(paths: list[Path], output: Path) -> None:
+    modules = [p.relative_to(ROOT).with_suffix("").as_posix().replace("/", ".") for p in paths]
+    if not all(re.fullmatch(r"[A-Za-z_][A-Za-z_0-9]*(?:\.[A-Za-z_][A-Za-z_0-9]*)*", m) for m in modules):
+        raise SystemExit("Unrecognized module path in strict audit inventory")
+    template = (ROOT / "scripts" / "strict_axiom_audit.template").read_text(encoding="utf-8")
+    output.write_text(
+        "\n".join("import " + m for m in modules) + "\n\n" +
+        template.replace("@MODULES@", ", ".join("`" + m for m in modules)),
+        encoding="utf-8",
+    )
 
 
 def sha256(path: Path) -> str:
@@ -24,6 +75,7 @@ def sha256(path: Path) -> str:
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--output", type=Path, default=ROOT / "formal-source-hashes.json")
+    parser.add_argument("--strict-lean-output", type=Path)
     args = parser.parse_args()
 
     toolchain = (ROOT / "lean-toolchain").read_text(encoding="utf-8").strip()
@@ -38,10 +90,9 @@ def main() -> None:
     files: dict[str, str] = {}
     for path in source_files:
         text = path.read_text(encoding="utf-8")
-        if FORBIDDEN.search(text):
-            failures.append(f"placeholder proof token in {path.relative_to(ROOT)}")
-        if path in legacy_files and LEGACY_AXIOM.search(text):
-            failures.append(f"custom legacy model axiom in {path.relative_to(ROOT)}")
+        forbidden = sorted(set(source_tokens(text)) & FORBIDDEN)
+        if forbidden:
+            failures.append(f"forbidden source tokens {forbidden} in {path.relative_to(ROOT)}")
         files[path.relative_to(ROOT).as_posix()] = sha256(path)
 
     root_text = (ROOT / "WCTLean" / "Main.lean").read_text(encoding="utf-8")
@@ -89,6 +140,9 @@ def main() -> None:
     mathlib = next((row for row in manifest.get("packages", []) if row.get("name") == "mathlib"), None)
     if not mathlib:
         failures.append("lake-manifest.json has no mathlib package")
+
+    if args.strict_lean_output and not failures:
+        generate_strict_audit(source_files, args.strict_lean_output)
 
     output = {
         "schema_version": "2.0.0",
