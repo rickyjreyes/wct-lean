@@ -6,10 +6,12 @@ import argparse
 import hashlib
 import json
 import re
+import subprocess
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-FORBIDDEN = {"sorry", "admit", "axiom", "sorryAx", "native_decide", "ofReduceBool", "unsafe", "implemented_by"}
+FORBIDDEN = {"sorry", "admit", "axiom", "sorryAx", "native_decide", "ofReduceBool", "unsafe", "implemented_by", "skipKernelTC", "trustCompiler"}
+TOKEN = re.compile(r"[\w'!?]+")
 
 def source_tokens(text: str):
     """Conservative lexical screen; nested comments and ordinary strings are ignored.
@@ -45,7 +47,7 @@ def source_tokens(text: str):
                 else:
                     i += 1
         else:
-            match = re.match(r"[\w'!?]+", text[i:])
+            match = TOKEN.match(text, i)
             if match:
                 yield match.group(0)
                 i += len(match.group(0))
@@ -94,6 +96,15 @@ def main() -> None:
         if forbidden:
             failures.append(f"forbidden source tokens {forbidden} in {path.relative_to(ROOT)}")
         files[path.relative_to(ROOT).as_posix()] = sha256(path)
+
+    # Inventory every tracked Lean path; non-library tooling is separately hashed.
+    tracked = subprocess.check_output(["git", "ls-files", "-z", "--", "*.lean"], cwd=ROOT)
+    tracked_paths = {ROOT / p for p in tracked.decode("utf-8").split("\\0") if p}
+    tooling = {p for p in tracked_paths if p == ROOT / "lakefile.lean" or p.is_relative_to(ROOT / "scripts")}
+    unclassified = tracked_paths - set(source_files) - tooling
+    for path in sorted(unclassified):
+        failures.append(f"unclassified Lean file: {path.relative_to(ROOT)}")
+    tooling_hashes = {p.relative_to(ROOT).as_posix(): sha256(p) for p in sorted(tooling)}
 
     root_text = (ROOT / "WCTLean" / "Main.lean").read_text(encoding="utf-8")
     for required in (
@@ -151,6 +162,8 @@ def main() -> None:
         "mathlib_commit": mathlib.get("rev") if mathlib else None,
         "source_file_count": len(files),
         "source_sha256": files,
+        "tracked_lean_file_count": len(tracked_paths),
+        "tooling_sha256": tooling_hashes,
         "lake_manifest_sha256": sha256(ROOT / "lake-manifest.json"),
         "lakefile_sha256": sha256(ROOT / "lakefile.lean"),
         "status": "PASS" if not failures else "FAIL",
