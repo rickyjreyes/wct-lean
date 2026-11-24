@@ -63,15 +63,22 @@ def passes_verifier (cfg : VerifierConfig) (s : StateConfig) : Prop :=
   normalized_overlap s.field s.reference > cfg.tau
   /\ entropy s.field <= cfg.sigma_crit
 
--- Kolmogorov complexity
-axiom K : Vector -> Nat
+/-- A finite-description decoder. Only vectors in its image are representable.
+No universality or computability property is asserted for this decoder. -/
+abbrev DescriptionDecoder := Tape → Option Vector
 
--- Exponential lower bound
-axiom exponential_bound :
-  forall (psi : Vector), K psi >= 2 ^ psi.length
+def DescriptionLengthAtMost (decode : DescriptionDecoder) (psi : Vector) (k : ℕ) : Prop :=
+  ∃ code : Tape, decode code = some psi ∧ code.length ≤ k
 
--- Nonconstructibility
-def NonConstructible (M : Nat -> StateConfig) (psi_star : StateConfig) : Prop :=
-  forall i : Nat, exists _n : Nat, Ne (M i) psi_star
+/-- Open, decoder-relative lower-bound claim for a representable vector.
+The representability conjunct prevents a vacuous lower bound.
+This is not an assertion about universal Kolmogorov complexity. -/
+def ExponentialDescriptionLowerBound (decode : DescriptionDecoder) (psi : Vector) : Prop :=
+  (∃ code : Tape, decode code = some psi) ∧
+  ∀ code : Tape, decode code = some psi → 2 ^ psi.length ≤ code.length
+
+/-- Unreachability in the specified enumeration, not a complexity lower bound. -/
+def NonConstructible (M : Nat → StateConfig) (psi_star : StateConfig) : Prop :=
+  ∀ i : Nat, M i ≠ psi_star
 
 end WCT
