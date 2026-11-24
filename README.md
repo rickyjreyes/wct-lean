@@ -233,7 +233,7 @@ python scripts/audit_formal_sources.py
 lake build
 ```
 
-The maintained source audit rejects `sorry` and `admit`, verifies public import closure, emits SHA-256 hashes for every Lean source file, and confirms the pinned dependency graph remains unchanged.
+The maintained source audit rejects proof-bypass tokens in both libraries and the executable, inventories every tracked Lean path, and separately hashes audit/build tooling. CI generates a module inventory and checks transitive axioms of all declarations in maintained modules, allowing only `propext`, `Classical.choice`, and `Quot.sound`. The lexical screen is supplemental, not a Lean parser. A successful gate certifies dependency policy, not correspondence to a physical specification.
 
 ## Next mathematical closure targets
 
@@ -281,3 +281,19 @@ names, with local attraction defined separately by convergence of iterates.
 No continuum theorem, dynamical attraction, or physical claim is promoted.
 
 The legacy complexity model now explicitly decodes finite binary descriptions of rational vectors and minimizes their bit length. It is not universal Kolmogorov complexity. The historical universal lower bound is preserved as a proposition and refuted for this model by the empty description; the intended hard-family complexity lower bound remains open and requires a justified machine/resource model. Actual attraction, entropy monotonicity, nontriviality, baseline distinction, and dimension-dependent behavior are open until independently proved for the intended physical operator.
+
+### Strict verification follow-up (2026-11-24)
+
+The registry's finite computations use kernel-reduced `decide`, not `native_decide`. The baseline and dimensional models must be inhabited; an explicit dimension-indexed open proposition preserves the intended quantification over every positive dimension. `FullContractFalsified` records the broader README alternatives, while retaining the original two-alternative predicate. These are abstract obligations, not proofs about a PDE: a concrete physical realization, admissible nonzero states, entropy/flow correspondence, and the complexity lower bound remain open. No change of status to PROVED is authorized by these declarations.
+
+To reproduce the strict gate at the exact checked-out commit:
+
+```bash
+python scripts/test_audit_formal_sources.py
+python scripts/audit_formal_sources.py --strict-lean-output scripts/GeneratedStrictAudit.lean
+lake build
+lake build my_project
+lake env lean scripts/GeneratedStrictAudit.lean
+```
+
+A missing import, nonstandard axiom or source-audit failure blocks certification. Audit scripts and Lake tooling are inventoried separately; intentional negative controls must never be counted as production proofs. Independent specification review is still mandatory.
