@@ -2,36 +2,28 @@ import MyProject.Theta.Core
 
 namespace WCT
 
-/-
-  Core Theta axioms
--/
+/-- Open nontriviality obligation for a specified model. -/
+def NontrivialTheta {S : Type} (M : ThetaModel S) (p : ThetaParams) : Prop :=
+  ∃ s : S, M.step p s ≠ s
 
--- Theta is nontrivial
-axiom Theta_nontrivial :
-  forall p : ThetaParams,
-    exists s : State, Ne (Theta p s) s
+theorem Theta_deterministic {S : Type} (M : ThetaModel S)
+    (p : ThetaParams) (s1 s2 : S) (h : s1 = s2) :
+    M.step p s1 = M.step p s2 :=
+  congrArg (M.step p) h
 
--- Theta is deterministic
-axiom Theta_deterministic :
-  forall (p : ThetaParams) (s1 s2 : State),
-    s1 = s2 -> Theta p s1 = Theta p s2
+/-- Failure of additivity or real homogeneity, not failure of injectivity. -/
+def NonlinearTheta {S : Type} [AddCommMonoid S] [Module ℝ S]
+    (M : ThetaModel S) (p : ThetaParams) : Prop :=
+  ¬ ((∀ x y : S, M.step p (x + y) = M.step p x + M.step p y) ∧
+     (∀ (c : ℝ) (x : S), M.step p (c • x) = c • M.step p x))
 
--- Theta is many-to-one (nonlinear)
-axiom Theta_nonlinear :
-  forall p : ThetaParams,
-    exists s1 s2 : State,
-      Ne s1 s2 /\ Theta p s1 = Theta p s2
+def AttractorExists {S : Type} [MetricSpace S]
+    (M : ThetaModel S) (p : ThetaParams) : Prop :=
+  ∃ s : S, IsAttractor (M.step p) s
 
--- Attractor existence
-axiom attractor_exists :
-  forall p : ThetaParams,
-    exists s : State, IsAttractor p s
-
--- Attractor uniqueness
-axiom attractor_unique :
-  forall (p : ThetaParams) (s1 s2 : State),
-    IsAttractor p s1 ->
-    IsAttractor p s2 ->
-    s1 = s2
+def AttractorUnique {S : Type} [MetricSpace S]
+    (M : ThetaModel S) (p : ThetaParams) : Prop :=
+  ∀ s1 s2 : S, IsAttractor (M.step p) s1 →
+    IsAttractor (M.step p) s2 → s1 = s2
 
 end WCT
