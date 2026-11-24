@@ -2,29 +2,26 @@ import Mathlib
 
 namespace WCT
 
-/-
-  Theta-LEAN Core Contract
-  Single source of truth for core types
--/
-
--- Abstract symbolic state
-axiom State : Type
-
--- Theta parameters
 structure ThetaParams where
   id : Nat
 
--- Curvature-feedback operator
-axiom Theta : ThetaParams -> State -> State
+/-- Explicit model data, not global axioms or a claim of physical realization. -/
+structure ThetaModel (S : Type) where
+  step : ThetaParams → S → S
+  entropy : S → ℝ
+  energy : S → ℝ
 
--- Entropy functional
-axiom Entropy : State -> Real
+def IsFixedPoint {S : Type} (f : S → S) (s : S) : Prop :=
+  f s = s
 
--- Energy functional
-axiom Energy : State -> Real
-
--- Fixed-point (attractor) definition
-def IsAttractor (p : ThetaParams) (s : State) : Prop :=
-  Theta p s = s
+/-- A locally asymptotically stable fixed point of a discrete metric-space map.
+Both Lyapunov stability and convergence from a neighborhood are required. -/
+def IsAttractor {S : Type} [MetricSpace S] (f : S → S) (s : S) : Prop :=
+  IsFixedPoint f s ∧
+  (∀ ε : ℝ, 0 < ε → ∃ δ : ℝ, 0 < δ ∧
+    ∀ x : S, dist x s < δ → ∀ n : ℕ, dist (Function.iterate f n x) s < ε) ∧
+  (∃ δ : ℝ, 0 < δ ∧ ∀ x : S, dist x s < δ →
+    ∀ ε : ℝ, 0 < ε → ∃ N : ℕ, ∀ n : ℕ, N ≤ n →
+      dist (Function.iterate f n x) s < ε)
 
 end WCT
