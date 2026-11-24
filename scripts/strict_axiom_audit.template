@@ -1,0 +1,38 @@
+/-!
+Generated module inventory from all maintained Lean library sources and Main.
+No theorem, definition, private or generated declaration is exempted.
+The allowlist is the ordinary Lean logical foundations, not a mathematical model.
+-/
+open Lean Elab Command
+
+namespace WCTStrictAudit
+
+def auditedModules : List Name := [@MODULES@]
+def approved : List Name := [``propext, ``Classical.choice, ``Quot.sound]
+
+set_option maxHeartbeats 0 in
+elab "#wct_strict_audit" : command => do
+  let env ← getEnv
+  let mut failures : Array String := #[]
+  let mut total : Nat := 0
+  for m in auditedModules do
+    let some idx := env.getModuleIdx? m | throwError "missing audited module {m}"
+    let names := (env.header.moduleData[idx.toNat]!).constNames
+    for n in names do
+      let some ci := env.find? n | throwError "missing declaration {n} in {m}"
+      let axs ← liftCoreM (collectAxioms n)
+      for a in axs do
+        unless approved.contains a do
+          failures := failures.push s!"{m}: {n} depends on {a}"
+      match ci with
+      | .axiomInfo _ => failures := failures.push s!"{m} declares an axiom: {n}"
+      | _ => pure ()
+      total := total + 1
+    logInfo m!"strict module {m}: {names.size} constants"
+  logInfo m!"strict audit: {auditedModules.length} modules, {total} constants, {failures.size} failures"
+  unless failures.isEmpty do
+    throwError "strict audit failed: {failures.toList}"
+
+end WCTStrictAudit
+
+#wct_strict_audit
