@@ -246,7 +246,7 @@ These are scalar algebraic closures and do not prove existence or uniqueness of 
 n < 4  ↔  n ≤ 3
 ```
 
-while `SobolevEmbeddingStatement` and `E69LaplacianEmbeddingObligation` keep the actual embedding and higher-regularity Laplacian obligations explicit. The a.e. product bound is proved separately; it is not a proof of either embedding.
+while `SobolevEmbeddingStatement` and `E69LaplacianEmbeddingObligation` keep the actual embedding and higher-regularity Laplacian obligations explicit on a whole-space Schwartz/L2 graph. The a.e. product bound is proved separately; it is not a proof of either embedding.
 
 ### M5 and E36 — bounded averaged dynamics
 

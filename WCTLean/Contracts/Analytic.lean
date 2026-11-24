@@ -1,8 +1,8 @@
 import Mathlib
 import WCTLean.Models.ComplexCurvature
 
-open MeasureTheory
-open scoped ENNReal
+open MeasureTheory Filter Topology
+open scoped ENNReal FourierTransform
 
 namespace WCTLean
 
@@ -14,23 +14,70 @@ def h2SubcriticalDimension (n : ℕ) : Prop := n < 4
   unfold h2SubcriticalDimension
   omega
 
-/-- E24/E67: the continuous embedding obligation for a supplied class of
-fields and its supplied Sobolev norm. A concrete instantiation must identify
-the class and norm with the actual Sobolev space on the stated domain.
-No dimension biconditional is built into this definition. -/
-def SobolevEmbeddingStatement {X : Type*} [MeasurableSpace X]
-    (μ : Measure X) (H2 : Set (X → ℂ)) (H2norm : (X → ℂ) → ℝ) : Prop :=
-  ∃ C : ℝ, 0 ≤ C ∧ ∀ ψ ∈ H2, ∀ᵐ x ∂μ, ‖ψ x‖ ≤ C * H2norm ψ
+/-- Whole-space Sobolev graph, using the same Schwartz approximation model
+as ReyesMath.Sobolev.H2 in the math repository. All derivatives are tied
+to one approximating sequence in actual L2 spaces. -/
+abbrev SobolevDomain (n : ℕ) := EuclideanSpace ℝ (Fin n)
+noncomputable abbrev SobolevL2 (n : ℕ) :=
+  Lp ℂ 2 (volume : Measure (SobolevDomain n))
 
-/-- E69: the missing high-regularity embedding step, expressed on a supplied
-scale of field classes and supplied Laplacian. Its interpretation as a
-Sobolev theorem requires an independent identification of these data.
-In particular H^2 alone does not give the required Laplacian sup bound. -/
-def E69LaplacianEmbeddingObligation {X : Type*} [MeasurableSpace X]
-    (μ : Measure X) (n : ℕ) (Hs : ℝ → Set (X → ℂ))
-    (laplacian : (X → ℂ) → X → ℂ) : Prop :=
-  ∀ (s : ℝ) (ψ : X → ℂ), (n : ℝ) / 2 + 2 < s → ψ ∈ Hs s →
-    ∃ L : ℝ, 0 ≤ L ∧ ∀ᵐ x ∂μ, ‖laplacian ψ x‖ ≤ L
+noncomputable def sobolevToL2 {n : ℕ} :
+    SchwartzMap (SobolevDomain n) ℂ →L[ℂ] SobolevL2 n :=
+  SchwartzMap.toLpCLM ℂ ℂ 2 volume
+
+noncomputable def sobolevPartial {n : ℕ} (i : Fin n) :
+    SchwartzMap (SobolevDomain n) ℂ →L[ℂ] SchwartzMap (SobolevDomain n) ℂ :=
+  SchwartzMap.pderivCLM ℂ (EuclideanSpace.single i (1 : ℝ))
+
+noncomputable def sobolevLap {n : ℕ} :
+    SchwartzMap (SobolevDomain n) ℂ →L[ℂ] SchwartzMap (SobolevDomain n) ℂ :=
+  ∑ i : Fin n, (sobolevPartial i).comp (sobolevPartial i)
+
+structure SobolevH2 (n : ℕ) where
+  val : SobolevL2 n
+  grad : Fin n → SobolevL2 n
+  lap : SobolevL2 n
+  approx : ∃ φ : ℕ → SchwartzMap (SobolevDomain n) ℂ,
+    Tendsto (fun j => sobolevToL2 (φ j)) atTop (𝓝 val) ∧
+    (∀ i, Tendsto (fun j => sobolevToL2 (sobolevPartial i (φ j))) atTop (𝓝 (grad i))) ∧
+    Tendsto (fun j => sobolevToL2 (sobolevLap (φ j))) atTop (𝓝 lap)
+
+noncomputable def sobolevH2Norm {n : ℕ} (u : SobolevH2 n) : ℝ :=
+  ‖u.val‖ + (∑ i, ‖u.grad i‖) + ‖u.lap‖
+
+/-- E24/E67: actual L2 graph to essential-supremum embedding statement
+on whole space. The threshold theorem remains open in this library. -/
+def SobolevEmbeddingStatement (n : ℕ) : Prop :=
+  ∃ C : ℝ, 0 ≤ C ∧ ∀ u : SobolevH2 n,
+    ∀ᵐ x ∂(volume : Measure (SobolevDomain n)), ‖u.val x‖ ≤ C * sobolevH2Norm u
+
+/-- Squared weighted Fourier distance of two Schwartz functions.
+The real order s occurs in the Bessel-potential weight. -/
+noncomputable def sobolevFourierDistanceSq {n : ℕ} (s : ℝ)
+    (φ χ : SchwartzMap (SobolevDomain n) ℂ) : ℝ≥0∞ :=
+  ∫⁻ ξ, ENNReal.ofReal
+    (Real.rpow (1 + (2 * Real.pi) ^ 2 * ‖ξ‖ ^ 2) s *
+      ‖(𝓕 (⇑φ : SobolevDomain n → ℂ)) ξ - (𝓕 (⇑χ : SobolevDomain n → ℂ)) ξ‖ ^ 2)
+
+/-- Higher-order whole-space Sobolev completion data: the same sequence
+approximates the function, gradient and Laplacian in L2 and is Cauchy for
+the weighted Fourier norm. Identification with a particular external
+Sobolev library and proof of its embedding theorem remain separate. -/
+def SobolevHigherRegularity {n : ℕ} (s : ℝ) (u : SobolevH2 n) : Prop :=
+  ∃ φ : ℕ → SchwartzMap (SobolevDomain n) ℂ,
+    Tendsto (fun j => sobolevToL2 (φ j)) atTop (𝓝 u.val) ∧
+    (∀ i, Tendsto (fun j => sobolevToL2 (sobolevPartial i (φ j))) atTop (𝓝 (u.grad i))) ∧
+    Tendsto (fun j => sobolevToL2 (sobolevLap (φ j))) atTop (𝓝 u.lap) ∧
+    ∀ δ : ℝ, 0 < δ → ∃ N : ℕ, ∀ j k : ℕ, N ≤ j → N ≤ k →
+      sobolevFourierDistanceSq s (φ j) (φ k) < ENNReal.ofReal δ
+
+/-- E69: the actual higher-regularity Laplacian embedding obligation.
+It is not replaced by a dimension biconditional or an assumed field. -/
+def E69LaplacianEmbeddingObligation (n : ℕ) : Prop :=
+  ∀ (s : ℝ) (u : SobolevH2 n), (n : ℝ) / 2 + 2 < s →
+    SobolevHigherRegularity s u →
+    ∃ L : ℝ, 0 ≤ L ∧
+      ∀ᵐ x ∂(volume : Measure (SobolevDomain n)), ‖u.lap x‖ ≤ L
 
 /-- The exact corrected curvature quotient inherits an a.e. bound from
 a Laplacian bound and a bound on the regularized reciprocal. This is the
@@ -92,12 +139,18 @@ theorem localEnergyScale_two (radius : ℝ) :
     localEnergyScale radius 2 = 1 := by
   norm_num [localEnergyScale]
 
-/-- E70: the three proposed hypotheses, not a definition of dynamical
-stability. The former projection of the dimension assumption is not
-retained as a stability theorem. -/
-def DimensionalStabilityHypotheses
-    (n : ℕ) (embedding subcriticalNonlinearity : Prop) : Prop :=
-  n ≤ 3 ∧ embedding ∧ subcriticalNonlinearity
+/-- E70: analytical hypotheses only. The dimension bound is deliberately
+not part of the definition. For n > 2 use the published finite critical
+exponent; lower dimensions require a separately justified regime.
+This is not a predicate of dynamical stability. -/
+def DimensionalStabilityCriterion (n : ℕ) (p : ℝ) : Prop :=
+  SobolevEmbeddingStatement n ∧ 1 < p ∧
+    (2 < n → p < criticalSobolevExponent (n : ℝ))
+
+/-- The proposed dimension implication is retained as an open obligation,
+not as a theorem. Its relation to actual stable PDE solutions is open. -/
+def E70DimensionObligation : Prop :=
+  ∀ n : ℕ, ∀ p : ℝ, DimensionalStabilityCriterion n p → n ≤ 3
 
 /-- The scaling factor in the biharmonic norm is lambda^(4-n). -/
 noncomputable def biharmonicScalingFactor (lambda : ℝ) (n : ℕ) : ℝ :=

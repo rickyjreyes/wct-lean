@@ -182,8 +182,8 @@ No empirical fit or physical-origin claim is proved.
 | Declaration | Equation | Status |
 |---|---|---|
 | `h2Subcritical_iff_le_three` | M4/E24/E67 | proved arithmetic equivalence `n < 4 ↔ n ≤ 3` |
-| `SobolevEmbeddingStatement` | M4/E24/E67 | open continuous embedding obligation on supplied fields and norm; no dimension biconditional |
-| `E69LaplacianEmbeddingObligation` | E69 | open higher-regularity Laplacian embedding obligation |
+| `SobolevEmbeddingStatement` | M4/E24/E67 | open continuous embedding obligation on actual Schwartz/L2 Sobolev graph; no dimension biconditional |
+| `E69LaplacianEmbeddingObligation` | E69 | open higher-regularity Laplacian embedding obligation on weighted Fourier completion data |
 | `thetaComplex_ae_bound` | E69 | a.e. product bound from explicit Laplacian and reciprocal bounds; not a Sobolev theorem |
 | `criticalSobolevExponent` | E25/E65 | definition |
 | `FiniteConfinementEnergy`, `FiniteFieldConfinementEnergy` | E27 | extended-real finiteness and field-level integral definitions |
@@ -191,7 +191,7 @@ No empirical fit or physical-origin claim is proved.
 | `GagliardoNirenbergBound` | E66 | proposition encoding the required inequality |
 | `LocalEnergyBound` | E68 | open localized estimate with positive radius and signed exponent |
 | `localEnergyScale_one`, `localEnergyScale_two` | E68 | signed-exponent regression proofs |
-| `DimensionalStabilityHypotheses` | E70 | proposed hypotheses only; no stability theorem or dimension projection counted |
+| `DimensionalStabilityCriterion`, `E70DimensionObligation` | E70 | analytical hypotheses without dimension conclusion; implication open, not a theorem |
 | `biharmonic_scaling_dimension_four` | dimensional audit | at `n=4`, printed scaling factor is scale-invariant rather than divergent |
 
 ## Derived audit (`WCTLean/DerivedAudit.lean`)

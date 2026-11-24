@@ -5,7 +5,9 @@ import MyProject
 #print axioms WCTLean.infinite_gradient_energy_not_finite
 #print axioms WCTLean.localEnergyScale_one
 #print axioms WCTLean.localEnergyScale_two
-#print axioms WCT.legacy_fixedPoint_contract_valid_of
-#print axioms WCT.Theta_unique_fixedPoint_existsUnique_of
 #print axioms WCT.Theta_total
 #print axioms WCT.Theta_deterministic
+#print axioms WCT.theta_ne_baseline_of_witness
+#print axioms WCT.empty_description_decodes
+#print axioms WCT.K_empty
+#print axioms WCT.exponential_bound_false_in_description_model

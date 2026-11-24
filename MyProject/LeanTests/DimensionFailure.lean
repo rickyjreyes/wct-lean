@@ -25,4 +25,29 @@ all dimensions greater than three. -/
 def no_fixedPoint_4D (D : DimensionalModel) : Prop :=
   ∀ p : ThetaParams, ¬ (∃ s : D.State4D, IsFixedPoint4D D p s)
 
+/-- Genuine attraction on the specified discrete 3D and 4D model maps. -/
+def dimensionalIterate {X : Type} (T : X → X) : Nat → X → X
+  | 0, x => x
+  | k + 1, x => T (dimensionalIterate T k x)
+
+def IsAttractingFixedPoint3D (D : DimensionalModel) [MetricSpace D.State3D]
+    (p : ThetaParams) (s : D.State3D) : Prop :=
+  IsFixedPoint3D D p s ∧ ∃ r : ℝ, 0 < r ∧
+    ∀ x : D.State3D, dist x s < r →
+      Filter.Tendsto (fun k : Nat => dimensionalIterate (D.Theta3D p) k x)
+        Filter.atTop (nhds s)
+
+def IsAttractingFixedPoint4D (D : DimensionalModel) [MetricSpace D.State4D]
+    (p : ThetaParams) (s : D.State4D) : Prop :=
+  IsFixedPoint4D D p s ∧ ∃ r : ℝ, 0 < r ∧
+    ∀ x : D.State4D, dist x s < r →
+      Filter.Tendsto (fun k : Nat => dimensionalIterate (D.Theta4D p) k x)
+        Filter.atTop (nhds s)
+
+def Theta_converges_3D (D : DimensionalModel) [MetricSpace D.State3D] : Prop :=
+  ∀ p : ThetaParams, ∃ s : D.State3D, IsAttractingFixedPoint3D D p s
+
+def Theta_fails_4D (D : DimensionalModel) [MetricSpace D.State4D] : Prop :=
+  ∀ p : ThetaParams, ¬ (∃ s : D.State4D, IsAttractingFixedPoint4D D p s)
+
 end WCT
