@@ -2,29 +2,12 @@ import MyProject.Theta.Definitions
 
 namespace WCT
 
-/-
-  Entropy monotonicity contract
--/
+/-- Open inequality for a specified model; no monotonicity is postulated. -/
+def EntropyMonotoneTheta {S : Type} (M : ThetaModel S) (p : ThetaParams) : Prop :=
+  ∀ s : S, M.entropy (M.step p s) ≤ M.entropy s
 
-/--
-  Entropy is monotone under one application of Theta.
--/
-def EntropyMonotoneTheta (p : ThetaParams) : Prop :=
-  forall s : State,
-    Entropy (Theta p s) <= Entropy s
-
--- Abstract flow on states
-axiom Flow : Type
-
--- Flow evaluation
-axiom evalFlow : Flow -> State -> Real -> State
-
-/--
-  Entropy is monotone along a flow trajectory.
--/
-def EntropyMonotoneFlow (H : State -> Real) (Phi : Flow) : Prop :=
-  forall (x : State) (t1 t2 : Real),
-    t1 <= t2 ->
-    H (evalFlow Phi x t2) <= H (evalFlow Phi x t1)
+/-- Open inequality along an explicitly supplied flow evaluation. -/
+def EntropyMonotoneFlow {S : Type} (H : S → ℝ) (Phi : S → ℝ → S) : Prop :=
+  ∀ (x : S) (t1 t2 : ℝ), t1 ≤ t2 → H (Phi x t2) ≤ H (Phi x t1)
 
 end WCT
