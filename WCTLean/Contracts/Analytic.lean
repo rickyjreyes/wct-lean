@@ -38,17 +38,6 @@ def LocalEnergyBound
     (localGradientEnergy constant radius h1NormSq : ℝ) (n : ℕ) : Prop :=
   localGradientEnergy ≤ constant * radius ^ (n - 2) * h1NormSq
 
-/-- E70: precise separation of arithmetic dimension and analytic hypotheses. -/
-def DimensionalStabilityCriterion
-    (n : ℕ) (embedding subcriticalNonlinearity : Prop) : Prop :=
-  n ≤ 3 ∧ embedding ∧ subcriticalNonlinearity
-
-/-- A downstream n ≤ 3 result follows immediately once the criterion is established. -/
-theorem dimensional_stability_implies_le_three
-    (n : ℕ) (embedding subcriticalNonlinearity : Prop)
-    (h : DimensionalStabilityCriterion n embedding subcriticalNonlinearity) :
-    n ≤ 3 := h.1
-
 /-- The scaling factor in the biharmonic norm is lambda^(4-n). -/
 noncomputable def biharmonicScalingFactor (lambda : ℝ) (n : ℕ) : ℝ :=
   Real.rpow lambda (4 - (n : ℝ))

@@ -9,7 +9,7 @@ import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-FORBIDDEN = re.compile(r"(?m)^\s*(sorry|admit)\b")
+FORBIDDEN = re.compile(r"(?m)^\s*(?:(?:private|protected)\s+)?(sorry|admit|axiom|axioms)\b|\b(?:sorryAx|native_decide)\b|:=\s*(?:sorry|admit)\b")
 
 
 def sha256(path: Path) -> str:
@@ -31,13 +31,15 @@ def main() -> None:
     if f'@ "v{expected_version}"' not in lakefile:
         raise SystemExit("lean-toolchain and mathlib version in lakefile.lean differ")
 
-    source_files = sorted([ROOT / "WCTLean.lean", *(ROOT / "WCTLean").rglob("*.lean")])
+    source_files = sorted([ROOT / "Main.lean", ROOT / "WCTLean.lean", *(ROOT / "WCTLean").rglob("*.lean")])
     failures: list[str] = []
     files: dict[str, str] = {}
+    if (ROOT / "MyProject.lean").exists() or (ROOT / "MyProject").exists() or re.search(r"(?m)^\s*lean_lib\s+MyProject\b", lakefile):
+        failures.append("legacy axiomatic MyProject scaffold must not be present")
     for path in source_files:
         text = path.read_text(encoding="utf-8")
         if FORBIDDEN.search(text):
-            failures.append(f"placeholder proof token in {path.relative_to(ROOT)}")
+            failures.append(f"prohibited proof or axiom token in {path.relative_to(ROOT)}")
         files[path.relative_to(ROOT).as_posix()] = sha256(path)
 
     root_text = (ROOT / "WCTLean" / "Main.lean").read_text(encoding="utf-8")

@@ -92,38 +92,38 @@ def canonicalRegistry : List CanonicalEntry :=
     | some family, some status => some { id := id, family := family, status := status }
     | _, _ => none
 
-theorem masterIds_length : masterIds.length = 9 := by native_decide
-theorem canonicalIds_length : canonicalIds.length = 83 := by native_decide
-theorem electronIds_length : electronIds.length = 10 := by native_decide
-theorem auxiliaryIds_length : auxiliaryIds.length = 5 := by native_decide
-theorem cosmologyIds_length : cosmologyIds.length = 20 := by native_decide
-theorem topologyIds_length : topologyIds.length = 9 := by native_decide
-theorem correctionIds_length : correctionIds.length = 6 := by native_decide
+theorem masterIds_length : masterIds.length = 9 := by decide
+theorem canonicalIds_length : canonicalIds.length = 83 := by decide
+theorem electronIds_length : electronIds.length = 10 := by decide
+theorem auxiliaryIds_length : auxiliaryIds.length = 5 := by decide
+theorem cosmologyIds_length : cosmologyIds.length = 20 := by decide
+theorem topologyIds_length : topologyIds.length = 9 := by decide
+theorem correctionIds_length : correctionIds.length = 6 := by decide
 
-theorem allEquationIds_length : allEquationIds.length = 142 := by native_decide
-theorem allEquationIds_nodup : allEquationIds.Nodup := by native_decide
+theorem allEquationIds_length : allEquationIds.length = 142 := by decide
+theorem allEquationIds_nodup : allEquationIds.Nodup := by decide
 
-theorem passIds_length : passIds.length = 59 := by native_decide
-theorem conditionalIds_length : conditionalIds.length = 27 := by native_decide
-theorem definitionIds_length : definitionIds.length = 26 := by native_decide
-theorem openIds_length : openIds.length = 30 := by native_decide
+theorem passIds_length : passIds.length = 59 := by decide
+theorem conditionalIds_length : conditionalIds.length = 27 := by decide
+theorem definitionIds_length : definitionIds.length = 26 := by decide
+theorem openIds_length : openIds.length = 30 := by decide
 
-theorem statusPartition_length : statusPartition.length = 142 := by native_decide
-theorem statusPartition_nodup : statusPartition.Nodup := by native_decide
+theorem statusPartition_length : statusPartition.length = 142 := by decide
+theorem statusPartition_nodup : statusPartition.Nodup := by decide
 
 theorem statusPartition_complete :
     statusPartition.toFinset = allEquationIds.toFinset := by
-  native_decide
+  decide
 
 theorem every_registered_id_has_status :
     ∀ id ∈ allEquationIds, (effectiveStatus? id).isSome := by
-  native_decide
+  decide
 
 theorem every_registered_id_has_family :
     ∀ id ∈ allEquationIds, (equationFamily? id).isSome := by
-  native_decide
+  decide
 
 theorem canonicalRegistry_length : canonicalRegistry.length = 142 := by
-  native_decide
+  decide
 
 end WCTLean
