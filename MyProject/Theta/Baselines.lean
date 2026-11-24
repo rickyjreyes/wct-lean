@@ -4,6 +4,7 @@ namespace WCT
 
 structure BaselineModel (M : ThetaModel) where
   BaselineOp : Type
+  baseline_nonempty : Nonempty BaselineOp
   applyBaseline : BaselineOp → M.State → M.State
 
 /-- Open exclusion property of a supplied baseline class. -/
