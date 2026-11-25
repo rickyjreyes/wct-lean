@@ -191,7 +191,7 @@ No empirical fit or physical-origin claim is proved.
 | `GagliardoNirenbergBound` | E66 | proposition encoding the required inequality |
 | `LocalEnergyBound` | E68 | open localized estimate with positive radius and signed exponent |
 | `localEnergyScale_one`, `localEnergyScale_two` | E68 | signed-exponent regression proofs |
-| `DimensionalStabilityCriterion`, `E70DimensionObligation` | E70 | analytical hypotheses without dimension conclusion; implication open, not a theorem |
+| `AnalyticSubcriticalCriterion`, `E70DimensionObligation` | E70 | analytical hypotheses without dimension conclusion; implication open, not a theorem |
 | `biharmonic_scaling_dimension_four` | dimensional audit | at `n=4`, printed scaling factor is scale-invariant rather than divergent |
 
 ## Derived audit (`WCTLean/DerivedAudit.lean`)
@@ -541,3 +541,7 @@ The `WCTLean/Models/S004FirstSpatialTraceEuler.lean` module proves that the expl
 ### Phase XXIII: periodic original-field derivative traces from actual scalar derivatives
 
 `S004ClassicalPeriodicity.lean` verifies the real differentiation theorem that a translation-periodic classical scalar function has translation-periodic first and second derivatives. Applied separately in spatial and temporal directions to a genuine `ClassicalScalarField`, an original spatial field periodicity assumption implies every one of its five physical jet components (field, velocity, acceleration, gradient, Laplacian) is periodic. For real and imaginary fields this discharges the ten independent jet-value matching conditions. This does not imply nonlinear Euler momentum Green regularity, Sobolev traces or full action domination. Five new roots (83→88).
+
+## Legacy model integrity
+
+`AtMostOneFixedPoint` is conditional uniqueness; `UniqueFixedPoint` includes existence. `uniqueFixedPoint_iff_exists_and_atMostOne` is a logical equivalence only. `successor_uniqueness_regression` distinguishes the two using a nonempty successor model with no fixed points. Attraction, Lyapunov stability, asymptotic stability and orbital stability are distinct; no physical stability result follows from the legacy abstract model. All concrete physical realization obligations remain OPEN.
