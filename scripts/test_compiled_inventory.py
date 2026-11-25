@@ -32,7 +32,7 @@ def main():
             ("import WCTLean.Target", "theorem", "(0 : Nat) = 0 := rfl", None),
             ("-- import WCTLean.Target", "theorem", "(0 : Nat) = 0 := rfl", "missing direct import"),
             ("import WCTLean.Target", "def", "(0 : Nat) = 0 := rfl", "expected a registry theorem"),
-            ("import WCTLean.Target", "theorem", "True := True.intro", "type mismatch"),
+            ("import WCTLean.Target", "theorem", "True := True.intro", "Type mismatch"),
         ]:
             compile_module("WCTLean/Main", "import Lean\n" + root_import + "\n")
             compile_module("WCTLean/Registry",
