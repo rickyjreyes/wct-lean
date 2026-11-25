@@ -13,6 +13,17 @@ def approved : List Name := [``propext, ``Classical.choice, ``Quot.sound]
 set_option maxHeartbeats 20000000 in
 elab "#wct_strict_audit" : command => do
   let env ← getEnv
+  let some root := env.getModuleIdx? `WCTLean.Main | throwError "missing maintained root"
+  let direct := env.header.moduleData[root.toNat]!.imports.map (·.module)
+  for required in ([@IMPORTS@] : List Name) do
+    unless direct.contains required do
+      throwError "missing direct import in WCTLean.Main: {required}"
+  let some registry := env.getModuleIdx? `WCTLean.Registry | throwError "missing registry"
+  for n in ([@THEOREMS@] : List Name) do
+    unless env.getModuleIdxFor? n == some registry do
+      throwError "missing registry declaration: {n}"
+    let some (.thmInfo _) := env.find? n | throwError "expected a registry theorem: {n}"
+    pure ()
   let mut failures : Array String := #[]
   let mut total : Nat := 0
   for m in auditedModules do

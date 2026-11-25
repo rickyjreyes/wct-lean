@@ -21,12 +21,14 @@ WORKDIR /workspace
 
 COPY lean-toolchain lakefile.lean lake-manifest.json ./
 RUN elan toolchain install "$(cat lean-toolchain)" \
-    && lake update \
     && lake exe cache get
 
 COPY . .
 
-RUN python3 scripts/audit_formal_sources.py \
-    && lake build
+RUN python3 scripts/audit_formal_sources.py --container-inventory --strict-lean-output /tmp/StrictAudit.lean \
+    && python3 scripts/test_compiled_inventory.py \
+    && lake build \
+    && lake build my_project \
+    && lake env lean /tmp/StrictAudit.lean
 
 CMD ["lake", "build"]

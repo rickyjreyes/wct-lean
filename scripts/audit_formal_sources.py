@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 import re
 import subprocess
 from pathlib import Path
@@ -13,12 +14,49 @@ ROOT = Path(__file__).resolve().parents[1]
 FORBIDDEN = {"sorry", "admit", "axiom", "sorryAx", "native_decide", "ofReduceBool", "unsafe", "implemented_by", "skipKernelTC", "trustCompiler", "extern", "partial", "opaque", "csimp"}
 TOKEN = re.compile(r"[\w'!?]+")
 
-def source_tokens(text: str):
+REQUIRED_IMPORTS = (
+    "WCTLean.Models.D4Binding",
+    "WCTLean.Models.D4Analytical",
+    "WCTLean.Models.D4Closure",
+    "WCTLean.Registry",
+    "WCTLean.Dimension",
+    "WCTLean.Curvature",
+    "WCTLean.Energy",
+    "WCTLean.Koide",
+    "WCTLean.Fourier",
+    "WCTLean.Contracts.Analytic",
+    "WCTLean.Models.CurvatureOperator",
+    "WCTLean.Models.ComplexCurvature",
+    "WCTLean.Models.PhaseFlux",
+    "WCTLean.Models.RestDensity",
+    "WCTLean.Models.Locking",
+    "WCTLean.Models.BandPass",
+    "WCTLean.Models.AlgebraicChecks",
+    "WCTLean.Models.LogFlow",
+    "WCTLean.Models.GhostModes",
+    "WCTLean.Models.Collider",
+    "WCTLean.Models.KoideDerivation",
+    "WCTLean.Models.UnifiedOperator",
+    "WCTLean.Models.CompactDynamics",
+    "WCTLean.ResolvedAudit",
+    "WCTLean.DerivedAudit",
+)
+REQUIRED_THEOREMS = (
+    "allEquationIds_length",
+    "allEquationIds_nodup",
+    "statusPartition_complete",
+    "canonicalRegistry_length",
+)
+
+
+def visible_code(text: str) -> str:
     """Conservative lexical screen; nested comments and ordinary strings are ignored.
     The elaborated dependency audit is authoritative, not this screen.
     """
+    result = list(text)
     i = 0
     while i < len(text):
+        start = i
         if text.startswith("--", i):
             end = text.find("\n", i)
             i = len(text) if end < 0 else end + 1
@@ -47,12 +85,17 @@ def source_tokens(text: str):
                 else:
                     i += 1
         else:
-            match = TOKEN.match(text, i)
-            if match:
-                yield match.group(0)
-                i += len(match.group(0))
-            else:
-                i += 1
+            i += 1
+            continue
+        for pos in range(start, i):
+            if result[pos] != "\n":
+                result[pos] = " "
+    return "".join(result)
+
+
+def source_tokens(text: str):
+    return TOKEN.findall(visible_code(text))
+
 
 def generate_strict_audit(paths: list[Path], output: Path) -> None:
     modules = [p.relative_to(ROOT).with_suffix("").as_posix().replace("/", ".") for p in paths]
@@ -61,7 +104,9 @@ def generate_strict_audit(paths: list[Path], output: Path) -> None:
     template = (ROOT / "scripts" / "strict_axiom_audit.template").read_text(encoding="utf-8")
     output.write_text(
         "\n".join("import " + m for m in modules) + "\n\n" +
-        template.replace("@MODULES@", ", ".join("`" + m for m in modules)),
+        (template.replace("@MODULES@", ", ".join("`" + m for m in modules))
+         .replace("@IMPORTS@", ", ".join("`" + m for m in REQUIRED_IMPORTS))
+         .replace("@THEOREMS@", ", ".join("`WCTLean." + n for n in REQUIRED_THEOREMS))),
         encoding="utf-8",
     )
 
@@ -74,10 +119,34 @@ def sha256(path: Path) -> str:
     return digest.hexdigest()
 
 
+def inventory(root: Path, container: bool) -> set[Path]:
+    manifest = json.loads((root / "scripts/lean-source-paths.json").read_text())
+    if container:
+        actual = []
+        for directory, children, names in os.walk(root):
+            if Path(directory) == root:
+                children[:] = [name for name in children if name not in {".lake", ".git"}]
+            actual.extend((Path(directory) / name).relative_to(root).as_posix()
+                          for name in names if name.endswith(".lean"))
+    else:
+        raw = subprocess.check_output(["git", "ls-files", "-z", "--", "*.lean"], cwd=root)
+        actual = [os.fsdecode(path) for path in raw.split(b"\0") if path]
+    if manifest != sorted(actual):
+        missing = sorted(set(manifest) - set(actual))
+        extra = sorted(set(actual) - set(manifest))
+        raise SystemExit(f"Lean source inventory mismatch: missing={missing}, extra={extra}")
+    for name in actual:
+        path = root / name
+        if not path.is_file() or path.resolve() != path:
+            raise SystemExit(f"Missing or symlinked Lean source: {name}")
+    return {root / name for name in actual}
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--output", type=Path, default=ROOT / "formal-source-hashes.json")
     parser.add_argument("--strict-lean-output", type=Path)
+    parser.add_argument("--container-inventory", action="store_true")
     args = parser.parse_args()
 
     toolchain = (ROOT / "lean-toolchain").read_text(encoding="utf-8").strip()
@@ -98,53 +167,30 @@ def main() -> None:
         files[path.relative_to(ROOT).as_posix()] = sha256(path)
 
     # Inventory every tracked Lean path; non-library tooling is separately hashed.
-    tracked = subprocess.check_output(["git", "ls-files", "-z", "--", "*.lean"], cwd=ROOT)
-    tracked_paths = {ROOT / p for p in tracked.decode("utf-8").split(chr(0)) if p}
-    tooling = {p for p in tracked_paths if p == ROOT / "lakefile.lean" or p.is_relative_to(ROOT / "scripts")}
+    tracked_paths = inventory(ROOT, args.container_inventory)
+    tooling = {ROOT / p for p in (
+        "lakefile.lean",
+        "scripts/analytic_integrity_axioms.lean",
+        "scripts/complex_closure_nonuniqueness_axiom_audit.lean",
+        "scripts/complex_curvature_limit_axiom_audit.lean",
+        "scripts/d4_axiom_audit.lean",
+        "scripts/s004_axiom_audit.lean",
+    )}
     unclassified = tracked_paths - set(source_files) - tooling
     for path in sorted(unclassified):
         failures.append(f"unclassified Lean file: {path.relative_to(ROOT)}")
     tooling_hashes = {p.relative_to(ROOT).as_posix(): sha256(p) for p in sorted(tooling)}
 
     root_text = (ROOT / "WCTLean" / "Main.lean").read_text(encoding="utf-8")
-    for required in (
-        "WCTLean.Models.D4Binding",
-        "WCTLean.Models.D4Analytical",
-        "WCTLean.Models.D4Closure",
-        "WCTLean.Registry",
-        "WCTLean.Dimension",
-        "WCTLean.Curvature",
-        "WCTLean.Energy",
-        "WCTLean.Koide",
-        "WCTLean.Fourier",
-        "WCTLean.Contracts.Analytic",
-        "WCTLean.Models.CurvatureOperator",
-        "WCTLean.Models.ComplexCurvature",
-        "WCTLean.Models.PhaseFlux",
-        "WCTLean.Models.RestDensity",
-        "WCTLean.Models.Locking",
-        "WCTLean.Models.BandPass",
-        "WCTLean.Models.AlgebraicChecks",
-        "WCTLean.Models.LogFlow",
-        "WCTLean.Models.GhostModes",
-        "WCTLean.Models.Collider",
-        "WCTLean.Models.KoideDerivation",
-        "WCTLean.Models.UnifiedOperator",
-        "WCTLean.Models.CompactDynamics",
-        "WCTLean.ResolvedAudit",
-        "WCTLean.DerivedAudit",
-    ):
-        if f"import {required}" not in root_text:
+    root_code = visible_code(root_text)
+    for required in REQUIRED_IMPORTS:
+        if not re.search(r"(?m)^\s*import[ \t]+" + re.escape(required) + r"[ \t]*$", root_code):
             failures.append(f"WCTLean/Main.lean does not import {required}")
 
     registry_text = (ROOT / "WCTLean" / "Registry.lean").read_text(encoding="utf-8")
-    for required_theorem in (
-        "allEquationIds_length",
-        "allEquationIds_nodup",
-        "statusPartition_complete",
-        "canonicalRegistry_length",
-    ):
-        if f"theorem {required_theorem}" not in registry_text:
+    registry_code = visible_code(registry_text)
+    for required_theorem in REQUIRED_THEOREMS:
+        if not re.search(r"(?m)^\s*theorem[ \t]+" + re.escape(required_theorem) + r"(?=[\s:])", registry_code):
             failures.append(f"WCTLean/Registry.lean lacks {required_theorem}")
 
     manifest = json.loads((ROOT / "lake-manifest.json").read_text(encoding="utf-8"))
