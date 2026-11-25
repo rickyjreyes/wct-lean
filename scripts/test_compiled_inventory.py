@@ -1,4 +1,4 @@
-"""Exercise the production Lean audit against three compiled miniature roots."""
+"""Exercise the production Lean audit against compiled miniature roots."""
 import os
 from pathlib import Path
 import subprocess
@@ -25,19 +25,22 @@ def main():
         audit = TEMPLATE.replace("@MODULES@", "`WCTLean.Registry, `WCTLean.Main")
         audit = audit.replace("@IMPORTS@", "`WCTLean.Target")
         audit = audit.replace("@THEOREMS@", "`WCTLean.required")
+        audit = audit.replace("@STATEMENTS@", "example : (0 : Nat) = 0 := WCTLean.required\nexample : WCTLean.spec ↔ False := Iff.rfl")
         (root / "Audit.lean").write_text(
             "import WCTLean.Main\nimport WCTLean.Target\nimport WCTLean.Registry\n" + audit)
-        for root_import, declaration, error in [
-            ("import WCTLean.Target", "theorem", None),
-            ("-- import WCTLean.Target", "theorem", "missing direct import"),
-            ("import WCTLean.Target", "def", "expected a registry theorem"),
+        for root_import, declaration, statement, spec, error in [
+            ("import WCTLean.Target", "theorem", "(0 : Nat) = 0 := rfl", "False", None),
+            ("-- import WCTLean.Target", "theorem", "(0 : Nat) = 0 := rfl", "False", "missing direct import"),
+            ("import WCTLean.Target", "def", "(0 : Nat) = 0 := rfl", "False", "expected a registry theorem"),
+            ("import WCTLean.Target", "theorem", "True := True.intro", "False", "Type mismatch"),
+            ("import WCTLean.Target", "theorem", "(0 : Nat) = 0 := rfl", "True", "Type mismatch"),
         ]:
             compile_module("WCTLean/Main", "import Lean\n" + root_import + "\n")
             compile_module("WCTLean/Registry",
-                           f"import Lean\n-- theorem required\n{declaration} WCTLean.required : True := True.intro\n")
+                           f"import Lean\n-- theorem required\n{declaration} WCTLean.required : {statement}\ndef WCTLean.spec : Prop := {spec}\n")
             result = subprocess.run([lean, "Audit.lean"], cwd=root, env=env,
                                     stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
-            if (result.returncode == 0) != (error is None) or (error and error not in result.stdout):
+            if (result.returncode == 0) != (error is None) or (error and error.lower() not in result.stdout.lower()):
                 raise RuntimeError(result.stdout)
             print(error or "valid registry accepted")
 
