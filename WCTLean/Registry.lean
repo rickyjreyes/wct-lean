@@ -95,7 +95,7 @@ def canonicalRegistry : List CanonicalEntry :=
 section RegistryKernelChecks
 
 set_option maxRecDepth 100000
-set_option maxHeartbeats 0
+set_option maxHeartbeats 20000000
 
 theorem masterIds_length : masterIds.length = 9 := by decide
 theorem canonicalIds_length : canonicalIds.length = 83 := by decide
