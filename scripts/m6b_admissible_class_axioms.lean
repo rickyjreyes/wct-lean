@@ -1,0 +1,5 @@
+import WCTLean.Main
+
+#print axioms WCTLean.m6b_nonnegative_basic_admissible
+#print axioms WCTLean.m6b_basic_admissible_nonunique
+#print axioms WCTLean.m6b_basic_class_reference_anchor_selects_canonical

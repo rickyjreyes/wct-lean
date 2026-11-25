@@ -133,4 +133,45 @@ theorem m6bInfinitelyManyClosures (epsilon alpha S : ℝ)
       (k : ℝ) (l : ℝ) hepsilon hS hne heq
   exact_mod_cast hcast
 
+/-- The independently imposed one-intensity denominator calibration
+selects lambda=0 within the already proved M6B family. This is
+**not** derived from the WCT action, and is not a uniqueness theorem
+over all hypothetical covariant closure operators. -/
+theorem m6b_reference_intensity_selects_canonical
+    (epsilon alpha lam S : ℝ)
+    (hepsilon : 0 < epsilon) (hS : 0 < S)
+    (hanchor : m6bDenominator epsilon alpha lam S 1 =
+      complexRegularizerDenominator (1 : ℂ) epsilon alpha) :
+    lam = 0 := by
+  have hzero : m6bDenominator epsilon alpha 0 S 1 =
+      complexRegularizerDenominator (1 : ℂ) epsilon alpha := by
+    simpa using m6bDenominator_canonical epsilon alpha S (1 : ℂ)
+  have hmatch : m6bDenominator epsilon alpha lam S 1 =
+      m6bDenominator epsilon alpha 0 S 1 := by
+    rw [hzero]
+    exact hanchor
+  exact (m6bDenominator_injective_at_one epsilon alpha S
+    hepsilon hS) hmatch
+
+/-- Both explicit distinct candidates have positive denominators
+for every nonnegative intensity and differ at a nonzero complex
+jet. Positivity and node safety alone therefore cannot select the
+canonical corrected M6B operator. -/
+theorem m6b_two_safe_distinct_candidates
+    (epsilon alpha S : ℝ)
+    (hepsilon : 0 < epsilon) (hS : 0 < S) :
+    (∀ s : ℝ, 0 ≤ s → 0 < m6bDenominator epsilon alpha 0 S s) ∧
+    (∀ s : ℝ, 0 ≤ s → 0 < m6bDenominator epsilon alpha 1 S s) ∧
+    m6bCurvature epsilon alpha 0 S 1 1 ≠
+      m6bCurvature epsilon alpha 1 S 1 1 := by
+  refine ⟨?_, ?_, ?_⟩
+  · intro s hs
+    exact m6bDenominator_positive epsilon alpha 0 S s
+      hepsilon (by norm_num) hS hs
+  · intro s hs
+    exact m6bDenominator_positive epsilon alpha 1 S s
+      hepsilon (by norm_num) hS hs
+  · exact m6bCurvature_pairwise_distinct epsilon alpha S 0 1
+      hepsilon hS (by norm_num)
+
 end WCTLean
