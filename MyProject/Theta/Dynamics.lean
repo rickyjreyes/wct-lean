@@ -24,4 +24,20 @@ is an open mathematical obligation, not a projection counted as a proof. -/
 def Theta_unique_attractor (M : ThetaModel) [MetricSpace M.State] : Prop :=
   ∀ p : ThetaParams, ∃! s : M.State, IsAttractingFixedPoint M p s
 
+/-- Unique asymptotically stable fixed points are a separate OPEN property.
+This is not a physical or orbital stability certificate. -/
+def Theta_unique_asymptoticallyStable (M : ThetaModel) [MetricSpace M.State] : Prop :=
+  ∀ p : ThetaParams, ∃! s : M.State, IsAsymptoticallyStable M p s
+
+/-- Combining independently established existence and at-most-one attracting
+fixed point yields exact unique existence, without asserting either premise. -/
+theorem unique_attractor_of_exists_and_atMostOne
+    (M : ThetaModel) [MetricSpace M.State] (p : ThetaParams)
+    (he : ∃ s : M.State, IsAttractingFixedPoint M p s)
+    (hu : ∀ x y : M.State, IsAttractingFixedPoint M p x →
+      IsAttractingFixedPoint M p y → x = y) :
+    ∃! s : M.State, IsAttractingFixedPoint M p s := by
+  obtain ⟨s, hs⟩ := he
+  exact ⟨s, hs, fun y hy => hu y s hy hs⟩
+
 end WCT
