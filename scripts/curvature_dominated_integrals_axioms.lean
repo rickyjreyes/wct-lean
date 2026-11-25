@@ -1,0 +1,4 @@
+import WCTLean.Models.CurvatureDominatedIntegrals
+
+#print axioms WCTLean.curvature_integral_dominated_limit
+#print axioms WCTLean.curvature_squared_integral_dominated_limit

@@ -15,6 +15,17 @@ FORBIDDEN = {"sorry", "admit", "axiom", "sorryAx", "native_decide", "ofReduceBoo
 TOKEN = re.compile(r"[\w'!?]+")
 
 REQUIRED_IMPORTS = (
+    "WCTLean.Models.CurvatureDominatedIntegrals",
+    "WCTLean.Models.CurvatureGlobalEnvelope",
+    "WCTLean.Models.CurvatureLpLimit",
+    "WCTLean.Models.CurvatureMultiplicativeLaplacian",
+    "WCTLean.Models.CurvatureNodalObstruction",
+    "WCTLean.Models.CurvatureQuantitativeLimit",
+    "WCTLean.Models.CurvatureStructuredDominatedLimit",
+    "WCTLean.Models.M6BAdmissibleClass",
+    "WCTLean.Models.M6BFamilyLimit",
+    "WCTLean.Models.M6BGlobalPhase",
+    "WCTLean.Models.OscillatoryNoncoercivity",
     "WCTLean.Models.D4Binding",
     "WCTLean.Models.D4Analytical",
     "WCTLean.Models.D4Closure",
@@ -245,6 +256,16 @@ def main() -> None:
         "scripts/complex_curvature_limit_axiom_audit.lean",
         "scripts/d4_axiom_audit.lean",
         "scripts/s004_axiom_audit.lean",
+        "scripts/curvature_dominated_integrals_axioms.lean",
+        "scripts/curvature_global_envelope_axioms.lean",
+        "scripts/curvature_lp_axioms.lean",
+        "scripts/curvature_multiplicative_axioms.lean",
+        "scripts/curvature_nodal_obstruction_axioms.lean",
+        "scripts/curvature_quantitative_axioms.lean",
+        "scripts/curvature_structured_dct_axioms.lean",
+        "scripts/m6b_admissible_class_axioms.lean",
+        "scripts/m6b_family_limit_axioms.lean",
+        "scripts/m6b_global_phase_axioms.lean",
     )}
     unclassified = tracked_paths - set(source_files) - tooling
     for path in sorted(unclassified):

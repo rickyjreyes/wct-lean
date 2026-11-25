@@ -9,3 +9,6 @@ import WCTLean.Models.ComplexClosureNonuniqueness
 #print axioms WCTLean.m6bDenominator_injective_at_one
 #print axioms WCTLean.m6bCurvature_pairwise_distinct
 #print axioms WCTLean.m6bInfinitelyManyClosures
+
+#print axioms WCTLean.m6b_reference_intensity_selects_canonical
+#print axioms WCTLean.m6b_two_safe_distinct_candidates

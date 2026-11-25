@@ -71,6 +71,18 @@ import WCTLean.Models.FormalUpgrades
 import WCTLean.ResolvedAudit
 import WCTLean.DerivedAudit
 
+import WCTLean.Models.CurvatureDominatedIntegrals
+import WCTLean.Models.CurvatureGlobalEnvelope
+import WCTLean.Models.CurvatureLpLimit
+import WCTLean.Models.CurvatureMultiplicativeLaplacian
+import WCTLean.Models.CurvatureNodalObstruction
+import WCTLean.Models.CurvatureQuantitativeLimit
+import WCTLean.Models.CurvatureStructuredDominatedLimit
+import WCTLean.Models.M6BAdmissibleClass
+import WCTLean.Models.M6BFamilyLimit
+import WCTLean.Models.M6BGlobalPhase
+import WCTLean.Models.OscillatoryNoncoercivity
+
 namespace WCTLean
 
 /-- A bundled smoke test that references the dimensional mass lemma. -/
