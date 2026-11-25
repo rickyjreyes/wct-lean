@@ -20,10 +20,8 @@ def FullContractFalsified (M : ThetaModel) [MetricSpace M.State]
     [AddCommGroup M.State] [Module ℝ M.State]
     (B : BaselineModel M) (D : DimensionIndexedModel) : Prop :=
   (∃ p : ThetaParams, ¬ EntropyMonotoneTheta M p) ∨
-  (∃ p : ThetaParams, ∃ x y : M.State,
-    x ≠ y ∧ IsAttractingFixedPoint M p x ∧ IsAttractingFixedPoint M p y) ∨
-  (∃ d : Nat, 3 < d ∧ ∃ p : ThetaParams,
-    ∃ s : D.State d, IsAdmissibleAttractor D d p s) ∨
-  ¬ Theta_nonlinear M ∨ ¬ Theta_not_baseline M
+  (∃ p : ThetaParams, ¬ ∃! s : M.State, IsAttractingFixedPoint M p s) ∨
+  ¬ dimensionRestrictionObligation D ∨
+  ¬ Theta_nonlinear M ∨ ¬ Theta_not_baseline M B
 
 end WCT
