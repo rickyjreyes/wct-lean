@@ -41,14 +41,14 @@ theorem fixedPointMissingCountermodel_old_detector_misses :
     intro s
     change (0 : ℝ) ≤ 0
     exact le_rfl
-  · change n + 1 = n at hn
+  · change Nat.succ n = n at hn
     omega
 
 theorem fixedPointMissingCountermodel_regression :
     LegacyFixedPointContractFalsified FixedPointMissingCountermodel := by
   apply no_fixedPoint_is_legacy_failure FixedPointMissingCountermodel ⟨0⟩
   rintro ⟨n, hn⟩
-  change n + 1 = n at hn
+  change Nat.succ n = n at hn
   omega
 
 
