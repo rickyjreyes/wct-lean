@@ -5,11 +5,36 @@ import MyProject.LeanTests.DimensionFailure
 namespace WCT
 
 /-- The original falsification alternatives, for explicitly supplied model data.
-The fixed-point predicate is unchanged; no physical stability is inferred. -/
+The fixed-point predicate is unchanged; missing fixed points are failures too.
+No physical stability is inferred. -/
 def LegacyFixedPointContractFalsified (M : ThetaModel) : Prop :=
   (∃ p : ThetaParams, ¬ EntropyMonotoneTheta M p) ∨
   (∃ p : ThetaParams, ∃ s1 s2 : M.State,
-    s1 ≠ s2 ∧ IsFixedPoint M p s1 ∧ IsFixedPoint M p s2)
+    s1 ≠ s2 ∧ IsFixedPoint M p s1 ∧ IsFixedPoint M p s2) ∨
+  (∃ p : ThetaParams, ¬ ∃ s : M.State, IsFixedPoint M p s)
+
+/-- A parameter with no fixed point must falsify the fixed-point contract. -/
+theorem no_fixedPoint_is_legacy_failure (M : ThetaModel) (p : ThetaParams)
+    (h : ¬ ∃ s : M.State, IsFixedPoint M p s) :
+    LegacyFixedPointContractFalsified M :=
+  Or.inr (Or.inr ⟨p, h⟩)
+
+/-- Adversarial nontrivial model: successor dynamics with constant entropy.
+The historical two-disjunct detector missed this model entirely. -/
+def FixedPointMissingCountermodel : ThetaModel where
+  State := Nat
+  state_nonempty := inferInstance
+  state_nontrivial := inferInstance
+  Theta := fun _ n => n + 1
+  Entropy := fun _ => 0
+  Energy := fun _ => 0
+
+theorem fixedPointMissingCountermodel_regression :
+    LegacyFixedPointContractFalsified FixedPointMissingCountermodel := by
+  apply no_fixedPoint_is_legacy_failure FixedPointMissingCountermodel ⟨0⟩
+  rintro ⟨n, hn⟩
+  change n + 1 = n at hn
+  omega
 
 
 /-- Unified model-relative diagnostic. The local state, map and functionals
