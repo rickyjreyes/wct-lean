@@ -14,12 +14,49 @@ ROOT = Path(__file__).resolve().parents[1]
 FORBIDDEN = {"sorry", "admit", "axiom", "sorryAx", "native_decide", "ofReduceBool", "unsafe", "implemented_by", "skipKernelTC", "trustCompiler", "extern", "partial", "opaque", "csimp"}
 TOKEN = re.compile(r"[\w'!?]+")
 
-def source_tokens(text: str):
+REQUIRED_IMPORTS = (
+    "WCTLean.Models.D4Binding",
+    "WCTLean.Models.D4Analytical",
+    "WCTLean.Models.D4Closure",
+    "WCTLean.Registry",
+    "WCTLean.Dimension",
+    "WCTLean.Curvature",
+    "WCTLean.Energy",
+    "WCTLean.Koide",
+    "WCTLean.Fourier",
+    "WCTLean.Contracts.Analytic",
+    "WCTLean.Models.CurvatureOperator",
+    "WCTLean.Models.ComplexCurvature",
+    "WCTLean.Models.PhaseFlux",
+    "WCTLean.Models.RestDensity",
+    "WCTLean.Models.Locking",
+    "WCTLean.Models.BandPass",
+    "WCTLean.Models.AlgebraicChecks",
+    "WCTLean.Models.LogFlow",
+    "WCTLean.Models.GhostModes",
+    "WCTLean.Models.Collider",
+    "WCTLean.Models.KoideDerivation",
+    "WCTLean.Models.UnifiedOperator",
+    "WCTLean.Models.CompactDynamics",
+    "WCTLean.ResolvedAudit",
+    "WCTLean.DerivedAudit",
+)
+REQUIRED_THEOREMS = (
+    "allEquationIds_length",
+    "allEquationIds_nodup",
+    "statusPartition_complete",
+    "canonicalRegistry_length",
+)
+
+
+def visible_code(text: str) -> str:
     """Conservative lexical screen; nested comments and ordinary strings are ignored.
     The elaborated dependency audit is authoritative, not this screen.
     """
+    result = list(text)
     i = 0
     while i < len(text):
+        start = i
         if text.startswith("--", i):
             end = text.find("\n", i)
             i = len(text) if end < 0 else end + 1
@@ -48,12 +85,17 @@ def source_tokens(text: str):
                 else:
                     i += 1
         else:
-            match = TOKEN.match(text, i)
-            if match:
-                yield match.group(0)
-                i += len(match.group(0))
-            else:
-                i += 1
+            i += 1
+            continue
+        for pos in range(start, i):
+            if result[pos] != "\n":
+                result[pos] = " "
+    return "".join(result)
+
+
+def source_tokens(text: str):
+    return TOKEN.findall(visible_code(text))
+
 
 def generate_strict_audit(paths: list[Path], output: Path) -> None:
     modules = [p.relative_to(ROOT).with_suffix("").as_posix().replace("/", ".") for p in paths]
@@ -62,7 +104,9 @@ def generate_strict_audit(paths: list[Path], output: Path) -> None:
     template = (ROOT / "scripts" / "strict_axiom_audit.template").read_text(encoding="utf-8")
     output.write_text(
         "\n".join("import " + m for m in modules) + "\n\n" +
-        template.replace("@MODULES@", ", ".join("`" + m for m in modules)),
+        (template.replace("@MODULES@", ", ".join("`" + m for m in modules))
+         .replace("@IMPORTS@", ", ".join("`" + m for m in REQUIRED_IMPORTS))
+         .replace("@THEOREMS@", ", ".join("`WCTLean." + n for n in REQUIRED_THEOREMS))),
         encoding="utf-8",
     )
 
@@ -138,44 +182,15 @@ def main() -> None:
     tooling_hashes = {p.relative_to(ROOT).as_posix(): sha256(p) for p in sorted(tooling)}
 
     root_text = (ROOT / "WCTLean" / "Main.lean").read_text(encoding="utf-8")
-    for required in (
-        "WCTLean.Models.D4Binding",
-        "WCTLean.Models.D4Analytical",
-        "WCTLean.Models.D4Closure",
-        "WCTLean.Registry",
-        "WCTLean.Dimension",
-        "WCTLean.Curvature",
-        "WCTLean.Energy",
-        "WCTLean.Koide",
-        "WCTLean.Fourier",
-        "WCTLean.Contracts.Analytic",
-        "WCTLean.Models.CurvatureOperator",
-        "WCTLean.Models.ComplexCurvature",
-        "WCTLean.Models.PhaseFlux",
-        "WCTLean.Models.RestDensity",
-        "WCTLean.Models.Locking",
-        "WCTLean.Models.BandPass",
-        "WCTLean.Models.AlgebraicChecks",
-        "WCTLean.Models.LogFlow",
-        "WCTLean.Models.GhostModes",
-        "WCTLean.Models.Collider",
-        "WCTLean.Models.KoideDerivation",
-        "WCTLean.Models.UnifiedOperator",
-        "WCTLean.Models.CompactDynamics",
-        "WCTLean.ResolvedAudit",
-        "WCTLean.DerivedAudit",
-    ):
-        if f"import {required}" not in root_text:
+    root_code = visible_code(root_text)
+    for required in REQUIRED_IMPORTS:
+        if not re.search(r"(?m)^\s*import[ \t]+" + re.escape(required) + r"[ \t]*$", root_code):
             failures.append(f"WCTLean/Main.lean does not import {required}")
 
     registry_text = (ROOT / "WCTLean" / "Registry.lean").read_text(encoding="utf-8")
-    for required_theorem in (
-        "allEquationIds_length",
-        "allEquationIds_nodup",
-        "statusPartition_complete",
-        "canonicalRegistry_length",
-    ):
-        if f"theorem {required_theorem}" not in registry_text:
+    registry_code = visible_code(registry_text)
+    for required_theorem in REQUIRED_THEOREMS:
+        if not re.search(r"(?m)^\s*theorem[ \t]+" + re.escape(required_theorem) + r"(?=[\s:])", registry_code):
             failures.append(f"WCTLean/Registry.lean lacks {required_theorem}")
 
     manifest = json.loads((ROOT / "lake-manifest.json").read_text(encoding="utf-8"))

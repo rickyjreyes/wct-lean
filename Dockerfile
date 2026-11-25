@@ -26,6 +26,7 @@ RUN elan toolchain install "$(cat lean-toolchain)" \
 COPY . .
 
 RUN python3 scripts/audit_formal_sources.py --container-inventory --strict-lean-output /tmp/StrictAudit.lean \
+    && python3 scripts/test_compiled_inventory.py \
     && lake build \
     && lake build my_project \
     && lake env lean /tmp/StrictAudit.lean
