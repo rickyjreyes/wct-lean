@@ -10,7 +10,7 @@ namespace WCTStrictAudit
 def auditedModules : List Name := [@MODULES@]
 def approved : List Name := [``propext, ``Classical.choice, ``Quot.sound]
 
-set_option maxHeartbeats 0 in
+set_option maxHeartbeats 20000000 in
 elab "#wct_strict_audit" : command => do
   let env ← getEnv
   let mut failures : Array String := #[]
