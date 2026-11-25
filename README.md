@@ -233,7 +233,7 @@ python scripts/audit_formal_sources.py
 lake build
 ```
 
-The maintained source audit rejects `sorry` and `admit`, verifies public import closure, emits SHA-256 hashes for every Lean source file, and confirms the pinned dependency graph remains unchanged.
+The maintained source audit rejects proof-bypass tokens in both libraries and the executable, inventories every tracked Lean path, and separately hashes audit/build tooling. CI generates a module inventory and checks transitive axioms of all declarations in maintained modules, allowing only `propext`, `Classical.choice`, and `Quot.sound`. The lexical screen is supplemental, not a Lean parser. A successful gate certifies dependency policy, not correspondence to a physical specification.
 
 ## Next mathematical closure targets
 
@@ -252,3 +252,52 @@ The highest-value open work is:
 ## Build meaning
 
 A green Lean build means the encoded declarations are syntactically valid, type-correct, and accepted by the Lean kernel under explicit hypotheses. Empirical support and physical interpretation are tracked in the corresponding WCT experimental and phenomenological layers.
+
+## Legacy contract integrity (2026-11-24)
+
+The separately built `MyProject` library is now an explicit abstract contract layer.
+The former 27 global declarations have been removed as global axioms: model types and
+operators are supplied as structure data, unresolved properties are propositions, and
+function totality and congruence follow directly from the supplied function. The former
+unconditional consistency theorem and its conditional replacement have both been removed.
+No original physical
+obligation has been discharged by this refactor. Fixed-point existence and uniqueness
+are not dynamical attraction or stability; the legacy "nonlinearity" statement actually
+asserted non-injectivity; the separate open nonlinearity obligation now tests additivity and scalar homogeneity. The 3D/4D contract does not cover all higher dimensions.
+The source audit now includes the legacy build target and rejects its custom axiom
+declarations. The maintained `WCTLean` mathematical library remains separate.
+
+Build validation is required before promoting this change as kernel-checked.
+
+## Analytic specification integrity
+
+The obsolete curvature/dimension biconditional has been removed. E24/E67
+are open embedding obligations on a whole-space Schwartz/L2 Sobolev graph; E69
+requires the higher-regularity Laplacian bound separately and proves only the
+a.e. product estimate for the exact corrected curvature quotient. E27 uses
+extended-real energies and a field-level integral; E68 uses a signed exponent
+with regression proofs at dimensions one and two. E70 omits the dimension conclusion from the criterion and retains the proposed implication as an open proposition, not a theorem. The legacy model now uses fixed-point
+names, with local attraction defined separately by convergence of iterates.
+No continuum theorem, dynamical attraction, or physical claim is promoted.
+
+The legacy complexity model now explicitly decodes finite binary descriptions of rational vectors and minimizes their bit length. It is not universal Kolmogorov complexity. The historical universal lower bound is preserved as a proposition and refuted for this model by the empty description; the intended hard-family complexity lower bound remains open and requires a justified machine/resource model. Actual attraction, entropy monotonicity, nontriviality, baseline distinction, and dimension-dependent behavior are open until independently proved for the intended physical operator.
+
+### Strict verification follow-up (2026-11-24)
+
+The registry's finite computations use kernel-reduced `decide`, not `native_decide`. The baseline and dimensional models must be inhabited; an explicit dimension-indexed open proposition preserves the intended quantification over every positive dimension. `FullContractFalsified` records the broader README alternatives, while retaining the original two-alternative predicate. These are abstract obligations, not proofs about a PDE: a concrete physical realization, admissible nonzero states, entropy/flow correspondence, and the complexity lower bound remain open. No change of status to PROVED is authorized by these declarations.
+
+To reproduce the strict gate at the exact checked-out commit:
+
+```bash
+python scripts/test_audit_formal_sources.py
+python scripts/audit_formal_sources.py --strict-lean-output scripts/GeneratedStrictAudit.lean
+lake build
+lake build my_project
+lake env lean scripts/GeneratedStrictAudit.lean
+```
+
+A missing import, nonstandard axiom or source-audit failure blocks certification. Audit scripts and Lake tooling are inventoried separately; intentional negative controls must never be counted as production proofs. Independent specification review is still mandatory.
+
+## Second-pass adversarial integrity audit
+
+See [the remediation ledger](docs/SECOND_PASS_PROOF_INTEGRITY.md) for precise scope, remaining physical and computational obligations, and required independent verification policy. Neither the unified abstract diagnostic nor the canonical pointwise curvature expression proves the original PDE or its dimensional stability. Exact-head build and axiom audit are required before acceptance.

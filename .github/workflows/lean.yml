@@ -12,6 +12,7 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-24.04
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -30,13 +31,27 @@ jobs:
         run: |
           lake update
           lake exe cache get
+      - name: Test source audit against proof bypass examples
+        run: python scripts/test_audit_formal_sources.py
       - name: Audit source closure and emit SHA-256 manifest
-        run: python scripts/audit_formal_sources.py
+        run: python scripts/audit_formal_sources.py --strict-lean-output scripts/GeneratedStrictAudit.lean
       - name: Build all maintained Lean targets
         shell: bash
         run: |
           set -o pipefail
           lake build 2>&1 | tee lean-build.log
+          lake build my_project 2>&1 | tee -a lean-build.log
+      - name: Audit all maintained declarations transitively
+        shell: bash
+        run: |
+          set -o pipefail
+          lake env lean scripts/GeneratedStrictAudit.lean 2>&1 | tee strict-axioms.log
+      - name: Verify analytic and legacy proof integrity
+        shell: bash
+        run: |
+          set -o pipefail
+          lake env lean scripts/analytic_integrity_axioms.lean 2>&1 | tee analytic-integrity-axioms.log
+          python scripts/check_analytic_integrity_axioms.py analytic-integrity-axioms.log
       - name: Audit D4 theorem dependencies
         shell: bash
         run: |
@@ -68,6 +83,8 @@ jobs:
           if-no-files-found: error
           path: |
             lean-build.log
+            strict-axioms.log
+            analytic-integrity-axioms.log
             d4-axioms.log
             s004-axioms.log
             curvature-limit-axioms.log

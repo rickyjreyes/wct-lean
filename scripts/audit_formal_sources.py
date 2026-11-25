@@ -5,11 +5,180 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 import re
+import subprocess
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-FORBIDDEN = re.compile(r"(?m)^\s*(sorry|admit)\b")
+FORBIDDEN = {"sorry", "admit", "axiom", "sorryAx", "native_decide", "ofReduceBool", "unsafe", "implemented_by", "skipKernelTC", "trustCompiler", "extern", "partial", "opaque", "csimp"}
+TOKEN = re.compile(r"[\w'!?]+")
+
+REQUIRED_IMPORTS = (
+    "WCTLean.Models.D4Binding",
+    "WCTLean.Models.D4Analytical",
+    "WCTLean.Models.D4Closure",
+    "WCTLean.Registry",
+    "WCTLean.Dimension",
+    "WCTLean.Curvature",
+    "WCTLean.Energy",
+    "WCTLean.Koide",
+    "WCTLean.Fourier",
+    "WCTLean.Contracts.Analytic",
+    "WCTLean.Models.CurvatureOperator",
+    "WCTLean.Models.ComplexCurvature",
+    "WCTLean.Models.PhaseFlux",
+    "WCTLean.Models.RestDensity",
+    "WCTLean.Models.Locking",
+    "WCTLean.Models.BandPass",
+    "WCTLean.Models.AlgebraicChecks",
+    "WCTLean.Models.LogFlow",
+    "WCTLean.Models.GhostModes",
+    "WCTLean.Models.Collider",
+    "WCTLean.Models.KoideDerivation",
+    "WCTLean.Models.UnifiedOperator",
+    "WCTLean.Models.CompactDynamics",
+    "WCTLean.ResolvedAudit",
+    "WCTLean.DerivedAudit",
+)
+REQUIRED_STATEMENTS = """\
+section IndependentSpecificationChecks
+open scoped ENNReal
+set_option maxRecDepth 100000
+set_option maxHeartbeats 20000000
+example : WCTLean.allEquationIds.length = 142 := WCTLean.allEquationIds_length
+example : WCTLean.allEquationIds.Nodup := WCTLean.allEquationIds_nodup
+example : WCTLean.statusPartition.toFinset = WCTLean.allEquationIds.toFinset := WCTLean.statusPartition_complete
+example : WCTLean.canonicalRegistry.length = 142 := WCTLean.canonicalRegistry_length
+
+-- Frozen reviewed registry snapshot: these literals must not be generated from the candidate registry.
+example : WCTLean.masterIds = ["M1", "M2", "M3", "M4", "M5", "M6A", "M6B", "M7", "M8"] := by decide
+example : WCTLean.auxiliaryIds = ["G1", "EX", "EY", "EZ", "FA"] := by decide
+example : WCTLean.passIds = ["M2", "M3", "M4", "M7", "E1A", "E1B", "E2", "E3", "E4", "E5", "E6", "E7", "E8", "E9", "E10", "E11", "E12", "E13", "E14", "E16", "E17", "E18", "E20", "E21", "E24", "E26", "E28", "E29", "E30", "E33", "E37", "E38", "E45", "E47", "E49", "E51", "E53", "E57", "E58", "E59", "E61", "E62", "E64", "E65", "E67", "E69", "E81", "CLE2", "CLE4", "CLE6", "CLE7", "CLE9", "CLE10", "G1", "EX", "EY", "EZ", "CM9", "CM11"] := by decide
+example : WCTLean.conditionalIds = ["M1", "M5", "E15", "E19", "E22", "E23", "E31", "E32", "E40", "E41", "E48", "E50", "E54", "E56", "E66", "E68", "E70", "E71", "E72", "E76", "E80", "CLE5", "CLE8", "FA", "TOP3", "TOP7", "CORR2"] := by decide
+example : WCTLean.definitionIds = ["M6A", "E25", "E27", "E35", "E36", "E39", "E44", "E52", "E55", "E60", "E63", "E73", "E79", "E82", "CLE1", "CLE3", "CM12", "CM13", "CM16", "CM18", "TOP1", "TOP2", "TOP5", "CORR1", "CORR3", "CORR4"] := by decide
+example : WCTLean.openIds = ["M6B", "M8", "E34", "E42", "E43", "E46", "E74", "E75", "E77", "E78", "CM1", "CM2", "CM3", "CM4", "CM5", "CM6", "CM7", "CM8", "CM10", "CM14", "CM15", "CM17", "CM19", "CM20", "TOP4", "TOP6", "TOP8", "TOP9", "CORR5", "CORR6"] := by decide
+example : WCTLean.canonicalIds = ["E1A", "E1B"] ++ (List.range 81).map (fun i => "E" ++ toString (2 + i)) := by decide
+example : WCTLean.electronIds = (List.range 10).map (fun i => "CLE" ++ toString (1 + i)) := by decide
+example : WCTLean.cosmologyIds = (List.range 20).map (fun i => "CM" ++ toString (1 + i)) := by decide
+example : WCTLean.topologyIds = (List.range 9).map (fun i => "TOP" ++ toString (1 + i)) := by decide
+example : WCTLean.correctionIds = (List.range 6).map (fun i => "CORR" ++ toString (1 + i)) := by decide
+
+-- Definitional checks on the actual propositions, not just their names.
+example (M : WCT.ThetaModel) (p : WCT.ThetaParams) (s : M.State) :
+    WCT.IsFixedPoint M p s ↔ M.Theta p s = s := Iff.rfl
+example (M : WCT.ThetaModel) (p : WCT.ThetaParams) :
+    WCT.EntropyMonotoneTheta M p ↔ (∀ s : M.State, M.Entropy (M.Theta p s) ≤ M.Entropy s) := Iff.rfl
+example (M : WCT.ThetaModel) [MetricSpace M.State] (p : WCT.ThetaParams) (s : M.State) :
+    WCT.IsLyapunovStable M p s ↔ (∀ ε : ℝ, 0 < ε → ∃ δ : ℝ, 0 < δ ∧ ∀ x : M.State, dist x s < δ → ∀ k : ℕ, dist (WCT.thetaIterate M p k x) s < ε) := Iff.rfl
+example (M : WCT.ThetaModel) [MetricSpace M.State] (p : WCT.ThetaParams) (s : M.State) :
+    WCT.IsAttractingFixedPoint M p s ↔ (M.Theta p s = s ∧ ∃ r : ℝ, 0 < r ∧ ∀ x : M.State, dist x s < r → Filter.Tendsto (fun k : ℕ => WCT.thetaIterate M p k x) Filter.atTop (nhds s)) := Iff.rfl
+
+-- Registry composition must preserve the frozen partition and canonical ordering.
+example : WCTLean.allEquationIds =
+    WCTLean.masterIds ++ WCTLean.canonicalIds ++ WCTLean.electronIds ++
+    WCTLean.auxiliaryIds ++ WCTLean.cosmologyIds ++ WCTLean.topologyIds ++
+    WCTLean.correctionIds := rfl
+example : WCTLean.statusPartition = WCTLean.passIds ++ WCTLean.conditionalIds ++
+    WCTLean.definitionIds ++ WCTLean.openIds := rfl
+example (id : WCTLean.EquationId) : WCTLean.effectiveStatus? id =
+    (if id ∈ WCTLean.passIds then some WCTLean.AuditStatus.pass
+     else if id ∈ WCTLean.conditionalIds then some WCTLean.AuditStatus.conditional
+     else if id ∈ WCTLean.definitionIds then some WCTLean.AuditStatus.definition
+     else if id ∈ WCTLean.openIds then some WCTLean.AuditStatus.openClaim
+     else none) := rfl
+
+-- Canonical corrected complex curvature formula and signed energy scaling.
+example (psi : ℂ) (epsilon alpha : ℝ) :
+    WCTLean.complexRegularizerDenominator psi epsilon alpha =
+      Complex.normSq psi + epsilon ^ 2 * Real.exp (-2 * alpha * Complex.normSq psi) := rfl
+example (lapPsi psi : ℂ) (epsilon alpha : ℝ) :
+    WCTLean.thetaComplex lapPsi psi epsilon alpha =
+      -lapPsi * (star psi / (WCTLean.complexRegularizerDenominator psi epsilon alpha : ℂ)) := rfl
+example (radius : ℝ) (n : ℕ) :
+    WCTLean.localEnergyScale radius n = radius ^ ((n : ℤ) - 2) := rfl
+example (G C : ℝ≥0∞) : WCTLean.FiniteConfinementEnergy G C ↔ G + C < ⊤ := Iff.rfl
+
+-- Non-isolation and stability must not collapse to fixed-point existence.
+example {X : Type} [MetricSpace X] (A : X → Prop) (s : X) :
+    WCT.HasNearbyPerturbations A s ↔
+      (∀ r : ℝ, 0 < r → ∃ x : X, A x ∧ x ≠ s ∧ dist x s < r) := Iff.rfl
+example (M : WCT.ThetaModel) [MetricSpace M.State] (p : WCT.ThetaParams) (s : M.State) :
+    WCT.IsAsymptoticallyStable M p s ↔
+      (WCT.IsAttractingFixedPoint M p s ∧ WCT.IsLyapunovStable M p s ∧
+        WCT.HasNearbyPerturbations (fun _ : M.State => True) s) := Iff.rfl
+end IndependentSpecificationChecks
+"""
+
+REQUIRED_THEOREMS = (
+    "allEquationIds_length",
+    "allEquationIds_nodup",
+    "statusPartition_complete",
+    "canonicalRegistry_length",
+)
+
+
+def visible_code(text: str) -> str:
+    """Conservative lexical screen; nested comments and ordinary strings are ignored.
+    The elaborated dependency audit is authoritative, not this screen.
+    """
+    result = list(text)
+    i = 0
+    while i < len(text):
+        start = i
+        if text.startswith("--", i):
+            end = text.find("\n", i)
+            i = len(text) if end < 0 else end + 1
+        elif text.startswith("/-", i):
+            depth = 1
+            i += 2
+            while depth and i < len(text):
+                if text.startswith("/-", i):
+                    depth += 1
+                    i += 2
+                elif text.startswith("-/", i):
+                    depth -= 1
+                    i += 2
+                else:
+                    i += 1
+            if depth:
+                raise ValueError("unterminated block comment")
+        elif text[i] == '"':
+            i += 1
+            while i < len(text):
+                if text[i] == "\\":
+                    i += 2
+                elif text[i] == '"':
+                    i += 1
+                    break
+                else:
+                    i += 1
+        else:
+            i += 1
+            continue
+        for pos in range(start, i):
+            if result[pos] != "\n":
+                result[pos] = " "
+    return "".join(result)
+
+
+def source_tokens(text: str):
+    return TOKEN.findall(visible_code(text))
+
+
+def generate_strict_audit(paths: list[Path], output: Path) -> None:
+    modules = [p.relative_to(ROOT).with_suffix("").as_posix().replace("/", ".") for p in paths]
+    if not all(re.fullmatch(r"[A-Za-z_][A-Za-z_0-9]*(?:\.[A-Za-z_][A-Za-z_0-9]*)*", m) for m in modules):
+        raise SystemExit("Unrecognized module path in strict audit inventory")
+    template = (ROOT / "scripts" / "strict_axiom_audit.template").read_text(encoding="utf-8")
+    output.write_text(
+        "\n".join("import " + m for m in modules) + "\n\n" +
+        (template.replace("@MODULES@", ", ".join("`" + m for m in modules))
+         .replace("@IMPORTS@", ", ".join("`" + m for m in REQUIRED_IMPORTS))
+         .replace("@THEOREMS@", ", ".join("`WCTLean." + n for n in REQUIRED_THEOREMS))
+         .replace("@STATEMENTS@", REQUIRED_STATEMENTS)),
+        encoding="utf-8",
+    )
 
 
 def sha256(path: Path) -> str:
@@ -20,9 +189,34 @@ def sha256(path: Path) -> str:
     return digest.hexdigest()
 
 
+def inventory(root: Path, container: bool) -> set[Path]:
+    manifest = json.loads((root / "scripts/lean-source-paths.json").read_text())
+    if container:
+        actual = []
+        for directory, children, names in os.walk(root):
+            if Path(directory) == root:
+                children[:] = [name for name in children if name not in {".lake", ".git"}]
+            actual.extend((Path(directory) / name).relative_to(root).as_posix()
+                          for name in names if name.endswith(".lean"))
+    else:
+        raw = subprocess.check_output(["git", "ls-files", "-z", "--", "*.lean"], cwd=root)
+        actual = [os.fsdecode(path) for path in raw.split(b"\0") if path]
+    if manifest != sorted(actual):
+        missing = sorted(set(manifest) - set(actual))
+        extra = sorted(set(actual) - set(manifest))
+        raise SystemExit(f"Lean source inventory mismatch: missing={missing}, extra={extra}")
+    for name in actual:
+        path = root / name
+        if not path.is_file() or path.resolve() != path:
+            raise SystemExit(f"Missing or symlinked Lean source: {name}")
+    return {root / name for name in actual}
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--output", type=Path, default=ROOT / "formal-source-hashes.json")
+    parser.add_argument("--strict-lean-output", type=Path)
+    parser.add_argument("--container-inventory", action="store_true")
     args = parser.parse_args()
 
     toolchain = (ROOT / "lean-toolchain").read_text(encoding="utf-8").strip()
@@ -31,60 +225,51 @@ def main() -> None:
     if f'@ "v{expected_version}"' not in lakefile:
         raise SystemExit("lean-toolchain and mathlib version in lakefile.lean differ")
 
-    source_files = sorted([ROOT / "WCTLean.lean", *(ROOT / "WCTLean").rglob("*.lean")])
+    legacy_files = {ROOT / "Main.lean", ROOT / "MyProject.lean", *(ROOT / "MyProject").rglob("*.lean")}
+    source_files = sorted([ROOT / "WCTLean.lean", *(ROOT / "WCTLean").rglob("*.lean"), *legacy_files])
     failures: list[str] = []
     files: dict[str, str] = {}
     for path in source_files:
         text = path.read_text(encoding="utf-8")
-        if FORBIDDEN.search(text):
-            failures.append(f"placeholder proof token in {path.relative_to(ROOT)}")
+        forbidden = sorted(set(source_tokens(text)) & FORBIDDEN)
+        if forbidden:
+            failures.append(f"forbidden source tokens {forbidden} in {path.relative_to(ROOT)}")
         files[path.relative_to(ROOT).as_posix()] = sha256(path)
 
+    # Inventory every tracked Lean path; non-library tooling is separately hashed.
+    tracked_paths = inventory(ROOT, args.container_inventory)
+    tooling = {ROOT / p for p in (
+        "lakefile.lean",
+        "scripts/analytic_integrity_axioms.lean",
+        "scripts/complex_closure_nonuniqueness_axiom_audit.lean",
+        "scripts/complex_curvature_limit_axiom_audit.lean",
+        "scripts/d4_axiom_audit.lean",
+        "scripts/s004_axiom_audit.lean",
+    )}
+    unclassified = tracked_paths - set(source_files) - tooling
+    for path in sorted(unclassified):
+        failures.append(f"unclassified Lean file: {path.relative_to(ROOT)}")
+    tooling_hashes = {p.relative_to(ROOT).as_posix(): sha256(p) for p in sorted(tooling)}
+
     root_text = (ROOT / "WCTLean" / "Main.lean").read_text(encoding="utf-8")
-    for required in (
-        "WCTLean.Models.D4Binding",
-        "WCTLean.Models.D4Analytical",
-        "WCTLean.Models.D4Closure",
-        "WCTLean.Registry",
-        "WCTLean.Dimension",
-        "WCTLean.Curvature",
-        "WCTLean.Energy",
-        "WCTLean.Koide",
-        "WCTLean.Fourier",
-        "WCTLean.Contracts.Analytic",
-        "WCTLean.Models.CurvatureOperator",
-        "WCTLean.Models.ComplexCurvature",
-        "WCTLean.Models.PhaseFlux",
-        "WCTLean.Models.RestDensity",
-        "WCTLean.Models.Locking",
-        "WCTLean.Models.BandPass",
-        "WCTLean.Models.AlgebraicChecks",
-        "WCTLean.Models.LogFlow",
-        "WCTLean.Models.GhostModes",
-        "WCTLean.Models.Collider",
-        "WCTLean.Models.KoideDerivation",
-        "WCTLean.Models.UnifiedOperator",
-        "WCTLean.Models.CompactDynamics",
-        "WCTLean.ResolvedAudit",
-        "WCTLean.DerivedAudit",
-    ):
-        if f"import {required}" not in root_text:
+    root_code = visible_code(root_text)
+    for required in REQUIRED_IMPORTS:
+        if not re.search(r"(?m)^\s*import[ \t]+" + re.escape(required) + r"[ \t]*$", root_code):
             failures.append(f"WCTLean/Main.lean does not import {required}")
 
     registry_text = (ROOT / "WCTLean" / "Registry.lean").read_text(encoding="utf-8")
-    for required_theorem in (
-        "allEquationIds_length",
-        "allEquationIds_nodup",
-        "statusPartition_complete",
-        "canonicalRegistry_length",
-    ):
-        if f"theorem {required_theorem}" not in registry_text:
+    registry_code = visible_code(registry_text)
+    for required_theorem in REQUIRED_THEOREMS:
+        if not re.search(r"(?m)^\s*theorem[ \t]+" + re.escape(required_theorem) + r"(?=[\s:])", registry_code):
             failures.append(f"WCTLean/Registry.lean lacks {required_theorem}")
 
     manifest = json.loads((ROOT / "lake-manifest.json").read_text(encoding="utf-8"))
     mathlib = next((row for row in manifest.get("packages", []) if row.get("name") == "mathlib"), None)
     if not mathlib:
         failures.append("lake-manifest.json has no mathlib package")
+
+    if args.strict_lean_output and not failures:
+        generate_strict_audit(source_files, args.strict_lean_output)
 
     output = {
         "schema_version": "2.0.0",
@@ -93,6 +278,8 @@ def main() -> None:
         "mathlib_commit": mathlib.get("rev") if mathlib else None,
         "source_file_count": len(files),
         "source_sha256": files,
+        "tracked_lean_file_count": len(tracked_paths),
+        "tooling_sha256": tooling_hashes,
         "lake_manifest_sha256": sha256(ROOT / "lake-manifest.json"),
         "lakefile_sha256": sha256(ROOT / "lakefile.lean"),
         "status": "PASS" if not failures else "FAIL",

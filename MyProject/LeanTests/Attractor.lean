@@ -2,15 +2,9 @@ import MyProject.Theta.Dynamics
 
 namespace WCT
 
-/-
-  LEAN-2: Attractor uniqueness contract
--/
-
-/--
-  Unique attractor per Theta-parameter set.
--/
-axiom Theta_unique_attractor_existsUnique :
-  forall p : ThetaParams,
-    ExistsUnique (fun s => IsAttractor p s)
+/-- LEAN-2: the actual unique fixed-point existence obligation. No proof is
+claimed until an independently verified concrete Theta model is supplied. -/
+def Theta_unique_fixedPoint_existsUnique (M : ThetaModel) : Prop :=
+  ∀ p : ThetaParams, ∃! s : M.State, IsFixedPoint M p s
 
 end WCT
