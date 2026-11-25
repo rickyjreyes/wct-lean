@@ -17,7 +17,8 @@ are projections of D, so unrelated maps cannot be mixed. No physical
 realization or validity is certified. The baseline class is compared only
 at the designated positive dimension; full physical scope remains OPEN. -/
 def FullContractFalsified (D : DimensionIndexedModel) (d : Nat) (hd : 0 < d)
-    [AddCommGroup (D.State d)] [Module ℝ (D.State d)]
+    [AddCommGroup (dimensionSlice D d hd).State]
+    [Module ℝ (dimensionSlice D d hd).State]
     (B : BaselineModel (dimensionSlice D d hd)) : Prop :=
   (∃ (j : Nat), 0 < j ∧ ∃ p : ThetaParams, ∃ x : D.State j,
     D.admissible j x ∧ D.entropy j (D.Theta j p x) > D.entropy j x) ∨
