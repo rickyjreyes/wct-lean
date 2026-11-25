@@ -3,6 +3,9 @@ Generated module inventory from all maintained Lean library sources and Main.
 No theorem, definition, private or generated declaration is exempted.
 The allowlist is the ordinary Lean logical foundations, not a mathematical model.
 -/
+/- Independently stated registry obligations: a name and theorem kind alone do not suffice. -/
+@STATEMENTS@
+
 open Lean Elab Command
 
 namespace WCTStrictAudit

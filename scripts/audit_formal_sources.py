@@ -41,6 +41,13 @@ REQUIRED_IMPORTS = (
     "WCTLean.ResolvedAudit",
     "WCTLean.DerivedAudit",
 )
+REQUIRED_STATEMENTS = """\
+example : WCTLean.allEquationIds.length = 142 := WCTLean.allEquationIds_length
+example : WCTLean.allEquationIds.Nodup := WCTLean.allEquationIds_nodup
+example : WCTLean.statusPartition.toFinset = WCTLean.allEquationIds.toFinset := WCTLean.statusPartition_complete
+example : WCTLean.canonicalRegistry.length = 142 := WCTLean.canonicalRegistry_length
+"""
+
 REQUIRED_THEOREMS = (
     "allEquationIds_length",
     "allEquationIds_nodup",
@@ -106,7 +113,8 @@ def generate_strict_audit(paths: list[Path], output: Path) -> None:
         "\n".join("import " + m for m in modules) + "\n\n" +
         (template.replace("@MODULES@", ", ".join("`" + m for m in modules))
          .replace("@IMPORTS@", ", ".join("`" + m for m in REQUIRED_IMPORTS))
-         .replace("@THEOREMS@", ", ".join("`WCTLean." + n for n in REQUIRED_THEOREMS))),
+         .replace("@THEOREMS@", ", ".join("`WCTLean." + n for n in REQUIRED_THEOREMS))
+         .replace("@STATEMENTS@", REQUIRED_STATEMENTS)),
         encoding="utf-8",
     )
 
