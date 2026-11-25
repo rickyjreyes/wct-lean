@@ -20,4 +20,12 @@ theorem theta_ne_baseline_of_witness (M : ThetaModel) (B : BaselineModel M)
   intro h
   exact hx (congrFun h x)
 
+
+/-- Explicit comparison with every real-linear map. No arbitrary choice of
+baseline class can discharge this obligation. -/
+def ExcludesLinearBaselines (M : ThetaModel) [AddCommGroup M.State]
+    [Module ℝ M.State] : Prop :=
+  ∀ p : ThetaParams, ∀ L : M.State →ₗ[ℝ] M.State,
+    ∃ x : M.State, M.Theta p x ≠ L x
+
 end WCT
