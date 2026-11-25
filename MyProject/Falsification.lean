@@ -1,4 +1,5 @@
 import MyProject.Theta.Entropy
+import MyProject.Theta.Dynamics
 import MyProject.Theta.Baselines
 import MyProject.LeanTests.DimensionFailure
 
@@ -50,6 +51,24 @@ theorem fixedPointMissingCountermodel_regression :
   rintro ⟨n, hn⟩
   change Nat.succ n = n at hn
   omega
+
+/-- The same nonempty successor model has no fixed point, for every parameter. -/
+theorem successor_has_no_fixedPoint (p : ThetaParams) :
+    ¬ ∃ n : FixedPointMissingCountermodel.State,
+      IsFixedPoint FixedPointMissingCountermodel p n := by
+  rintro ⟨n, hn⟩
+  change Nat.succ n = n at hn
+  exact Nat.succ_ne_self n hn
+
+/-- At-most-one is vacuous, but exactly-one must reject this countermodel. -/
+theorem successor_uniqueness_regression (p : ThetaParams) :
+    AtMostOneFixedPoint FixedPointMissingCountermodel p ∧
+      ¬ UniqueFixedPoint FixedPointMissingCountermodel p := by
+  constructor
+  · intro x y hx hy
+    exact (successor_has_no_fixedPoint p ⟨x, hx⟩).elim
+  · rintro ⟨x, hx, _⟩
+    exact successor_has_no_fixedPoint p ⟨x, hx⟩
 
 
 /-- Unified model-relative diagnostic. The local state, map and functionals
