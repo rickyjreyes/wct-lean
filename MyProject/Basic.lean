@@ -37,8 +37,8 @@ structure VerifierConfig where
 -- Symbolic evolution operator
 abbrev Evolution := StateConfig -> StateConfig
 
--- Deterministic symbolic machine
-abbrev TuringMachine := Nat -> StateConfig
+/-- An arbitrary state sequence, not a Turing machine. -/
+abbrev StateSequence := Nat → StateConfig
 
 -- Inner product
 def dot_product (x y : Vector) : Real :=
@@ -48,20 +48,43 @@ def dot_product (x y : Vector) : Real :=
 noncomputable def norm (v : Vector) : Real :=
   Real.sqrt (dot_product v v)
 
--- Normalized overlap
-noncomputable def normalized_overlap (a b : Vector) : Real :=
-  dot_product a b / (norm a * norm b)
+/-- Checked normalization: undefined inputs are rejected, not mapped to zero. -/
+noncomputable def normalized_overlap (a b : Vector) : Option ℝ := by
+  classical
+  exact if a.length = b.length ∧ 0 < norm a ∧ 0 < norm b then
+    some (dot_product a b / (norm a * norm b)) else none
 
--- Shannon entropy
-noncomputable def entropy (p : Vector) : Real :=
+def IsProbabilityVector (p : Vector) : Prop :=
+  p ≠ [] ∧ (∀ x ∈ p, 0 ≤ x) ∧ p.sum = 1
+
+def ProbabilityVector := {p : Vector // IsProbabilityVector p}
+
+/-- Shannon entropy on the probability simplex, with the zero-mass convention. -/
+noncomputable def entropy (p : ProbabilityVector) : ℝ :=
   - List.foldl (fun a b => a + b) 0
-      (p.map (fun pi =>
-        if pi = 0 then 0 else pi * Real.log pi))
+      (p.val.map (fun pi => if pi = 0 then 0 else pi * Real.log pi))
 
--- Verifier acceptance
+/-- Squared amplitudes, normalized by their total squared mass. Real-valued
+symbolic amplitude convention; correspondence to the physical spectral
+distribution is a separate obligation. -/
+noncomputable def amplitudeProbabilities (v : Vector) : Vector :=
+  v.map (fun x => x ^ 2 / (v.map (fun y => y ^ 2)).sum)
+
+/-- Fail closed unless the normalized amplitudes actually define a probability
+vector. No theorem about normalization is assumed. -/
+noncomputable def amplitudeEntropy (v : Vector) : Option ℝ := by
+  classical
+  exact if h : IsProbabilityVector (amplitudeProbabilities v) then
+    some (entropy ⟨amplitudeProbabilities v, h⟩) else none
+
+/-- Conditional symbolic verifier. Physical threshold calibration and the
+spectral interpretation remain OPEN. -/
 def passes_verifier (cfg : VerifierConfig) (s : StateConfig) : Prop :=
-  normalized_overlap s.field s.reference > cfg.tau
-  /\ entropy s.field <= cfg.sigma_crit
+  0 ≤ cfg.tau ∧ cfg.tau < 1 ∧ 0 ≤ cfg.sigma_crit ∧
+    ∃ overlap H : ℝ,
+      normalized_overlap s.field s.reference = some overlap ∧
+      amplitudeEntropy s.field = some H ∧
+      cfg.tau < overlap ∧ H ≤ cfg.sigma_crit
 
 /-- A finite binary description language: unary naturals separated by zero
 bits, with one bit contributing one unit of description length. A nonterminated
@@ -90,7 +113,7 @@ noncomputable def decodeDescription (program : Tape) : Option Vector :=
 complexity oracle is postulated. None denotes no finite description in
 this language. This is description length, not running time or universal
 Kolmogorov complexity. -/
-noncomputable def K (psi : Vector) : Option Nat := by
+noncomputable def literalDescriptionLength (psi : Vector) : Option Nat := by
   classical
   exact if h : ∃ n : Nat, ∃ program : Tape,
     program.length = n ∧ decodeDescription program = some psi
@@ -100,17 +123,17 @@ noncomputable def K (psi : Vector) : Option Nat := by
 This is not asserted: arbitrary real vectors need not be describable,
 and the empty vector has a zero-length description in this model. -/
 def exponential_bound : Prop :=
-  ∀ psi : Vector, ∃ k : Nat, K psi = some k ∧ k ≥ 2 ^ psi.length
+  ∀ psi : Vector, ∃ k : Nat, literalDescriptionLength psi = some k ∧ k ≥ 2 ^ psi.length
 
 theorem empty_description_decodes : decodeDescription [] = some [] := by
   simp [decodeDescription, decodeRuns, decodeRationalWords]
 
-theorem K_empty : K [] = some 0 := by
+theorem K_empty : literalDescriptionLength [] = some 0 := by
   classical
   have h : ∃ n : Nat, ∃ program : Tape,
       program.length = n ∧ decodeDescription program = some ([] : Vector) :=
     ⟨0, [], rfl, empty_description_decodes⟩
-  unfold K
+  unfold literalDescriptionLength
   rw [dif_pos h]
   have hle : Nat.find h ≤ 0 :=
     Nat.find_le (show ∃ program : Tape,
@@ -129,8 +152,25 @@ theorem exponential_bound_false_in_description_model : ¬ exponential_bound := b
   subst k
   norm_num at hb
 
--- Nonconstructibility
-def NonConstructible (M : Nat -> StateConfig) (psi_star : StateConfig) : Prop :=
+/-- Range exclusion only. This is not computational nonconstructibility. -/
+def OutsideSequenceRange (M : StateSequence) (psi_star : StateConfig) : Prop :=
   ∀ i : Nat, M i ≠ psi_star
+
+/-- Uniform family resource obligation for an independently specified machine
+semantics. This is not a Turing-machine implementation or a lower bound. -/
+structure FamilyMachineSemantics where
+  Machine : Type
+  machine_nonempty : Nonempty Machine
+  runs : Machine → List Bit → List Bit → Nat → Prop
+
+def PolynomialFamilyConstructor (S : FamilyMachineSemantics)
+    (target : List Bit → List Bit) : Prop :=
+  ∃ m : S.Machine, ∃ C k : Nat, 0 < C ∧
+    ∀ input : List Bit, ∃ t : Nat,
+      t ≤ C * (input.length + 1) ^ k ∧ S.runs m input (target input) t
+
+def UniformNonconstructibilityObligation (S : FamilyMachineSemantics)
+    (target : List Bit → List Bit) : Prop :=
+  ¬ PolynomialFamilyConstructor S target
 
 end WCT
