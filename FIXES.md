@@ -36,17 +36,7 @@ The following were defined **multiple times** across different files, causing co
 
 **Fix:** Created `MyProject/Theta/Core.lean` as the **single source of truth** for all core types:
 
-```lean
--- Core.lean defines ONCE:
-constant State : Type
-structure ThetaParams where id : Nat
-constant Theta : ThetaParams → State → State
-constant Entropy : State → ℝ
-constant Energy : State → ℝ
-def IsAttractor (p : ThetaParams) (s : State) : Prop := Theta p s = s
-```
-
-All other files now import from Core and **do not redefine** these types.
+`ThetaModel` supplies the state type, step map, entropy and energy as explicit model data. `IsFixedPoint`, `IsAttractingFixedPoint`, `IsLyapunovStable` and `IsAsymptoticallyStable` distinguish distinct mathematical properties. Model-specific physical realization and orbital stability remain OPEN; function totality is not PDE well-posedness. Other legacy modules import Core rather than reintroducing global model assumptions.
 
 ## Problem 3: WCT_Falsified Conflict
 

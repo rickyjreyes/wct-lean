@@ -1,15 +1,74 @@
 import MyProject.Theta.Entropy
+import MyProject.Theta.Dynamics
 import MyProject.Theta.Baselines
 import MyProject.LeanTests.DimensionFailure
 
 namespace WCT
 
 /-- The original falsification alternatives, for explicitly supplied model data.
-The fixed-point predicate is unchanged; no physical stability is inferred. -/
+The fixed-point predicate is unchanged; missing fixed points are failures too.
+No physical stability is inferred. -/
 def LegacyFixedPointContractFalsified (M : ThetaModel) : Prop :=
   (∃ p : ThetaParams, ¬ EntropyMonotoneTheta M p) ∨
   (∃ p : ThetaParams, ∃ s1 s2 : M.State,
-    s1 ≠ s2 ∧ IsFixedPoint M p s1 ∧ IsFixedPoint M p s2)
+    s1 ≠ s2 ∧ IsFixedPoint M p s1 ∧ IsFixedPoint M p s2) ∨
+  (∃ p : ThetaParams, ¬ ∃ s : M.State, IsFixedPoint M p s)
+
+/-- A parameter with no fixed point must falsify the fixed-point contract. -/
+theorem no_fixedPoint_is_legacy_failure (M : ThetaModel) (p : ThetaParams)
+    (h : ¬ ∃ s : M.State, IsFixedPoint M p s) :
+    LegacyFixedPointContractFalsified M :=
+  Or.inr (Or.inr ⟨p, h⟩)
+
+/-- Adversarial nontrivial model: successor dynamics with constant entropy.
+The historical two-disjunct detector missed this model entirely. -/
+def FixedPointMissingCountermodel : ThetaModel where
+  State := Nat
+  state_nonempty := inferInstance
+  state_nontrivial := inferInstance
+  Theta := fun _ n => n + 1
+  Entropy := fun _ => 0
+  Energy := fun _ => 0
+
+/-- Executable negative control: the historical detector accepts successor
+dynamics even though no fixed point exists. This is not a physical model. -/
+theorem fixedPointMissingCountermodel_old_detector_misses :
+    ¬ ((∃ p : ThetaParams, ¬ EntropyMonotoneTheta FixedPointMissingCountermodel p) ∨
+      (∃ p : ThetaParams, ∃ s1 s2 : FixedPointMissingCountermodel.State,
+        s1 ≠ s2 ∧ IsFixedPoint FixedPointMissingCountermodel p s1 ∧
+          IsFixedPoint FixedPointMissingCountermodel p s2)) := by
+  rintro (⟨p, h⟩ | ⟨p, n, m, hne, hn, hm⟩)
+  · apply h
+    intro s
+    change (0 : ℝ) ≤ 0
+    exact le_rfl
+  · change Nat.succ n = n at hn
+    omega
+
+theorem fixedPointMissingCountermodel_regression :
+    LegacyFixedPointContractFalsified FixedPointMissingCountermodel := by
+  apply no_fixedPoint_is_legacy_failure FixedPointMissingCountermodel ⟨0⟩
+  rintro ⟨n, hn⟩
+  change Nat.succ n = n at hn
+  omega
+
+/-- The same nonempty successor model has no fixed point, for every parameter. -/
+theorem successor_has_no_fixedPoint (p : ThetaParams) :
+    ¬ ∃ n : FixedPointMissingCountermodel.State,
+      IsFixedPoint FixedPointMissingCountermodel p n := by
+  rintro ⟨n, hn⟩
+  change Nat.succ n = n at hn
+  exact Nat.succ_ne_self n hn
+
+/-- At-most-one is vacuous, but exactly-one must reject this countermodel. -/
+theorem successor_uniqueness_regression (p : ThetaParams) :
+    AtMostOneFixedPoint FixedPointMissingCountermodel p ∧
+      ¬ UniqueFixedPoint FixedPointMissingCountermodel p := by
+  constructor
+  · intro x y hx hy
+    exact (successor_has_no_fixedPoint p ⟨x, hx⟩).elim
+  · rintro ⟨x, hx, _⟩
+    exact successor_has_no_fixedPoint p ⟨x, hx⟩
 
 
 /-- Unified model-relative diagnostic. The local state, map and functionals
