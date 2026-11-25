@@ -8,6 +8,7 @@ import MyProject.LeanTests.EntropyMonotone
 import MyProject.LeanTests.Attractor
 import MyProject.LeanTests.DimensionFailure
 import MyProject.Falsification
+import MyProject.LeanTests.IntegrityRegression
 
 namespace WCT
 
