@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 import re
 import subprocess
 from pathlib import Path
@@ -74,10 +75,34 @@ def sha256(path: Path) -> str:
     return digest.hexdigest()
 
 
+def inventory(root: Path, container: bool) -> set[Path]:
+    manifest = json.loads((root / "scripts/lean-source-paths.json").read_text())
+    if container:
+        actual = []
+        for directory, children, names in os.walk(root):
+            if Path(directory) == root:
+                children[:] = [name for name in children if name not in {".lake", ".git"}]
+            actual.extend((Path(directory) / name).relative_to(root).as_posix()
+                          for name in names if name.endswith(".lean"))
+    else:
+        raw = subprocess.check_output(["git", "ls-files", "-z", "--", "*.lean"], cwd=root)
+        actual = [os.fsdecode(path) for path in raw.split(b"\0") if path]
+    if manifest != sorted(actual):
+        missing = sorted(set(manifest) - set(actual))
+        extra = sorted(set(actual) - set(manifest))
+        raise SystemExit(f"Lean source inventory mismatch: missing={missing}, extra={extra}")
+    for name in actual:
+        path = root / name
+        if not path.is_file() or path.resolve() != path:
+            raise SystemExit(f"Missing or symlinked Lean source: {name}")
+    return {root / name for name in actual}
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--output", type=Path, default=ROOT / "formal-source-hashes.json")
     parser.add_argument("--strict-lean-output", type=Path)
+    parser.add_argument("--container-inventory", action="store_true")
     args = parser.parse_args()
 
     toolchain = (ROOT / "lean-toolchain").read_text(encoding="utf-8").strip()
@@ -98,9 +123,15 @@ def main() -> None:
         files[path.relative_to(ROOT).as_posix()] = sha256(path)
 
     # Inventory every tracked Lean path; non-library tooling is separately hashed.
-    tracked = subprocess.check_output(["git", "ls-files", "-z", "--", "*.lean"], cwd=ROOT)
-    tracked_paths = {ROOT / p for p in tracked.decode("utf-8").split(chr(0)) if p}
-    tooling = {p for p in tracked_paths if p == ROOT / "lakefile.lean" or p.is_relative_to(ROOT / "scripts")}
+    tracked_paths = inventory(ROOT, args.container_inventory)
+    tooling = {ROOT / p for p in (
+        "lakefile.lean",
+        "scripts/analytic_integrity_axioms.lean",
+        "scripts/complex_closure_nonuniqueness_axiom_audit.lean",
+        "scripts/complex_curvature_limit_axiom_audit.lean",
+        "scripts/d4_axiom_audit.lean",
+        "scripts/s004_axiom_audit.lean",
+    )}
     unclassified = tracked_paths - set(source_files) - tooling
     for path in sorted(unclassified):
         failures.append(f"unclassified Lean file: {path.relative_to(ROOT)}")
