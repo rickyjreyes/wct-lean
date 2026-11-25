@@ -29,6 +29,21 @@ def FixedPointMissingCountermodel : ThetaModel where
   Entropy := fun _ => 0
   Energy := fun _ => 0
 
+/-- Executable negative control: the historical detector accepts successor
+dynamics even though no fixed point exists. This is not a physical model. -/
+theorem fixedPointMissingCountermodel_old_detector_misses :
+    ¬ ((∃ p : ThetaParams, ¬ EntropyMonotoneTheta FixedPointMissingCountermodel p) ∨
+      (∃ p : ThetaParams, ∃ s1 s2 : FixedPointMissingCountermodel.State,
+        s1 ≠ s2 ∧ IsFixedPoint FixedPointMissingCountermodel p s1 ∧
+          IsFixedPoint FixedPointMissingCountermodel p s2)) := by
+  rintro (⟨p, h⟩ | ⟨p, n, m, hne, hn, hm⟩)
+  · apply h
+    intro s
+    change (0 : ℝ) ≤ 0
+    exact le_rfl
+  · change n + 1 = n at hn
+    omega
+
 theorem fixedPointMissingCountermodel_regression :
     LegacyFixedPointContractFalsified FixedPointMissingCountermodel := by
   apply no_fixedPoint_is_legacy_failure FixedPointMissingCountermodel ⟨0⟩
