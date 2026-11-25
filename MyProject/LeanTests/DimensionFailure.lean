@@ -60,6 +60,7 @@ open realization obligations. -/
 structure DimensionIndexedModel where
   State : Nat → Type
   inhabited : ∀ d : Nat, Nonempty (State d)
+  nontrivial : ∀ d : Nat, 0 < d → Nontrivial (State d)
   metric : ∀ d : Nat, MetricSpace (State d)
   Theta : (d : Nat) → ThetaParams → State d → State d
   admissible : (d : Nat) → State d → Prop
@@ -69,11 +70,17 @@ def IsAdmissibleAttractor (D : DimensionIndexedModel) (d : Nat)
     (p : ThetaParams) (s : D.State d) : Prop :=
   letI : MetricSpace (D.State d) := D.metric d
   D.admissible d s ∧ D.Theta d p s = s ∧
+    HasNearbyPerturbations (D.admissible d) s ∧
+    (∀ x : D.State d, D.admissible d x →
+      D.admissible d (D.Theta d p x)) ∧
+    (∀ ε : ℝ, 0 < ε → ∃ δ : ℝ, 0 < δ ∧
+      ∀ x : D.State d, D.admissible d x → dist x s < δ →
+        ∀ k : ℕ, dist (dimensionalIterate (D.Theta d p) k x) s < ε) ∧
     ∃ r : ℝ, 0 < r ∧ ∀ x : D.State d, D.admissible d x → dist x s < r →
       Filter.Tendsto (fun k : Nat => dimensionalIterate (D.Theta d p) k x)
         Filter.atTop (nhds s)
 
-/-- Original positive-dimensional restriction, now explicitly an OPEN
+/-- Abstract model-relative positive-dimensional restriction, explicitly an OPEN
 proposition, not a theorem or a dimensionality result for an abstract map. -/
 def dimensionRestrictionObligation (D : DimensionIndexedModel) : Prop :=
   (∀ (d : Nat), 0 < d → d ≤ 3 → ∀ p : ThetaParams,
