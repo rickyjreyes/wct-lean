@@ -10,7 +10,7 @@ import subprocess
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-FORBIDDEN = {"sorry", "admit", "axiom", "sorryAx", "native_decide", "ofReduceBool", "unsafe", "implemented_by", "skipKernelTC", "trustCompiler"}
+FORBIDDEN = {"sorry", "admit", "axiom", "sorryAx", "native_decide", "ofReduceBool", "unsafe", "implemented_by", "skipKernelTC", "trustCompiler", "extern", "partial", "opaque", "csimp"}
 TOKEN = re.compile(r"[\w'!?]+")
 
 def source_tokens(text: str):
