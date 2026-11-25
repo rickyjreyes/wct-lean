@@ -46,6 +46,29 @@ example : WCTLean.allEquationIds.length = 142 := WCTLean.allEquationIds_length
 example : WCTLean.allEquationIds.Nodup := WCTLean.allEquationIds_nodup
 example : WCTLean.statusPartition.toFinset = WCTLean.allEquationIds.toFinset := WCTLean.statusPartition_complete
 example : WCTLean.canonicalRegistry.length = 142 := WCTLean.canonicalRegistry_length
+
+-- Frozen reviewed registry snapshot: these literals must not be generated from the candidate registry.
+example : WCTLean.masterIds = ["M1", "M2", "M3", "M4", "M5", "M6A", "M6B", "M7", "M8"] := by decide
+example : WCTLean.auxiliaryIds = ["G1", "EX", "EY", "EZ", "FA"] := by decide
+example : WCTLean.passIds = ["M2", "M3", "M4", "M7", "E1A", "E1B", "E2", "E3", "E4", "E5", "E6", "E7", "E8", "E9", "E10", "E11", "E12", "E13", "E14", "E16", "E17", "E18", "E20", "E21", "E24", "E26", "E28", "E29", "E30", "E33", "E37", "E38", "E45", "E47", "E49", "E51", "E53", "E57", "E58", "E59", "E61", "E62", "E64", "E65", "E67", "E69", "E81", "CLE2", "CLE4", "CLE6", "CLE7", "CLE9", "CLE10", "G1", "EX", "EY", "EZ", "CM9", "CM11"] := by decide
+example : WCTLean.conditionalIds = ["M1", "M5", "E15", "E19", "E22", "E23", "E31", "E32", "E40", "E41", "E48", "E50", "E54", "E56", "E66", "E68", "E70", "E71", "E72", "E76", "E80", "CLE5", "CLE8", "FA", "TOP3", "TOP7", "CORR2"] := by decide
+example : WCTLean.definitionIds = ["M6A", "E25", "E27", "E35", "E36", "E39", "E44", "E52", "E55", "E60", "E63", "E73", "E79", "E82", "CLE1", "CLE3", "CM12", "CM13", "CM16", "CM18", "TOP1", "TOP2", "TOP5", "CORR1", "CORR3", "CORR4"] := by decide
+example : WCTLean.openIds = ["M6B", "M8", "E34", "E42", "E43", "E46", "E74", "E75", "E77", "E78", "CM1", "CM2", "CM3", "CM4", "CM5", "CM6", "CM7", "CM8", "CM10", "CM14", "CM15", "CM17", "CM19", "CM20", "TOP4", "TOP6", "TOP8", "TOP9", "CORR5", "CORR6"] := by decide
+example : WCTLean.canonicalIds = ["E1A", "E1B"] ++ (List.range 81).map (fun i => "E" ++ toString (2 + i)) := by decide
+example : WCTLean.electronIds = (List.range 10).map (fun i => "CLE" ++ toString (1 + i)) := by decide
+example : WCTLean.cosmologyIds = (List.range 20).map (fun i => "CM" ++ toString (1 + i)) := by decide
+example : WCTLean.topologyIds = (List.range 9).map (fun i => "TOP" ++ toString (1 + i)) := by decide
+example : WCTLean.correctionIds = (List.range 6).map (fun i => "CORR" ++ toString (1 + i)) := by decide
+
+-- Definitional checks on the actual propositions, not just their names.
+example (M : WCT.ThetaModel) (p : WCT.ThetaParams) (s : M.State) :
+    WCT.IsFixedPoint M p s ↔ M.Theta p s = s := Iff.rfl
+example (M : WCT.ThetaModel) (p : WCT.ThetaParams) :
+    WCT.EntropyMonotoneTheta M p ↔ (∀ s : M.State, M.Entropy (M.Theta p s) ≤ M.Entropy s) := Iff.rfl
+example (M : WCT.ThetaModel) [MetricSpace M.State] (p : WCT.ThetaParams) (s : M.State) :
+    WCT.IsLyapunovStable M p s ↔ (∀ ε : ℝ, 0 < ε → ∃ δ : ℝ, 0 < δ ∧ ∀ x : M.State, dist x s < δ → ∀ k : ℕ, dist (WCT.thetaIterate M p k x) s < ε) := Iff.rfl
+example (M : WCT.ThetaModel) [MetricSpace M.State] (p : WCT.ThetaParams) (s : M.State) :
+    WCT.IsAttractingFixedPoint M p s ↔ (M.Theta p s = s ∧ ∃ r : ℝ, 0 < r ∧ ∀ x : M.State, dist x s < r → Filter.Tendsto (fun k : ℕ => WCT.thetaIterate M p k x) Filter.atTop (nhds s)) := Iff.rfl
 """
 
 REQUIRED_THEOREMS = (
