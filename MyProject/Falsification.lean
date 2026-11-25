@@ -12,16 +12,31 @@ def LegacyFixedPointContractFalsified (M : ThetaModel) : Prop :=
     s1 ≠ s2 ∧ IsFixedPoint M p s1 ∧ IsFixedPoint M p s2)
 
 
-/-- All four alternatives promised by the initial README. This is a
-model-relative falsification predicate, not a validity theorem. Connecting
-the supplied maps and admissibility predicates to the actual physical model
-remains open. The original two-alternative contract is retained above. -/
-def FullContractFalsified (M : ThetaModel) [MetricSpace M.State]
-    [AddCommGroup M.State] [Module ℝ M.State]
-    (B : BaselineModel M) (D : DimensionIndexedModel) : Prop :=
-  (∃ p : ThetaParams, ¬ EntropyMonotoneTheta M p) ∨
-  (∃ p : ThetaParams, ¬ ∃! s : M.State, IsAttractingFixedPoint M p s) ∨
+/-- Unified model-relative diagnostic. The local state, map and functionals
+are projections of D, so unrelated maps cannot be mixed. No physical
+realization or validity is certified. The baseline class is compared only
+at the designated positive dimension; full physical scope remains OPEN. -/
+def FullContractFalsified (D : DimensionIndexedModel) (d : Nat) (hd : 0 < d)
+    [AddCommGroup (D.State d)] [Module ℝ (D.State d)]
+    (B : BaselineModel (dimensionSlice D d hd)) : Prop :=
+  (∃ (j : Nat), 0 < j ∧ ∃ p : ThetaParams, ∃ x : D.State j,
+    D.admissible j x ∧ D.entropy j (D.Theta j p x) > D.entropy j x) ∨
   ¬ dimensionRestrictionObligation D ∨
-  ¬ Theta_nonlinear M ∨ ¬ Theta_not_baseline M B
+  ¬ Theta_nonlinear (dimensionSlice D d hd) ∨
+  ¬ Theta_not_baseline (dimensionSlice D d hd) B ∨
+  ¬ ExcludesLinearBaselines (dimensionSlice D d hd)
+
+/-- Missing or multiple admissible attractors are independently detectable. -/
+def AttractorUniquenessFailure (D : DimensionIndexedModel) (d : Nat)
+    (p : ThetaParams) : Prop :=
+  ¬ ∃! s : D.State d, IsAdmissibleAttractor D d p s
+
+theorem no_attractor_is_uniqueness_failure (D : DimensionIndexedModel)
+    (d : Nat) (p : ThetaParams)
+    (h : ¬ ∃ s : D.State d, IsAdmissibleAttractor D d p s) :
+    AttractorUniquenessFailure D d p := by
+  intro hUnique
+  obtain ⟨s, hs, _⟩ := hUnique
+  exact h ⟨s, hs⟩
 
 end WCT
