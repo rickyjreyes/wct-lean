@@ -43,6 +43,7 @@ REQUIRED_IMPORTS = (
 )
 REQUIRED_STATEMENTS = """\
 section IndependentSpecificationChecks
+open scoped ENNReal
 set_option maxRecDepth 100000
 set_option maxHeartbeats 20000000
 example : WCTLean.allEquationIds.length = 142 := WCTLean.allEquationIds_length
@@ -72,6 +73,40 @@ example (M : WCT.ThetaModel) [MetricSpace M.State] (p : WCT.ThetaParams) (s : M.
     WCT.IsLyapunovStable M p s ↔ (∀ ε : ℝ, 0 < ε → ∃ δ : ℝ, 0 < δ ∧ ∀ x : M.State, dist x s < δ → ∀ k : ℕ, dist (WCT.thetaIterate M p k x) s < ε) := Iff.rfl
 example (M : WCT.ThetaModel) [MetricSpace M.State] (p : WCT.ThetaParams) (s : M.State) :
     WCT.IsAttractingFixedPoint M p s ↔ (M.Theta p s = s ∧ ∃ r : ℝ, 0 < r ∧ ∀ x : M.State, dist x s < r → Filter.Tendsto (fun k : ℕ => WCT.thetaIterate M p k x) Filter.atTop (nhds s)) := Iff.rfl
+
+-- Registry composition must preserve the frozen partition and canonical ordering.
+example : WCTLean.allEquationIds =
+    WCTLean.masterIds ++ WCTLean.canonicalIds ++ WCTLean.electronIds ++
+    WCTLean.auxiliaryIds ++ WCTLean.cosmologyIds ++ WCTLean.topologyIds ++
+    WCTLean.correctionIds := rfl
+example : WCTLean.statusPartition = WCTLean.passIds ++ WCTLean.conditionalIds ++
+    WCTLean.definitionIds ++ WCTLean.openIds := rfl
+example (id : WCTLean.EquationId) : WCTLean.effectiveStatus? id =
+    (if id ∈ WCTLean.passIds then some WCTLean.AuditStatus.pass
+     else if id ∈ WCTLean.conditionalIds then some WCTLean.AuditStatus.conditional
+     else if id ∈ WCTLean.definitionIds then some WCTLean.AuditStatus.definition
+     else if id ∈ WCTLean.openIds then some WCTLean.AuditStatus.openClaim
+     else none) := rfl
+
+-- Canonical corrected complex curvature formula and signed energy scaling.
+example (psi : ℂ) (epsilon alpha : ℝ) :
+    WCTLean.complexRegularizerDenominator psi epsilon alpha =
+      Complex.normSq psi + epsilon ^ 2 * Real.exp (-2 * alpha * Complex.normSq psi) := rfl
+example (lapPsi psi : ℂ) (epsilon alpha : ℝ) :
+    WCTLean.thetaComplex lapPsi psi epsilon alpha =
+      -lapPsi * (star psi / (WCTLean.complexRegularizerDenominator psi epsilon alpha : ℂ)) := rfl
+example (radius : ℝ) (n : ℕ) :
+    WCTLean.localEnergyScale radius n = radius ^ ((n : ℤ) - 2) := rfl
+example (G C : ℝ≥0∞) : WCTLean.FiniteConfinementEnergy G C ↔ G + C < ⊤ := Iff.rfl
+
+-- Non-isolation and stability must not collapse to fixed-point existence.
+example {X : Type} [MetricSpace X] (A : X → Prop) (s : X) :
+    WCT.HasNearbyPerturbations A s ↔
+      (∀ r : ℝ, 0 < r → ∃ x : X, A x ∧ x ≠ s ∧ dist x s < r) := Iff.rfl
+example (M : WCT.ThetaModel) [MetricSpace M.State] (p : WCT.ThetaParams) (s : M.State) :
+    WCT.IsAsymptoticallyStable M p s ↔
+      (WCT.IsAttractingFixedPoint M p s ∧ WCT.IsLyapunovStable M p s ∧
+        WCT.HasNearbyPerturbations (fun _ : M.State => True) s) := Iff.rfl
 end IndependentSpecificationChecks
 """
 
