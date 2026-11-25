@@ -93,7 +93,8 @@ theorem thetaComplex_ae_bound {X : Type*} [MeasurableSpace X]
   exact mul_le_mul hx hy (norm_nonneg _) hL
 
 /-- E25/E65: critical Sobolev exponent formula, physically used for n > 2. -/
-noncomputable def criticalSobolevExponent (n : ℝ) : ℝ := (n + 2) / (n - 2)
+noncomputable def criticalSobolevExponent (n : ℕ) (_hn : 2 < n) : ℝ :=
+  ((n : ℝ) + 2) / ((n : ℝ) - 2)
 
 /-- E27: finiteness of the sum of two nonnegative extended-real integral
 contributions. Unlike real-valued nonnegativity this excludes infinite energy. -/
@@ -103,20 +104,42 @@ def FiniteConfinementEnergy (gradientEnergy curvatureEnergy : ℝ≥0∞) : Prop
 /-- E27 at field level, with the integration measure, gradient and exact
 curvature operator supplied. Identifying the gradient and Laplacian with
 weak derivatives of a field remains a separate analytical obligation. -/
-def FiniteFieldConfinementEnergy {X G : Type*} [MeasurableSpace X]
+def SuppliedIntegrandFinite {X G : Type*} [MeasurableSpace X]
     [Norm G] (μ : Measure X) (ψ lapPsi : X → ℂ) (gradPsi : X → G)
     (epsilon alpha : ℝ) : Prop :=
   (∫⁻ x, ENNReal.ofReal
     (‖gradPsi x‖ ^ 2 + ‖thetaComplex (lapPsi x) (ψ x) epsilon alpha‖ ^ 2) ∂μ) < ⊤
+
+/-- Field-level energy uses the actual whole-space measure and derivatives
+from the common Schwartz approximation graph. The physical choice of
+functional and equivalence of the graph to the intended energy space are
+separate mathematical obligations. -/
+def FiniteFieldConfinementEnergy {n : ℕ} (u : SobolevH2 n)
+    (epsilon alpha : ℝ) : Prop :=
+  0 < n ∧ 0 < epsilon ∧
+    (∫⁻ x : SobolevDomain n, ENNReal.ofReal
+      ((∑ i : Fin n, ‖u.grad i x‖ ^ 2) +
+        ‖thetaComplex (u.lap x) (u.val x) epsilon alpha‖ ^ 2)) < ⊤
 
 theorem infinite_gradient_energy_not_finite :
     ¬ FiniteConfinementEnergy ⊤ 0 := by
   simp [FiniteConfinementEnergy]
 
 /-- E66: Gagliardo-Nirenberg is an analytic hypothesis in this package. -/
-def GagliardoNirenbergBound
+def ScalarInterpolationInequality
     (lp gradL2 l2 constant theta : ℝ) : Prop :=
-  lp ≤ constant * Real.rpow gradL2 theta * Real.rpow l2 (1 - theta)
+  0 ≤ lp ∧ 0 ≤ gradL2 ∧ 0 ≤ l2 ∧ 0 < constant ∧
+    0 ≤ theta ∧ theta ≤ 1 ∧
+    lp ≤ constant * Real.rpow gradL2 theta * Real.rpow l2 (1 - theta)
+
+/-- Uniform whole-space interpolation obligation; exponent compatibility
+and the analytic proof remain OPEN. The constant cannot depend on u. -/
+def GagliardoNirenbergBound (n : ℕ) (q : ℝ≥0∞) (theta : ℝ) : Prop :=
+  0 < n ∧ 1 ≤ q ∧ 0 ≤ theta ∧ theta ≤ 1 ∧
+    ∃ C : ℝ, 0 < C ∧ ∀ u : SobolevH2 n,
+      (eLpNorm (fun x => u.val x) q (volume : Measure (SobolevDomain n))) ≤
+        ENNReal.ofReal (C * Real.rpow (∑ i : Fin n, ‖u.grad i‖) theta *
+          Real.rpow ‖u.val‖ (1 - theta))
 
 /-- E68: use a signed exponent; natural subtraction would truncate n - 2. -/
 noncomputable def localEnergyScale (radius : ℝ) (n : ℕ) : ℝ :=
@@ -126,7 +149,8 @@ noncomputable def localEnergyScale (radius : ℝ) (n : ℕ) : ℝ :=
 proposition. No universal constant or analytical inequality is asserted. -/
 def LocalEnergyBound
     (localGradientEnergy constant radius h1NormSq : ℝ) (n : ℕ) : Prop :=
-  0 < radius ∧
+  0 < n ∧ 0 < radius ∧ 0 < constant ∧
+    0 ≤ localGradientEnergy ∧ 0 ≤ h1NormSq ∧
     localGradientEnergy ≤ constant * localEnergyScale radius n * h1NormSq
 
 /-- Regression: dimension one must give inverse radius, not radius^0. -/
@@ -143,14 +167,14 @@ theorem localEnergyScale_two (radius : ℝ) :
 not part of the definition. For n > 2 use the published finite critical
 exponent; lower dimensions require a separately justified regime.
 This is not a predicate of dynamical stability. -/
-def DimensionalStabilityCriterion (n : ℕ) (p : ℝ) : Prop :=
-  SobolevEmbeddingStatement n ∧ 1 < p ∧
-    (2 < n → p < criticalSobolevExponent (n : ℝ))
+def AnalyticSubcriticalCriterion (n : ℕ) (p : ℝ) : Prop :=
+  0 < n ∧ SobolevEmbeddingStatement n ∧ 1 < p ∧
+    (∀ hn : 2 < n, p < criticalSobolevExponent n hn)
 
 /-- The proposed dimension implication is retained as an open obligation,
 not as a theorem. Its relation to actual stable PDE solutions is open. -/
 def E70DimensionObligation : Prop :=
-  ∀ n : ℕ, ∀ p : ℝ, DimensionalStabilityCriterion n p → n ≤ 3
+  ∀ n : ℕ, ∀ p : ℝ, AnalyticSubcriticalCriterion n p → n ≤ 3
 
 /-- The scaling factor in the biharmonic norm is lambda^(4-n). -/
 noncomputable def biharmonicScalingFactor (lambda : ℝ) (n : ℕ) : ℝ :=
@@ -160,5 +184,22 @@ noncomputable def biharmonicScalingFactor (lambda : ℝ) (n : ℕ) : ℝ :=
 @[simp] theorem biharmonic_scaling_dimension_four (lambda : ℝ) :
     biharmonicScalingFactor lambda 4 = 1 := by
   simp [biharmonicScalingFactor]
+
+
+/-- Guarded physical dilation interface. The arithmetic factor above is
+not a field rescaling theorem. -/
+noncomputable def positiveDilationFactor
+    (lambda : {r : ℝ // 0 < r}) (n : ℕ) : ℝ :=
+  biharmonicScalingFactor lambda.val n
+
+/-- Actual localized gradient estimate, uniform in field, ball center and
+positive radius. This is an OPEN statement, not the scalar inequality above. -/
+def UniformLocalEnergyObligation (n : ℕ) : Prop :=
+  0 < n ∧ ∃ C : ℝ, 0 < C ∧ ∀ (u : SobolevH2 n)
+    (center : SobolevDomain n) (radius : ℝ), 0 < radius →
+    (∫⁻ x in Metric.ball center radius,
+      ENNReal.ofReal (∑ i : Fin n, ‖u.grad i x‖ ^ 2)) ≤
+      ENNReal.ofReal (C * localEnergyScale radius n *
+        (‖u.val‖ + ∑ i : Fin n, ‖u.grad i‖) ^ 2)
 
 end WCTLean
