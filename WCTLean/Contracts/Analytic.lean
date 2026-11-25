@@ -202,4 +202,26 @@ def UniformLocalEnergyObligation (n : ℕ) : Prop :=
       ENNReal.ofReal (C * localEnergyScale radius n *
         (‖u.val‖ + ∑ i : Fin n, ‖u.grad i‖) ^ 2)
 
+
+/-- Parameters used by the canonical regularized curvature expression.
+Only the independently justified positivity guard is imposed here. -/
+structure CurvatureParameters where
+  epsilon : ℝ
+  alpha : ℝ
+  epsilon_pos : 0 < epsilon
+
+/-- Actual dimension-indexed whole-space field, using the common derivative
+graph rather than arbitrary State types. This is a curvature expression,
+not the time evolution of the original nonlinear PDE. -/
+noncomputable def fieldCurvature {n : ℕ} (P : CurvatureParameters)
+    (u : SobolevH2 n) (x : SobolevDomain n) : ℂ :=
+  thetaComplex (u.lap x) (u.val x) P.epsilon P.alpha
+
+/-- Local denominator safety for the concrete field expression.
+The positive regulator result is a local algebraic theorem, not a stability result. -/
+theorem fieldCurvature_denominator_ne_zero {n : ℕ}
+    (P : CurvatureParameters) (u : SobolevH2 n) (x : SobolevDomain n) :
+    (complexRegularizerDenominator (u.val x) P.epsilon P.alpha : ℂ) ≠ 0 :=
+  thetaComplex_denominator_ne_zero (u.val x) P.epsilon P.alpha P.epsilon_pos
+
 end WCTLean
