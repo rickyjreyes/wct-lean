@@ -63,8 +63,21 @@ structure DimensionIndexedModel where
   nontrivial : ∀ d : Nat, 0 < d → Nontrivial (State d)
   metric : ∀ d : Nat, MetricSpace (State d)
   Theta : (d : Nat) → ThetaParams → State d → State d
+  entropy : (d : Nat) → State d → ℝ
+  energy : (d : Nat) → State d → ℝ
   admissible : (d : Nat) → State d → Prop
   admissible_nonempty : ∀ d : Nat, 0 < d → ∃ s : State d, admissible d s
+
+/-- The local model is derived from the same indexed family, not supplied
+as an unrelated operator. All physical realization claims remain OPEN. -/
+def dimensionSlice (D : DimensionIndexedModel) (d : Nat) (hd : 0 < d) :
+    ThetaModel where
+  State := D.State d
+  state_nonempty := D.inhabited d
+  state_nontrivial := D.nontrivial d hd
+  Theta := D.Theta d
+  Entropy := D.entropy d
+  Energy := D.energy d
 
 def IsAdmissibleAttractor (D : DimensionIndexedModel) (d : Nat)
     (p : ThetaParams) (s : D.State d) : Prop :=
@@ -84,7 +97,7 @@ def IsAdmissibleAttractor (D : DimensionIndexedModel) (d : Nat)
 proposition, not a theorem or a dimensionality result for an abstract map. -/
 def dimensionRestrictionObligation (D : DimensionIndexedModel) : Prop :=
   (∀ (d : Nat), 0 < d → d ≤ 3 → ∀ p : ThetaParams,
-    ∃ s : D.State d, IsAdmissibleAttractor D d p s) ∧
+    ∃! s : D.State d, IsAdmissibleAttractor D d p s) ∧
   (∀ (d : Nat), 3 < d → ∀ p : ThetaParams,
     ¬ ∃ s : D.State d, IsAdmissibleAttractor D d p s)
 
