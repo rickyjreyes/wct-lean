@@ -297,3 +297,7 @@ lake env lean scripts/GeneratedStrictAudit.lean
 ```
 
 A missing import, nonstandard axiom or source-audit failure blocks certification. Audit scripts and Lake tooling are inventoried separately; intentional negative controls must never be counted as production proofs. Independent specification review is still mandatory.
+
+## Second-pass adversarial integrity audit
+
+See [the remediation ledger](docs/SECOND_PASS_PROOF_INTEGRITY.md) for precise scope, remaining physical and computational obligations, and required independent verification policy. Neither the unified abstract diagnostic nor the canonical pointwise curvature expression proves the original PDE or its dimensional stability. Exact-head build and axiom audit are required before acceptance.
