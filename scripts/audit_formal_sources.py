@@ -42,6 +42,9 @@ REQUIRED_IMPORTS = (
     "WCTLean.DerivedAudit",
 )
 REQUIRED_STATEMENTS = """\
+section IndependentSpecificationChecks
+set_option maxRecDepth 100000
+set_option maxHeartbeats 20000000
 example : WCTLean.allEquationIds.length = 142 := WCTLean.allEquationIds_length
 example : WCTLean.allEquationIds.Nodup := WCTLean.allEquationIds_nodup
 example : WCTLean.statusPartition.toFinset = WCTLean.allEquationIds.toFinset := WCTLean.statusPartition_complete
@@ -69,6 +72,7 @@ example (M : WCT.ThetaModel) [MetricSpace M.State] (p : WCT.ThetaParams) (s : M.
     WCT.IsLyapunovStable M p s ↔ (∀ ε : ℝ, 0 < ε → ∃ δ : ℝ, 0 < δ ∧ ∀ x : M.State, dist x s < δ → ∀ k : ℕ, dist (WCT.thetaIterate M p k x) s < ε) := Iff.rfl
 example (M : WCT.ThetaModel) [MetricSpace M.State] (p : WCT.ThetaParams) (s : M.State) :
     WCT.IsAttractingFixedPoint M p s ↔ (M.Theta p s = s ∧ ∃ r : ℝ, 0 < r ∧ ∀ x : M.State, dist x s < r → Filter.Tendsto (fun k : ℕ => WCT.thetaIterate M p k x) Filter.atTop (nhds s)) := Iff.rfl
+end IndependentSpecificationChecks
 """
 
 REQUIRED_THEOREMS = (
